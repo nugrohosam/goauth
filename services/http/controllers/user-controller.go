@@ -11,7 +11,7 @@ import (
 // UserHandlerDetail is use
 func UserHandlerDetail() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		// TODO
 	}
 }
 
@@ -21,7 +21,6 @@ func UserHandlerStore() gin.HandlerFunc {
 		var user user.UserStoreDto
 		if err := c.ShouldBindJSON(&user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
 		}
 
 		usecases.CreateUser(user.Name)
