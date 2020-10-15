@@ -5,18 +5,21 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	header "github.com/nugrohosam/gosampleapi/services/http/requests/header"
+	header "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
 )
 
-// Header is using
-type Header header.HeaderJwt
+// HeaderJwt is using
+type HeaderJwt header.HeaderJwt
 
 // AuthJwt using for ..
 func AuthJwt() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		header := Header{}
+		header := HeaderJwt{}
 		if err := c.ShouldBindHeader(&header); err != nil {
-			panic(http.StatusUnauthorized)
+			c.JSON(http.StatusUnauthorized, nil)
+			return
 		}
+
+		c.Next()
 	}
 }

@@ -11,7 +11,7 @@ func GetAll() {
 
 // Create using for user
 func Create(name string) User {
-	database := *conn.DB
+	database := *conn.Db
 
 	user := User{Name: name}
 	database.Create(&user)
@@ -21,7 +21,7 @@ func Create(name string) User {
 
 // Find is using
 func Find(id string) User {
-	database := *conn.DB
+	database := *conn.Db
 
 	user := User{}
 	database.Where("id = ?", id).First(&user)

@@ -1,9 +1,6 @@
 package http
 
 import (
-	"fmt"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/nugrohosam/gosampleapi/services/http/controllers"
 	"github.com/nugrohosam/gosampleapi/services/http/middlewares"
@@ -12,24 +9,20 @@ import (
 // Serve using for listen to specific port
 func Serve() error {
 	routes := gin.New()
-
 	routes.Use(gin.Logger())
+	routes.Use(gin.Recovery())
 
-	routes.Use(gin.CustomRecovery(func(c *gin.Context, recovered interface{}) {
-		if err, ok := recovered.(string); ok {
-			c.String(http.StatusInternalServerError, fmt.Sprintf("error: %s", err))
-		}
-		c.AbortWithStatus(http.StatusInternalServerError)
-	}))
-
-	authorize := routes.Group("/")
-
-	authorize.Use(middlewares.AuthJwt())
-
-	user := authorize.Group("/users")
+	// v1
+	v1 := routes.Group("/v1")
+	auth := v1.Group("/auth")
 	{
-		user.POST("/", controllers.UserHandlerStore())
-		user.POST("/detail", controllers.UserHandlerDetail())
+		auth.POST("/login", controllers.AuthHandlerLogin())
+	}
+
+	home := v1.Group("/users")
+	home.Use(middlewares.AuthJwt())
+	{
+		home.GET("/", controllers.UserHandlerIndex())
 	}
 
 	if err := routes.Run(); err != nil {

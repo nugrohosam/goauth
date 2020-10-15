@@ -6,8 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// DB using to conn global
-var DB *gorm.DB
+// Db using to conn global
+var Db *gorm.DB
 
 // Conn use to connect db gorm
 func Conn() error {
@@ -19,11 +19,12 @@ func Conn() error {
 	dbName := viper.GetString("databse.name")
 
 	dsn := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	var err error
+	Db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return err
 	}
 
-	DB = db
 	return nil
 }

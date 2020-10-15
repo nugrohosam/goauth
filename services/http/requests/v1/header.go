@@ -1,4 +1,4 @@
-package header
+package v1
 
 // HeaderJwt using for ...
 type HeaderJwt struct {
