@@ -3,7 +3,6 @@ package http
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/nugrohosam/gosampleapi/services/http/controllers"
-	"github.com/nugrohosam/gosampleapi/services/http/middlewares"
 )
 
 // Serve using for listen to specific port
@@ -17,12 +16,7 @@ func Serve() error {
 	auth := v1.Group("/auth")
 	{
 		auth.POST("/login", controllers.AuthHandlerLogin())
-	}
-
-	home := v1.Group("/users")
-	home.Use(middlewares.AuthJwt())
-	{
-		home.GET("/", controllers.UserHandlerIndex())
+		auth.POST("/register", controllers.AuthHandlerRegister())
 	}
 
 	if err := routes.Run(); err != nil {

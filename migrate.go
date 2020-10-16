@@ -26,24 +26,50 @@ func main() {
 		panic("Stop state must be spellied")
 	}
 
+	viper.SetConfigType("yaml")
+	viper.SetConfigFile(".env.yaml")
+	err := viper.ReadInConfig()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	dbUsername := viper.GetString("databse.username")
 	dbPassword := viper.GetString("databse.password")
 	dbHost := viper.GetString("databse.host")
 	dbPort := viper.GetString("databse.port")
 	dbName := viper.GetString("databse.name")
 
-	db, _ := sql.Open("mysql", dbUsername+":"+dbPassword+"@tcp("+dbHost+":"+dbPort+")/"+dbName+"?multiStatements=true")
-	driver, _ := mysql.WithInstance(db, &mysql.Config{})
-	m, _ := migrate.NewWithDatabaseInstance(
-		"file://"+*version,
+	db, errConn := sql.Open("mysql", dbUsername+":"+dbPassword+"@tcp("+dbHost+":"+dbPort+")/"+dbName+"?multiStatements=true")
+	if errConn != nil {
+		fmt.Println(errConn)
+		return
+	}
+
+	driver, errMysql := mysql.WithInstance(db, &mysql.Config{})
+	if errMysql != nil {
+		fmt.Println(errMysql)
+		return
+	}
+
+	m, errInstance := migrate.NewWithDatabaseInstance(
+		"file://migrations/"+*version,
 		"mysql",
 		driver,
 	)
+	if errInstance != nil {
+		fmt.Println(errInstance)
+		return
+	}
 
 	if *state == "up" {
-		m.Up()
+		if err := m.Up(); err != nil {
+			fmt.Println(err, " when up")
+		}
 	} else if *state == "down" {
-		m.Down()
+		if err := m.Down(); err != nil {
+			fmt.Println(err, " when down")
+		}
 	} else {
 		fmt.Println("State is not define right")
 	}

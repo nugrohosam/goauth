@@ -5,10 +5,10 @@ import (
 	userRepo "github.com/nugrohosam/gosampleapi/repositories/user"
 )
 
-// AuthBasic ...
-func AuthBasic(emailOrUsername, password string) error {
+// RegisterBasic ...
+func RegisterBasic(name, username, email, password string) error {
 	hashedPassword := helpers.MakeHash(password)
-	userRepo.FindByEmailOrUsernameAndPassword(emailOrUsername, hashedPassword)
+	userRepo.Create(name, username, email, hashedPassword)
 
 	return nil
 }

@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/Microsoft/go-winio v0.4.14 // indirect
+	github.com/appleboy/gin-jwt/v2 v2.6.4 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/docker/distribution v2.7.1+incompatible // indirect
 	github.com/docker/docker v1.13.1 // indirect
@@ -17,6 +18,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1 // indirect
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb // indirect
 	gorm.io/driver/mysql v1.0.2
 	gorm.io/gorm v1.20.2

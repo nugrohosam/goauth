@@ -2,8 +2,11 @@ package user
 
 // User struct
 type User struct {
-	ID   int32
-	Name string
+	ID       int32
+	Name     string
+	Username string
+	Email    string
+	Password string
 }
 
 // Users using for many users

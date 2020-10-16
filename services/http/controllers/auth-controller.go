@@ -28,3 +28,22 @@ func AuthHandlerLogin() gin.HandlerFunc {
 		c.JSON(http.StatusOK, nil)
 	}
 }
+
+// AuthHandlerRegister is use
+func AuthHandlerRegister() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var authRegister auth.AuthRegister
+		c.BindJSON(&authRegister)
+
+		validate := validator.New()
+		if err := validate.Struct(authRegister); err != nil {
+			validationErrors := err.(validator.ValidationErrors)
+			fieldsErrors := helpers.TransformValidations(validationErrors)
+			c.JSON(http.StatusBadRequest, helpers.ResponseErrValidation(fieldsErrors))
+			return
+		}
+
+		usecases.RegisterBasic(authRegister.Name, authRegister.Username, authRegister.Email, authRegister.Password)
+		c.JSON(http.StatusOK, nil)
+	}
+}
