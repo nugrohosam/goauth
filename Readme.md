@@ -27,5 +27,5 @@ if you want to create some migration, add files to migration/{version that you w
 - [x] Middleware access denied
 - [x] Test api
 - [x] Cleaner DB Test
-- [ ] Request GRPC
+- [x] Request GRPC
 
