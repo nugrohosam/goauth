@@ -16,8 +16,6 @@ func main() {
 	// initial call to envinronment variable
 	if *stage == "prod" {
 		viper.SetConfigFile(".env.prod.yaml")
-	} else if *stage == "test" {
-		viper.SetConfigFile(".env.test.yaml")
 	} else {
 		viper.SetConfigFile(".env.yaml")
 	}

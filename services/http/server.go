@@ -6,9 +6,27 @@ import (
 	"github.com/nugrohosam/gosampleapi/services/http/middlewares"
 )
 
+// routes
+var routes *gin.Engine
+
 // Serve using for listen to specific port
-func Serve() *gin.Engine {
-	routes := gin.New()
+func Serve() error {
+	prepare()
+	if err := routes.Run(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// TestServe ...
+func TestServe() *gin.Engine {
+	prepare()
+	return routes
+}
+
+func prepare() {
+	routes = gin.New()
 	routes.Use(gin.Logger())
 	routes.Use(gin.Recovery())
 
@@ -33,10 +51,4 @@ func Serve() *gin.Engine {
 	{
 		helloWithoutMiddleware.GET("/", controllers.HelloWorldHandler())
 	}
-
-	if err := routes.Run(); err != nil {
-		panic("Cannot Serve")
-	}
-
-	return routes
 }

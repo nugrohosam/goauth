@@ -51,12 +51,8 @@ func testAuthRegister(t *testing.T) {
 	reader := bytes.NewBuffer(data)
 	endpoint := "http://" + url + ":" + port + "/v1/auth/register"
 
-	resp, err := http.Post(endpoint, "application/json", reader)
-	if err != nil {
-		t.Error(err.Error())
-	} else {
-		assert.Equal(t, 200, resp.StatusCode)
-	}
+	resp := PerformRequest(Routes, "POST", endpoint, "application/json", reader)
+	assert.Equal(t, http.StatusOK, resp.Code)
 }
 
 func testAuthLogin(t *testing.T) {
@@ -83,8 +79,10 @@ func loginWithEmail(t *testing.T, endpoint string) {
 	}
 
 	reader := bytes.NewBuffer(data)
-	resp, _ := http.Post(endpoint, "application/json", reader)
-	assert.Equal(t, 200, resp.StatusCode)
+	resp := PerformRequest(Routes, "POST", endpoint, "application/json", reader)
+
+	t.Log("Requested")
+	assert.Equal(t, http.StatusOK, resp.Code)
 }
 
 func loginWithUsername(t *testing.T, endpoint string) {
@@ -99,6 +97,6 @@ func loginWithUsername(t *testing.T, endpoint string) {
 	}
 
 	reader := bytes.NewBuffer(data)
-	resp, _ := http.Post(endpoint, "application/json", reader)
-	assert.Equal(t, 200, resp.StatusCode)
+	resp := PerformRequest(Routes, "POST", endpoint, "application/json", reader)
+	assert.Equal(t, http.StatusOK, resp.Code)
 }
