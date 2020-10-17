@@ -12,3 +12,10 @@
 
 - $ go run migration.go
 - $ go run main.go
+
+## Note
+
+if you want to create some migration, add files to migration/{version that you want}
+
+- {number}{nameofmigration}.up.sql
+- {number}{nameofmigration}.down.sql
