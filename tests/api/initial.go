@@ -32,7 +32,9 @@ func InitialTest(t *testing.T) {
 		panic(err)
 	}
 
-	Routes = httpServe.TestServe()
+	httpServe.Prepare()
+
+	Routes = httpServe.Routes
 }
 
 // PerformRequest ...

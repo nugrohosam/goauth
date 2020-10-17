@@ -15,54 +15,51 @@ import (
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
 
-type server struct{}
+// NewServer ...
+var NewServer *grpc.Server
+
+// NewServer ...
+type getServiceServer struct{}
+
+type validationServiceServer struct{}
+
+// Listen ...
+var Listen net.Listener
 
 // Serve ...
 func Serve() error {
-	port := viper.GetString("grpc.port")
-	listen, err := net.Listen("tcp", ":"+port)
+	Prepare()
 
 	fmt.Println("gRPC is Start to listen")
-	if err != nil {
-		return err
-	}
-
-	newServer := grpc.NewServer()
-	pb.RegisterGetServiceServer(newServer, &server{})
-
-	reflection.Register(newServer)
-	if err := newServer.Serve(listen); err != nil {
+	reflection.Register(NewServer)
+	if err := NewServer.Serve(Listen); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-// TestServe ...
-func TestServe() {
+// Prepare ...
+func Prepare() {
 	port := viper.GetString("grpc.port")
 	listen, err := net.Listen("tcp", ":"+port)
+	Listen = listen
 
-	fmt.Println("gRPC is Start to listen")
 	if err != nil {
 		log.Fatalf("Server exited with error: %v", err)
 	}
 
-	newServer := grpc.NewServer()
-	pb.RegisterGetServiceServer(newServer, &server{})
-
-	go func() {
-		if err := newServer.Serve(listen); err != nil {
-			log.Fatalf("Server exited with error: %v", err)
-		}
-	}()
+	NewServer = grpc.NewServer()
+	pb.RegisterGetServiceServer(NewServer, &getServiceServer{})
+	pb.RegisterValidationServiceServer(NewServer, &validationServiceServer{})
 }
 
-func (newServer *server) Get(context context.Context, request *pb.Request) (*pb.Response, error) {
+// Get ...
+func (getServiceServer *getServiceServer) Get(context context.Context, request *pb.GetRequest) (*pb.GetResponse, error) {
 	token := request.GetToken()
 
 	if usecases.AuthorizationValidation(token) != nil {
-		return &pb.Response{
+		return &pb.GetResponse{
 			Username: "",
 			Name:     "",
 			Email:    "",
@@ -71,16 +68,53 @@ func (newServer *server) Get(context context.Context, request *pb.Request) (*pb.
 
 	data, err := usecases.GetDataAuth(token)
 	if err != nil {
-		return &pb.Response{
+		return &pb.GetResponse{
 			Username: "",
 			Name:     "",
 			Email:    "",
 		}, nil
 	}
 
-	return &pb.Response{
+	return &pb.GetResponse{
 		Username: data["username"].(string),
 		Name:     data["name"].(string),
 		Email:    data["email"].(string),
+	}, nil
+}
+
+// GetID ...
+func (getServiceServer *getServiceServer) GetID(context context.Context, request *pb.GetRequest) (*pb.GetIdResponse, error) {
+	token := request.GetToken()
+
+	if usecases.AuthorizationValidation(token) != nil {
+		return &pb.GetIdResponse{
+			Id: "",
+		}, nil
+	}
+
+	data, err := usecases.GetDataAuth(token)
+	if err != nil {
+		return &pb.GetIdResponse{
+			Id: "",
+		}, nil
+	}
+
+	return &pb.GetIdResponse{
+		Id: data["id"].(string),
+	}, nil
+}
+
+// Valdate ...
+func (validationServiceServer *validationServiceServer) Validate(context context.Context, request *pb.GetRequest) (*pb.ValidationResponse, error) {
+	token := request.GetToken()
+
+	if usecases.AuthorizationValidation(token) != nil {
+		return &pb.ValidationResponse{
+			Valid: false,
+		}, nil
+	}
+
+	return &pb.ValidationResponse{
+		Valid: true,
 	}, nil
 }

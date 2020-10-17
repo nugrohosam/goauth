@@ -8,34 +8,29 @@ import (
 	"github.com/nugrohosam/gosampleapi/services/http/middlewares"
 )
 
-// routes
-var routes *gin.Engine
+// Routes ...
+var Routes *gin.Engine
 
 // Serve using for listen to specific port
 func Serve() error {
-	prepare()
+	Prepare()
 
 	port := viper.GetString("app.port")
-	if err := routes.Run(":" + port); err != nil {
+	if err := Routes.Run(":" + port); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-// TestServe ...
-func TestServe() *gin.Engine {
-	prepare()
-	return routes
-}
-
-func prepare() {
-	routes = gin.New()
-	routes.Use(gin.Logger())
-	routes.Use(gin.Recovery())
+// Prepare ...
+func Prepare() {
+	Routes = gin.New()
+	Routes.Use(gin.Logger())
+	Routes.Use(gin.Recovery())
 
 	// v1
-	v1 := routes.Group("/v1")
+	v1 := Routes.Group("/v1")
 
 	// v1/auth
 	auth := v1.Group("/auth")

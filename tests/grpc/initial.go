@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"log"
 	"testing"
 
 	database "github.com/nugrohosam/gosampleapi/services/databases"
@@ -24,5 +25,11 @@ func InitialTest(t *testing.T) {
 		panic(err)
 	}
 
-	grpcServe.TestServe()
+	grpcServe.Prepare()
+
+	go func() {
+		if err := grpcServe.NewServer.Serve(grpcServe.Listen); err != nil {
+			log.Fatalf("Server exited with error: %v", err)
+		}
+	}()
 }
