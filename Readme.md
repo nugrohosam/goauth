@@ -3,6 +3,11 @@
 - copy .env.example to .env.yaml
 - configure server environment that you needs in file .env.yaml
 
+## System Requirement protoc
+
+- install go to you computer
+- install protoc to your computer (optional) 
+
 ## Get All Modules
 
 - $ go mod tidy
@@ -27,5 +32,6 @@ if you want to create some migration, add files to migration/{version that you w
 - [x] Middleware access denied
 - [x] Test api
 - [x] Cleaner DB Test
-- [x] Request GRPC
+- [x] Request gRPC
+- [x] Test gRPC
 
