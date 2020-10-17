@@ -48,11 +48,9 @@ func AuthorizationValidation(tokenString string) error {
 
 	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return nil
-	} else if err != nil {
-		return errors.New("Cannot validate auth token")
-	} else {
-		return errors.New("Cannot validate")
 	}
+
+	return errors.New("Cannot validate")
 }
 
 // GetDataAuth ...
