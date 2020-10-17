@@ -6,6 +6,7 @@
 ## Get All Modules
 
 - $ go mod tidy
+- $ go get
 
 ## Run Migration & Run Server
 
