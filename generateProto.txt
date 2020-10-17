@@ -1,0 +1,2 @@
+protoc --proto_path=./services/grpc/pb --proto_path=./t
+hird_party --go_out=plugins=grpc:./services/grpc/pb nameofservice.proto

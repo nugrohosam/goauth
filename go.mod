@@ -9,6 +9,7 @@ require (
 	github.com/docker/docker v1.13.1 // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
+	github.com/gin-gonic/examples v0.0.0-20201016144932-440d2416e57a // indirect
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-playground/validator/v10 v10.4.0
 	github.com/go-sql-driver/mysql v1.5.0
@@ -18,7 +19,9 @@ require (
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb // indirect
+	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb
+	google.golang.org/grpc v1.33.0
+	google.golang.org/protobuf v1.25.0
 	gorm.io/driver/mysql v1.0.2
 	gorm.io/gorm v1.20.2
 )

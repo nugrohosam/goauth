@@ -1,8 +1,6 @@
 package databases
 
 import (
-	"fmt"
-
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -21,7 +19,6 @@ func Conn() error {
 	dbName := viper.GetString("databse.name")
 
 	dsn := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
-	fmt.Println(dsn)
 
 	var err error
 	Db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})

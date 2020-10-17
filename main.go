@@ -4,6 +4,7 @@ import (
 	"flag"
 
 	database "github.com/nugrohosam/gosampleapi/services/databases"
+	grpcConn "github.com/nugrohosam/gosampleapi/services/grpc"
 	httpConn "github.com/nugrohosam/gosampleapi/services/http"
 	viper "github.com/spf13/viper"
 )
@@ -26,6 +27,10 @@ func main() {
 	}
 
 	if err := database.Conn(); err != nil {
+		panic(err)
+	}
+
+	if err := grpcConn.Serve(); err != nil {
 		panic(err)
 	}
 
