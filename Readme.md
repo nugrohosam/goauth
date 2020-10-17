@@ -3,7 +3,7 @@
 - copy .env.example to .env.yaml
 - configure server environment that you needs in file .env.yaml
 
-## System Requirement protoc
+## System Requirement
 
 - install go to you computer
 - install protoc to your computer (optional) 
