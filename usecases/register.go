@@ -8,7 +8,9 @@ import (
 // RegisterBasic ...
 func RegisterBasic(name, username, email, password string) error {
 	hashedPassword := helpers.MakeHash(password)
-	userRepo.Create(name, username, email, hashedPassword)
+	if _, err := userRepo.Create(name, username, email, hashedPassword); err != nil {
+		return err
+	}
 
 	return nil
 }

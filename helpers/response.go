@@ -49,7 +49,7 @@ func ResponseManyWithPagination(data []map[string]interface{}, pagination []map[
 }
 
 // ResponseOne ...
-func ResponseOne(data []map[string]interface{}) gin.H {
+func ResponseOne(data map[string]interface{}) gin.H {
 	resp := gin.H{
 		"version": viper.GetString("app.version"),
 		"data":    data,

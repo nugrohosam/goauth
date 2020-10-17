@@ -23,9 +23,18 @@ func AuthHandlerLogin() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, helpers.ResponseErrValidation(fieldsErrors))
 			return
 		}
+		
+		token, err := usecases.AuthBasic(authLogin.EmailOrUsername, authLogin.Password)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, helpers.ResponseErr(err.Error()))
+			return
+		}
 
-		usecases.AuthBasic(authLogin.EmailOrUsername, authLogin.Password)
-		c.JSON(http.StatusOK, nil)
+		dataResponse := map[string]interface{} {
+			"token" : token,
+		}
+
+		c.JSON(http.StatusOK, helpers.ResponseOne(dataResponse))
 	}
 }
 
@@ -43,7 +52,11 @@ func AuthHandlerRegister() gin.HandlerFunc {
 			return
 		}
 
-		usecases.RegisterBasic(authRegister.Name, authRegister.Username, authRegister.Email, authRegister.Password)
+		if err := usecases.RegisterBasic(authRegister.Name, authRegister.Username, authRegister.Email, authRegister.Password); err != nil {
+			c.JSON(http.StatusBadRequest, helpers.ResponseErr(err.Error()))
+			return
+		}
+
 		c.JSON(http.StatusOK, nil)
 	}
 }

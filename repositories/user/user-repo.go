@@ -1,6 +1,7 @@
 package user
 
 import (
+	"errors"
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
 )
 
@@ -10,13 +11,21 @@ func GetAll() {
 }
 
 // Create using for user
-func Create(name, username, email, password string) User {
+func Create(name, username, email, password string) (User, error) {
 	database := *conn.Db
 
 	user := User{Name: name, Username: username, Email: email, Password: password}
-	database.Create(&user)
+	userExisting := User{}
+	
+	var isExists int64
+	database.Where("email = ? or usernme = = ? ",  user.Email, user.Username).Count(&isExists)
 
-	return user
+	if isExists != 0 {
+		return userExisting, errors.New("User is exists")
+	}
+
+	database.Create(&user)
+	return user, nil
 }
 
 // Find is using
