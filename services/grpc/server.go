@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"fmt"
+	"log"
 	"net"
 
 	"github.com/spf13/viper"
@@ -11,13 +12,13 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	pb "github.com/nugrohosam/gosampleapi/services/grpc/pb"
+	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
 
 type server struct{}
 
 // Serve ...
 func Serve() error {
-
 	port := viper.GetString("grpc.port")
 	listen, err := net.Listen("tcp", ":"+port)
 
@@ -37,14 +38,49 @@ func Serve() error {
 	return nil
 }
 
+// TestServe ...
+func TestServe() {
+	port := viper.GetString("grpc.port")
+	listen, err := net.Listen("tcp", ":"+port)
+
+	fmt.Println("gRPC is Start to listen")
+	if err != nil {
+		log.Fatalf("Server exited with error: %v", err)
+	}
+
+	newServer := grpc.NewServer()
+	pb.RegisterGetServiceServer(newServer, &server{})
+
+	go func() {
+		if err := newServer.Serve(listen); err != nil {
+			log.Fatalf("Server exited with error: %v", err)
+		}
+	}()
+}
+
 func (newServer *server) Get(context context.Context, request *pb.Request) (*pb.Response, error) {
 	token := request.GetToken()
 
-	fmt.Println("token passed : ", token)
+	if usecases.AuthorizationValidation(token) != nil {
+		return &pb.Response{
+			Username: "",
+			Name:     "",
+			Email:    "",
+		}, nil
+	}
+
+	data, err := usecases.GetDataAuth(token)
+	if err != nil {
+		return &pb.Response{
+			Username: "",
+			Name:     "",
+			Email:    "",
+		}, nil
+	}
 
 	return &pb.Response{
-		Name:     "a",
-		Username: "b",
-		Email:    "c",
+		Username: data["username"].(string),
+		Name:     data["name"].(string),
+		Email:    data["email"].(string),
 	}, nil
 }

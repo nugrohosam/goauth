@@ -23,6 +23,8 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"id":          user.ID,
+		"name":        user.Name,
 		"username":    user.Username,
 		"email":       user.Email,
 		"expiredTime": time.Now().AddDate(1, 0, 0),
@@ -40,12 +42,30 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 // AuthorizationValidation ...
 func AuthorizationValidation(tokenString string) error {
 	token, err := jwt.Parse(tokenString, validateToken)
+	if err != nil {
+		return errors.New("Wrong token input")
+	}
+
 	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return nil
 	} else if err != nil {
 		return errors.New("Cannot validate auth token")
 	} else {
 		return errors.New("Cannot validate")
+	}
+}
+
+// GetDataAuth ...
+func GetDataAuth(tokenString string) (map[string]interface{}, error) {
+	token, err := jwt.Parse(tokenString, validateToken)
+	data, ok := token.Claims.(jwt.MapClaims)
+
+	if ok && token.Valid {
+		return data, nil
+	} else if err != nil {
+		return nil, errors.New("Cannot validate auth token")
+	} else {
+		return nil, errors.New("Cannot validate")
 	}
 }
 

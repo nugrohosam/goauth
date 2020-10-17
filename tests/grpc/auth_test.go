@@ -1,19 +1,30 @@
-package clients
+package grpc
 
 import (
 	"context"
-	"fmt"
 	"log"
+	"testing"
 
 	pb "github.com/nugrohosam/gosampleapi/services/grpc/pb"
+	utilities "github.com/nugrohosam/gosampleapi/tests/utilities"
+	assert "github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
 )
+
+const bufSize = 1024 * 1024
 
 // BookResponse ...
 type BookResponse struct{}
 
 // GetBook ...
-func GetBook() {
+func TestRun(t *testing.T) {
+	InitialTest(t)
+	defer utilities.DbCleaner(t)
+
+	authWithToken(t)
+}
+
+func authWithToken(t *testing.T) {
 	// Set up a connection to the server.
 	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
@@ -27,10 +38,11 @@ func GetBook() {
 	token := "Anjeng"
 	req := &pb.Request{Token: token}
 	res, err := client.Get(ctx, req)
+	if err != nil {
+		t.Error(err.Error())
+	}
 
-	fmt.Println(
-		"username :", res.Username,
-		"email :", res.Email,
-		"name :", res.Name,
-	)
+	assert.NotEmpty(t, res.Username)
+	assert.NotEmpty(t, res.Email)
+	assert.NotEmpty(t, res.Name)
 }
