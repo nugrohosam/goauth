@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"flag"
+	"os"
 
 	database "github.com/nugrohosam/gosampleapi/services/databases"
 	grpcConn "github.com/nugrohosam/gosampleapi/services/grpc"
@@ -30,11 +32,21 @@ func main() {
 		panic(err)
 	}
 
-	if err := grpcConn.Serve(); err != nil {
-		panic(err)
+	runGrpc := func() {
+		if err := grpcConn.Serve(); err != nil {
+			panic(err)
+		}
 	}
 
-	if err := httpConn.Serve(); err != nil {
-		panic(err)
+	runHTTP := func() {
+		if err := httpConn.Serve(); err != nil {
+			panic(err)
+		}
 	}
+
+	go runGrpc()
+	go runHTTP()
+
+	reader := bufio.NewReader(os.Stdin)
+	reader.ReadString('\n')
 }

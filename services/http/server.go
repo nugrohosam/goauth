@@ -1,6 +1,8 @@
 package http
 
 import (
+	"github.com/spf13/viper"
+
 	"github.com/gin-gonic/gin"
 	"github.com/nugrohosam/gosampleapi/services/http/controllers"
 	"github.com/nugrohosam/gosampleapi/services/http/middlewares"
@@ -12,7 +14,9 @@ var routes *gin.Engine
 // Serve using for listen to specific port
 func Serve() error {
 	prepare()
-	if err := routes.Run(); err != nil {
+
+	port := viper.GetString("app.port")
+	if err := routes.Run(":" + port); err != nil {
 		return err
 	}
 
