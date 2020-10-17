@@ -1,9 +1,8 @@
 package usecases
 
 import (
-	"time"
 	"errors"
-	viper "github.com/spf13/viper"
+	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
@@ -12,25 +11,24 @@ import (
 
 // AuthBasic ...
 func AuthBasic(emailOrUsername, password string) (string, error) {
-	hashedPassword := helpers.MakeHash(password)
-	user := userRepo.FindByEmailOrUsernameAndPassword(emailOrUsername, hashedPassword)
+	user := userRepo.FindByEmailOrUsername(emailOrUsername)
 
 	if len(user.Username) == 0 || len(user.Email) == 0 {
-		return "", errors.New("Cannot find user")
+		return "", errors.New("Cannot find user, username or email")
 	}
 
 	if isPasswordValid := helpers.CompareHash([]byte(user.Password), password); isPasswordValid {
-		return "", errors.New("Cannot find user")
+		return "", errors.New("Cannot find user, password")
 	}
-	
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": user.Username,
-		"email": user.Email,
+		"username":    user.Username,
+		"email":       user.Email,
 		"expiredTime": time.Now().AddDate(1, 0, 0),
 	})
 
-	secret := viper.GetString("secret")
-	tokenString, err := token.SignedString(secret)
+	bytedString := helpers.GetBytedSecret()
+	tokenString, err := token.SignedString(bytedString) // always use byted string
 	if err != nil {
 		return "", errors.New("Cannot make token")
 	}

@@ -7,6 +7,8 @@ import (
 )
 
 func main() {
+
+	// initial call to envinronment variable
 	viper.SetConfigType("yaml")
 	viper.SetConfigFile(".env.yaml")
 	err := viper.ReadInConfig()

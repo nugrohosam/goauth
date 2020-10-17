@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	viper "github.com/spf13/viper"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -18,12 +19,18 @@ func MakeHash(data string) string {
 // CompareHash ...
 func CompareHash(hashedPassword []byte, plainPassword string) bool {
 
-	byted2 := []byte(plainPassword)
-
-	err := bcrypt.CompareHashAndPassword(hashedPassword, byted2)
+	bytedPlainPassword := []byte(plainPassword)
+	err := bcrypt.CompareHashAndPassword(bytedPlainPassword, hashedPassword)
 	if err != nil {
 		return false
 	}
 
 	return true
+}
+
+// GetBytedSecret ...
+func GetBytedSecret() []byte {
+	secret := viper.GetString("secret")
+
+	return []byte(secret)
 }

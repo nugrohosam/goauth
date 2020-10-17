@@ -2,13 +2,9 @@ package user
 
 import (
 	"errors"
+
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
 )
-
-// GetAll using
-func GetAll() {
-
-}
 
 // Create using for user
 func Create(name, username, email, password string) (User, error) {
@@ -16,9 +12,7 @@ func Create(name, username, email, password string) (User, error) {
 
 	user := User{Name: name, Username: username, Email: email, Password: password}
 	userExisting := User{}
-	
-	var isExists int64
-	database.Where("email = ? or usernme = = ? ",  user.Email, user.Username).Count(&isExists)
+	isExists := database.Where("email = ? OR username = ?", user.Email, user.Username).Find(&user).RowsAffected
 
 	if isExists != 0 {
 		return userExisting, errors.New("User is exists")
@@ -38,12 +32,12 @@ func Find(id string) User {
 	return user
 }
 
-// FindByEmailOrUsernameAndPassword ...
-func FindByEmailOrUsernameAndPassword(emailOrUsername, password string) User {
+// FindByEmailOrUsername ...
+func FindByEmailOrUsername(emailOrUsername string) User {
 	database := *conn.Db
 
 	user := User{}
-	database.Where("username = ? OR email = ?", emailOrUsername, emailOrUsername).Where("password = ?", password).First(&user)
+	database.Where("username = ? OR email = ?", emailOrUsername, emailOrUsername).First(&user)
 
 	return user
 }

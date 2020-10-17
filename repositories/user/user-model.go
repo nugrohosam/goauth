@@ -1,5 +1,8 @@
 package user
 
+// TableName ...
+const TableName = "users"
+
 // User struct
 type User struct {
 	ID       int32
