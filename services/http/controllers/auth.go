@@ -26,7 +26,7 @@ func AuthHandlerLogin() gin.HandlerFunc {
 
 		token, err := usecases.AuthBasic(authLogin.EmailOrUsername, authLogin.Password)
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, helpers.ResponseErr(err.Error()))
+			c.JSON(http.StatusBadRequest, helpers.ResponseErr(err.Error()))
 			return
 		}
 
