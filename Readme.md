@@ -19,3 +19,13 @@ if you want to create some migration, add files to migration/{version that you w
 
 - {number}{nameofmigration}.up.sql
 - {number}{nameofmigration}.down.sql
+
+## Checklist
+
+- [x] Register Users
+- [x] Auth JWT Login
+- [x] Middleware access denied
+- [x] Test api
+- [x] Cleaner DB Test
+- [ ] Request GRPC
+

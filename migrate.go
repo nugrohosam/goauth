@@ -15,6 +15,7 @@ import (
 func main() {
 	version := flag.String("version", "none", "-")
 	state := flag.String("state", "none", "-")
+	stage := flag.String("stage", "dev", "-")
 
 	flag.Parse()
 
@@ -26,8 +27,17 @@ func main() {
 		panic("Stop state must be spellied")
 	}
 
+	// initial call to envinronment variable
 	viper.SetConfigType("yaml")
-	viper.SetConfigFile(".env.yaml")
+
+	if *stage == "prod" {
+		viper.SetConfigFile(".env.prod.yaml")
+	} else if *stage == "test" {
+		viper.SetConfigFile(".env.test.yaml")
+	} else {
+		viper.SetConfigFile(".env.yaml")
+	}
+
 	err := viper.ReadInConfig()
 	if err != nil {
 		fmt.Println(err)
