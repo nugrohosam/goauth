@@ -6,12 +6,14 @@ WORKDIR /app
 
 COPY . .
 
-RUN go get
+RUN go get -v
 
 RUN cp .env.example .env.yaml
 
-RUN go build main.go
+RUN migrate -state=up -version=ver1
+
+RUN go build -ldflags='[pattern=]args list'
 
 EXPOSE 8080
 
-CMD ["main", "-stage=dev"]
+CMD ["gosampleapi", "stage=dev"]
