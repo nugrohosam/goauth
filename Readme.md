@@ -6,7 +6,13 @@
 ## System Requirement
 
 - install go to you computer
-- install protoc to your computer (optional) 
+- install protoc to your computer (optional)
+
+## Using Protocol Buff (following this if you are do install)
+
+- copy folder `google`, from inside of folder `root_protoc/include` to `root_folder_this_project/third_party`
+- make your file `.proto` as you need in `proto` folder
+- generate go protobuff with command as noted in file `generateProto.txt`
 
 ## Get All Modules
 
