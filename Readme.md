@@ -20,16 +20,22 @@
 - $ go get
 
 ## Run Migration & Run Server
-
-- $ go run migration.go
 - $ go run main.go
 
-## Note
+## Migration Create
 
 if you want to create some migration, run `$ migrate-create -namefile=namefileyouwant` it will automaticaly create 2 files in migrations folder 
 
 - {number}{nameofmigration}.up.sql
 - {number}{nameofmigration}.down.sql
+
+## Migration Up
+
+if you want to create some migration, run `$ migrate -state=up -stage=dev` it will automaticaly migration up
+
+## Migration Down
+
+if you want to create some migration, run `$ migrate -state=down -stage=dev -howmuchstep=1` it will rollback 1 file .down.sql
 
 ## Checklist
 

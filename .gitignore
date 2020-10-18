@@ -2,3 +2,4 @@
 .env.test.yaml
 .env.prod.yaml
 third_party
+vendor
