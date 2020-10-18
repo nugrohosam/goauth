@@ -26,7 +26,7 @@
 
 ## Note
 
-if you want to create some migration, run `$ migrate-create -namefile=namefileyouwant` (is just run in windows only) it will automaticaly create 2 files in migrations folder 
+if you want to create some migration, run `$ migrate-create -namefile=namefileyouwant` it will automaticaly create 2 files in migrations folder 
 
 - {number}{nameofmigration}.up.sql
 - {number}{nameofmigration}.down.sql
