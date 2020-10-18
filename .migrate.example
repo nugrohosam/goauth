@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate"
@@ -13,17 +14,42 @@ import (
 )
 
 func main() {
-	version := flag.String("version", "none", "-")
 	state := flag.String("state", "none", "-")
+	stage := flag.String("stage", "dev", "-")
+	howManyStep := flag.String("howmanystep", "none", "-")
 
 	flag.Parse()
 
-	if *version == "none" {
-		panic("Stop version must be spellied")
+	if *stage == "none" {
+		panic("Stop!!! stage must be spellied")
 	}
 
+	var step int64
 	if *state == "none" {
-		panic("Stop state must be spellied")
+		panic("Stop!!! state must be spellied")
+	} else if *state == "down" {
+		if *howManyStep == "none" {
+			panic("Stop!!! howmanystep must be spellied more than 0")
+		} else {
+			var err error
+			step, err = strconv.ParseInt(*howManyStep, 0, 32)
+			if step == 0 || err != nil {
+				panic("Stop!!! define howmanystep must be spellied more than 0")
+			}
+		}
+	}
+
+	// initial call to envinronment variable
+	if *stage == "prod" {
+		viper.SetConfigFile(".env.prod.yaml")
+	} else if *stage == "test" {
+		viper.SetConfigFile(".env.test.yaml")
+	} else {
+		viper.SetConfigFile(".env.yaml")
+	}
+
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err)
 	}
 
 	dbUsername := viper.GetString("databse.username")
@@ -45,10 +71,11 @@ func main() {
 	}
 
 	m, errInstance := migrate.NewWithDatabaseInstance(
-		"file://migrations/"+*version,
+		"file://migrations/",
 		"mysql",
 		driver,
 	)
+
 	if errInstance != nil {
 		fmt.Println(errInstance)
 		return
@@ -56,13 +83,14 @@ func main() {
 
 	if *state == "up" {
 		if err := m.Up(); err != nil {
-			fmt.Println(err, " when up")
+			fmt.Println(err, "when up")
 		}
+		fmt.Println("Migration", *state, "complete")
 	} else if *state == "down" {
-		if err := m.Down(); err != nil {
-			fmt.Println(err, " when down")
-		}
+		m.Steps((int)(-step))
+		fmt.Println("Migration", *state, "complete", *howManyStep, "step")
 	} else {
 		fmt.Println("State is not define right")
 	}
+
 }

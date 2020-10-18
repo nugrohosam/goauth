@@ -16,4 +16,4 @@ RUN go build -ldflags='[pattern=]args list'
 
 EXPOSE 8080
 
-CMD ["gosampleapi", "stage=dev"]
+CMD ["app", "stage=dev"]

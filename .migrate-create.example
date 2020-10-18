@@ -1,0 +1,44 @@
+package main
+
+import (
+	"flag"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"time"
+)
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
+func main() {
+	namefileUsers := flag.String("namefile", "none", "-")
+
+	flag.Parse()
+
+	if *namefileUsers == "none" {
+		panic("Stop state must be spellied")
+	}
+
+	dir := "./migrations/"
+
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		os.Mkdir(dir, 0754)
+	}
+
+	timeNow := time.Now()
+	numbersFile := timeNow.Format("20060102150404")
+
+	up := []byte("BEGIN;\n\n## DO YOUR MIGRATION UP \n\nCOMMIt;")
+	if err := ioutil.WriteFile(dir+numbersFile+"_"+*namefileUsers+".up.sql", up, 0754); err != nil {
+		fmt.Println(err)
+	}
+
+	down := []byte("BEGIN;\n\n## DO YOUR MIGRATION DOWN \n\nCOMMIt;")
+	if err := ioutil.WriteFile(dir+numbersFile+"_"+*namefileUsers+".down.sql", down, 0754); err != nil {
+		fmt.Println(err)
+	}
+}
