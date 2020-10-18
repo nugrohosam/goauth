@@ -26,7 +26,7 @@
 
 ## Note
 
-if you want to create some migration, add files to migration/{version that you want}
+if you want to create some migration, run `$ migrate-create -namefile=namefileyouwant` (is just run in windows only) it will automaticaly create 2 files in migrations folder 
 
 - {number}{nameofmigration}.up.sql
 - {number}{nameofmigration}.down.sql
@@ -40,4 +40,5 @@ if you want to create some migration, add files to migration/{version that you w
 - [x] Cleaner DB Test
 - [x] Request gRPC
 - [x] Test gRPC
+- [x] Migration tools
 
