@@ -5,11 +5,12 @@ const TableName = "users"
 
 // User struct
 type User struct {
-	ID       int32
-	Name     string
-	Username string
-	Email    string
-	Password string
+	ID          int32
+	Name        string
+	Username    string
+	Email       string
+	Password    string
+	Phonenumber string
 }
 
 // Users using for many users
