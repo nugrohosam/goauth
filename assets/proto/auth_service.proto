@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package proto;
+
+message GetRequest {
+    string token = 1;
+}
+
+message GetResponse {
+    string id = 1;
+    string name = 2;
+    string username = 3;
+    string email = 4;
+}
+
+message GetIdResponse {
+    string id = 1;
+}
+
+service GetService {
+    rpc Get(GetRequest) returns (GetResponse);
+    rpc GetID(GetRequest) returns (GetIdResponse);
+}
+
+message ValidationResponse {
+    bool valid = 1;
+}
+
+service ValidationService {
+    rpc Validate(GetRequest) returns (ValidationResponse);
+}

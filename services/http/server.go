@@ -28,6 +28,7 @@ func Prepare() {
 	Routes = gin.New()
 	Routes.Use(gin.Logger())
 	Routes.Use(gin.Recovery())
+	Routes.Static("/assets", "./assets")
 
 	// v1
 	v1 := Routes.Group("/v1")
