@@ -3,3 +3,4 @@
 .env.prod.yaml
 third_party
 vendor
+public/*

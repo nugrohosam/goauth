@@ -5,7 +5,7 @@ const TableName = "users"
 
 // User struct
 type User struct {
-	ID          int32
+	ID          int
 	Name        string
 	Username    string
 	Email       string

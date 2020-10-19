@@ -3,6 +3,7 @@ package usecases
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -23,7 +24,7 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":          user.ID,
+		"id":          strconv.Itoa(user.ID),
 		"name":        user.Name,
 		"username":    user.Username,
 		"email":       user.Email,

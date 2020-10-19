@@ -63,6 +63,7 @@ func (getServiceServer *getServiceServer) Get(context context.Context, request *
 			Username: "",
 			Name:     "",
 			Email:    "",
+			Id:       "",
 		}, nil
 	}
 
@@ -72,6 +73,7 @@ func (getServiceServer *getServiceServer) Get(context context.Context, request *
 			Username: "",
 			Name:     "",
 			Email:    "",
+			Id:       "",
 		}, nil
 	}
 
@@ -79,6 +81,7 @@ func (getServiceServer *getServiceServer) Get(context context.Context, request *
 		Username: data["username"].(string),
 		Name:     data["name"].(string),
 		Email:    data["email"].(string),
+		Id:       data["id"].(string),
 	}, nil
 }
 
