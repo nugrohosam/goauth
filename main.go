@@ -8,6 +8,7 @@ import (
 	database "github.com/nugrohosam/gosampleapi/services/databases"
 	grpcConn "github.com/nugrohosam/gosampleapi/services/grpc"
 	httpConn "github.com/nugrohosam/gosampleapi/services/http"
+	infrastructure "github.com/nugrohosam/gosampleapi/services/insfrastructure"
 	viper "github.com/spf13/viper"
 )
 
@@ -27,6 +28,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	infrastructure.PrepareSentry()
 
 	if err := database.Conn(); err != nil {
 		panic(err)

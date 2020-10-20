@@ -1,11 +1,13 @@
 package http
 
 import (
-	"github.com/spf13/viper"
+	sentrygin "github.com/getsentry/sentry-go/gin"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nugrohosam/gosampleapi/services/http/controllers"
+	"github.com/nugrohosam/gosampleapi/services/http/exceptions"
 	"github.com/nugrohosam/gosampleapi/services/http/middlewares"
+	"github.com/spf13/viper"
 )
 
 // Routes ...
@@ -27,8 +29,16 @@ func Serve() error {
 func Prepare() {
 	Routes = gin.New()
 	Routes.Use(gin.Logger())
-	Routes.Use(gin.Recovery())
+	Routes.Use(exceptions.Recovery500())
 	Routes.Static("/assets", "./assets")
+	Routes.Use(sentrygin.New(sentrygin.Options{
+		Repanic: true,
+	}))
+
+	// test-sentry
+	Routes.GET("/test-sentry", func(c *gin.Context) {
+		panic("make panic test")
+	})
 
 	// v1
 	v1 := Routes.Group("/v1")
