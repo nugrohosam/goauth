@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/spf13/viper"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
 	userRepo "github.com/nugrohosam/gosampleapi/repositories/user"
@@ -23,12 +25,13 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 		return "", errors.New("Cannot find user, password")
 	}
 
+	tokenExpiredInHour, _ := strconv.ParseInt(viper.GetString("token.expired_time"), 24, 64)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":          strconv.Itoa(user.ID),
 		"name":        user.Name,
 		"username":    user.Username,
 		"email":       user.Email,
-		"expiredTime": time.Now().AddDate(1, 0, 0),
+		"expiredTime": time.Now().Add(time.Hour * time.Duration(tokenExpiredInHour)),
 	})
 
 	bytedString := helpers.GetBytedSecret()
