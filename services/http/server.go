@@ -28,7 +28,6 @@ func Serve() error {
 // Prepare ...
 func Prepare() {
 	Routes = gin.New()
-	Routes.Use(gin.Logger())
 	Routes.Use(exceptions.Recovery500())
 	Routes.Static("/assets", "./assets")
 	Routes.Use(sentrygin.New(sentrygin.Options{

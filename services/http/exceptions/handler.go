@@ -5,8 +5,9 @@ import (
 	"log"
 	"net/http/httputil"
 
-	"github.com/go-errors/errors"
 	"github.com/nugrohosam/gosampleapi/helpers"
+
+	"github.com/go-errors/errors"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,7 +22,8 @@ func Recovery500() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				c.JSON(500, helpers.ResponseErr(err.(string)))
+				c.JSON(500, helpers.ResponseErr("Server error"))
+				c.Abort()
 			}
 		}()
 

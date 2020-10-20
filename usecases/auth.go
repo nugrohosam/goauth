@@ -47,8 +47,17 @@ func AuthorizationValidation(tokenString string) error {
 		return errors.New("Wrong token input")
 	}
 
-	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		return nil
+	if data, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		timeNow := time.Now()
+		timeExpiredString := data["expiredTime"].(string)
+		layout := "2006-01-02T15:04:05+07:00"
+		timeExpired, _ := time.Parse(layout, timeExpiredString)
+
+		if timeNow.Before(timeExpired) {
+			return nil
+		}
+
+		return errors.New("Time token has expired")
 	}
 
 	return errors.New("Cannot validate")

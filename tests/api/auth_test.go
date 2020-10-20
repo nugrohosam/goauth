@@ -119,8 +119,6 @@ func loginWithEmail(t *testing.T, endpoint string) {
 
 	reader := bytes.NewBuffer(data)
 	resp := PerformRequest(Routes, "POST", endpoint, "application/json", reader)
-
-	t.Log("Requested")
 	assert.Equal(t, http.StatusOK, resp.Code)
 	assert.Contains(t, resp.Body.String(), "token")
 	assert.Contains(t, resp.Body.String(), "version")
