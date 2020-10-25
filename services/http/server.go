@@ -41,6 +41,7 @@ func Prepare() {
 		panic("make panic test")
 	})
 
+	// load html example websocket chat
 	Routes.LoadHTMLFiles("./views/websocket-chat.html")
 	Routes.GET("/websocket-chat", func(ctx *gin.Context) {
 		ctx.HTML(200, "websocket.html", nil)
