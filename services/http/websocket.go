@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"fmt"
 
 	"github.com/gorilla/websocket"
 )
@@ -38,6 +39,8 @@ type connection struct {
 
 // readPump pumps messages from the websocket connection to the hub.
 func (s subscription) readPump() {
+	fmt.Println("subscription->readPump")
+
 	c := s.conn
 	defer func() {
 		HubConn.unregister <- s
@@ -67,6 +70,8 @@ func (c *connection) write(mt int, payload []byte) error {
 
 // writePump pumps messages from the hub to the websocket connection.
 func (s *subscription) writePump() {
+	fmt.Println("subscription->writePump")
+	
 	c := s.conn
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
@@ -92,14 +97,16 @@ func (s *subscription) writePump() {
 }
 
 // ServerWS handles websocket requests from the peer.
-func ServerWS(w http.ResponseWriter, r *http.Request, roomId string) {
+func ServerWS(w http.ResponseWriter, r *http.Request, roomID string) {
+	fmt.Println("Server WS")
 	ws, err := upgrader.Upgrade(w, r, nil)
+
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 	c := &connection{send: make(chan []byte, 256), ws: ws}
-	s := subscription{c, roomId}
+	s := subscription{c, roomID}
 	HubConn.register <- s
 	
 	go s.writePump()
