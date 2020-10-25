@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nugrohosam/gosampleapi/services/http/controllers"
 	"github.com/nugrohosam/gosampleapi/services/http/exceptions"
-	"github.com/nugrohosam/gosampleapi/services/http/middlewares"
 	"github.com/spf13/viper"
 )
 
@@ -16,7 +15,7 @@ var Routes *gin.Engine
 // Serve using for listen to specific port
 func Serve() error {
 	Prepare()
-
+	
 	port := viper.GetString("app.port")
 	if err := Routes.Run(":" + port); err != nil {
 		return err
@@ -27,6 +26,9 @@ func Serve() error {
 
 // Prepare ...
 func Prepare() {
+	// run hub connection for websocket
+	go HubConn.run()
+
 	Routes = gin.New()
 	Routes.Use(exceptions.Recovery500())
 	Routes.Static("/assets", "./assets")
@@ -35,8 +37,18 @@ func Prepare() {
 	}))
 
 	// test-sentry
-	Routes.GET("/test-sentry", func(c *gin.Context) {
+	Routes.GET("/test-sentry", func(ctx *gin.Context) {
 		panic("make panic test")
+	})
+
+	Routes.LoadHTMLFiles("./views/websocket-chat.html")
+	Routes.GET("/websocket-chat", func(ctx *gin.Context) {
+		ctx.HTML(200, "websocket.html", nil)
+	})
+
+	Routes.GET("/ws/:roomId", func(ctx *gin.Context) {
+		roomId := ctx.Param("roomId")
+		ServerWS(ctx.Writer, ctx.Request, roomId)
 	})
 
 	// v1
@@ -47,17 +59,5 @@ func Prepare() {
 	{
 		auth.POST("/login", controllers.AuthHandlerLogin())
 		auth.POST("/register", controllers.AuthHandlerRegister())
-	}
-
-	// v1/hello-with-middleware
-	helloWithMiddleware := v1.Group("/hello-with-middleware")
-	helloWithMiddleware.Use(middlewares.AuthJwt())
-	{
-		helloWithMiddleware.GET("/", controllers.HelloWorldHandler())
-	}
-
-	helloWithoutMiddleware := v1.Group("/hello-without-middleware")
-	{
-		helloWithoutMiddleware.GET("/", controllers.HelloWorldHandler())
 	}
 }
