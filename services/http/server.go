@@ -30,13 +30,6 @@ func Serve() error {
 
 // Prepare ...
 func Prepare() {
-	
-	// run hub connection for websocket
-	if viper.GetString("websocket.active") == "true" {
-		fmt.Println("Hub connected")
-		go HubConn.run()
-	}
-
 	Routes = gin.New()
 	Routes.Use(exceptions.Recovery500())
 	Routes.Static("/assets", "./assets")
@@ -48,29 +41,6 @@ func Prepare() {
 	Routes.GET("/test-sentry", func(ctx *gin.Context) {
 		panic("make panic test")
 	})
-
-	// ws handler get
-	if viper.GetString("websocket.active") == "true" {
-		// load html example websocket chat
-		Routes.LoadHTMLFiles("./views/websocket-chat.html")
-		websocketChat := Routes.Group("/websocket-chat")
-		{
-			websocketChat.GET("/:roomID", func(ctx *gin.Context) {
-				ctx.HTML(200, "websocket-chat.html", nil)
-			})
-
-			websocketChat.GET("/", func(ctx *gin.Context) {
-				uuidClock := uuid.ClockSequence()
-				roomID := strconv.Itoa(uuidClock)
-				ctx.Redirect(http.StatusTemporaryRedirect, "/websocket-chat/" + roomID)
-			})
-		}
-		
-		Routes.GET("/ws/:roomID", func(ctx *gin.Context) {
-			roomID := ctx.Param("roomID")
-			ServerWS(ctx.Writer, ctx.Request, roomID)
-		})
-	}
 
 	// v1
 	v1 := Routes.Group("/v1")
