@@ -8,7 +8,7 @@ COPY . .
 
 RUN go get -v
 
-RUN cp .env.example .env.yaml
+RUN cp .env.yaml.example .env.yaml
 
 RUN go build -ldflags='[pattern=]args list'
 

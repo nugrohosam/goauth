@@ -16,11 +16,8 @@
 
 ## Get All Modules
 
-- $ go mod tidy
 - $ go get
-
-## Run Migration & Run Server
-- $ go run main.go
+- $ go mod tidy
 
 ## Migration Create
 
@@ -36,6 +33,15 @@ if you want to create some migration, run `$ migrate -state=up -stage=dev` it wi
 ## Migration Down
 
 if you want to create some migration, run `$ migrate -state=down -stage=dev -howmuchstep=1` it will rollback 1 file .down.sql
+
+## Run Server
+- $ go run main.go
+
+## Run Test API
+- $ go test github.com/nugrohosam/gosampleapi/tests/api
+
+## Run Test GRPC
+- $ go test github.com/nugrohosam/gosampleapi/tests/grpc
 
 ## Checklist
 

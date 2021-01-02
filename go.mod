@@ -8,9 +8,6 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-errors/errors v1.0.1
 	github.com/go-playground/validator/v10 v10.4.0
-	github.com/go-sql-driver/mysql v1.5.0
-	github.com/golang-migrate/migrate v3.5.4+incompatible
-	github.com/google/uuid v1.1.2
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
