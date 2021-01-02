@@ -1,5 +1,8 @@
 BEGIN;
 
-## DO YOUR MIGRATION UP 
+CREATE TABLE IF NOT EXISTS roles (
+    id bigint PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255) NULL
+);
 
 COMMIt;

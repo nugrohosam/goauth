@@ -1,5 +1,5 @@
 BEGIN;
 
-## DO YOUR MIGRATION DOWN 
+DROP TABLE IF EXISTS permissions;
 
 COMMIt;
