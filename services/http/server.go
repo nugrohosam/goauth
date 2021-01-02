@@ -1,16 +1,12 @@
 package http
 
 import (
-	"strconv"
-	"net/http"
-	"fmt"
 	sentrygin "github.com/getsentry/sentry-go/gin"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nugrohosam/gosampleapi/services/http/controllers"
 	"github.com/nugrohosam/gosampleapi/services/http/exceptions"
 	"github.com/spf13/viper"
-	"github.com/google/uuid"
 )
 
 // Routes ...
@@ -19,7 +15,7 @@ var Routes *gin.Engine
 // Serve using for listen to specific port
 func Serve() error {
 	Prepare()
-	
+
 	port := viper.GetString("app.port")
 	if err := Routes.Run(":" + port); err != nil {
 		return err
