@@ -1,0 +1,5 @@
+BEGIN;
+
+## DO YOUR MIGRATION UP 
+
+COMMIt;

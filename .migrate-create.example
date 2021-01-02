@@ -20,7 +20,8 @@ func main() {
 	flag.Parse()
 
 	if *namefileUsers == "none" {
-		panic("Stop state must be spellied")
+		fmt.Println("flag [-namefile=?] must be spellied")
+		return
 	}
 
 	dir := "./migrations/"

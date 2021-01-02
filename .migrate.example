@@ -21,7 +21,8 @@ func main() {
 	flag.Parse()
 
 	if *stage == "none" {
-		panic("Stop!!! stage must be spellied")
+		fmt.Println("flag [-stage=?] must be spellied")
+		return
 	}
 
 	var step int64
