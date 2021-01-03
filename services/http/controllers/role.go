@@ -34,7 +34,22 @@ func RoleHandlerCreate() gin.HandlerFunc {
 // RoleHandlerUpdate ..
 func RoleHandlerUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, helpers.ResponseModelStruct(nil))
+		var role role.UpdateRole
+		c.BindJSON(&role)
+
+		validate := validator.New()
+		if err := validate.Struct(role); err != nil {
+			validationErrors := err.(validator.ValidationErrors)
+			fieldsErrors := helpers.TransformValidations(validationErrors)
+			c.JSON(http.StatusBadRequest, helpers.ResponseErrValidation(fieldsErrors))
+			return
+		}
+
+		roleID := c.Param("id")
+		if err := usecases.UpdateRole(roleID, role.Name); err != nil {
+			c.JSON(http.StatusBadRequest, helpers.ResponseErr(err.Error()))
+			return
+		}
 	}
 }
 

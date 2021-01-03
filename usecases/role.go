@@ -16,3 +16,9 @@ func CreateRole(name string) error {
 	_, err := roleRepo.Create(name)
 	return err
 }
+
+// UpdateRole ...
+func UpdateRole(ID string, name string) error {
+	_, err := roleRepo.Update(ID, name)
+	return err
+}

@@ -22,6 +22,22 @@ func Create(name string) (Permission, error) {
 	return permission, nil
 }
 
+// Update using for permission
+func Update(ID string, name string) (Permission, error) {
+	database := *conn.Db
+
+	permission := Permission{Name: name}
+	permissionExisting := Permission{}
+	isExists := database.Where("name = ?", permission.Name).Where("id != ?", ID).Find(&permission).RowsAffected
+
+	if isExists != 0 {
+		return permissionExisting, errors.New("Permission is exists")
+	}
+
+	database.Model(Permission{}).Where("id = ?", ID).Updates(&permission)
+	return permission, nil
+}
+
 // Find is using
 func Find(id string) Permission {
 	database := *conn.Db

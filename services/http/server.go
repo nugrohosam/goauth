@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nugrohosam/gosampleapi/services/http/controllers"
+	"github.com/nugrohosam/gosampleapi/services/http/exceptions"
 	"github.com/spf13/viper"
 
 	"github.com/nugrohosam/gosampleapi/services/http/middlewares"
@@ -32,7 +33,7 @@ func Prepare() {
 	adminRole := viper.GetString("config.role.admin")
 
 	Routes = gin.New()
-	// Routes.Use(exceptions.Recovery500())
+	Routes.Use(exceptions.Recovery500())
 	Routes.Static("/assets", "./assets")
 	Routes.Use(sentrygin.New(sentrygin.Options{
 		Repanic: true,
