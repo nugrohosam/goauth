@@ -17,5 +17,5 @@ type UserRole struct {
 	Role   role.Role `gorm:"constraint:OnDelete:CASCADE;references:id"`
 }
 
-// RolePermissions using for many role_permissions
-type RolePermissions []UserRole
+// UserRoles using for many user_role
+type UserRoles []UserRole

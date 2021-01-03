@@ -45,11 +45,11 @@ func Delete(ID string) {
 }
 
 // Find is using
-func Find(id string) Permission {
+func Find(ID string) Permission {
 	database := *conn.Db
 
 	permission := Permission{}
-	database.Where("id = ?", id).First(&permission)
+	database.Where("id = ?", ID).First(&permission)
 
 	return permission
 }

@@ -2,7 +2,14 @@ package usecases
 
 import (
 	permissionRepo "github.com/nugrohosam/gosampleapi/repositories/permission"
+	rolePermissionRepo "github.com/nugrohosam/gosampleapi/repositories/rolepermission"
 )
+
+// IsHaveAnyPermission ...
+func IsHaveAnyPermission(userID int, permissionName []string) (bool, error) {
+	isExist := rolePermissionRepo.IsExistsByUserIDAndPermissionName(userID, permissionName)
+	return isExist, nil
+}
 
 // CreatePermission ...
 func CreatePermission(name string) error {

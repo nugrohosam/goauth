@@ -2,6 +2,7 @@ package userrole
 
 import (
 	"errors"
+	"strconv"
 	"strings"
 
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
@@ -37,10 +38,35 @@ func Find(id string) UserRole {
 func FindByUserIDAndRoleName(userID int, roleName []string) UserRole {
 	database := *conn.Db
 
-	rolePermission := UserRole{}
-	database.Table(TableName).Preload("Role", "name IN (?)", strings.Join(roleName, ",")).Where("user_id = ?", userID).First(&rolePermission)
+	userRole := UserRole{}
+	database.Table(TableName).Preload("Role", "name IN (?)", strings.Join(roleName, ",")).Where("user_id = ?", userID).First(&userRole)
 
-	return rolePermission
+	return userRole
+}
+
+// GetByUserID is using
+func GetByUserID(userID int) []UserRole {
+	database := *conn.Db
+
+	userRoles := []UserRole{}
+	database.Table(TableName).Where("user_id = ?", userID).Find(&userRoles)
+
+	return userRoles
+}
+
+// GetRolesID is using
+func GetRolesID(userRoles []UserRole) []string {
+
+	i := 0
+	lengthUserRoles := cap(userRoles)
+	mapped := make([]string, lengthUserRoles)
+
+	for _, userRole := range userRoles {
+		mapped[i] = strconv.Itoa(userRole.RoleID)
+		i++
+	}
+
+	return mapped
 }
 
 // IsExistsByUserIDAndRoleName is using
