@@ -38,6 +38,12 @@ func Update(ID string, name string) (Role, error) {
 	return role, nil
 }
 
+// Delete is using
+func Delete(ID string) {
+	database := *conn.Db
+	database.Delete(&Role{}, ID)
+}
+
 // Find is using
 func Find(id string) Role {
 	database := *conn.Db

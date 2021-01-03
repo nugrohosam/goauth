@@ -22,3 +22,9 @@ func UpdateRole(ID string, name string) error {
 	_, err := roleRepo.Update(ID, name)
 	return err
 }
+
+// DeleteRole ...
+func DeleteRole(ID string) error {
+	roleRepo.Delete(ID)
+	return nil
+}

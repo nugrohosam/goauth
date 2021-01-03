@@ -38,6 +38,12 @@ func Update(ID string, name string) (Permission, error) {
 	return permission, nil
 }
 
+// Delete is using
+func Delete(ID string) {
+	database := *conn.Db
+	database.Delete(&Permission{}, ID)
+}
+
 // Find is using
 func Find(id string) Permission {
 	database := *conn.Db
