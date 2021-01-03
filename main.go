@@ -27,7 +27,6 @@ func main() {
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	infrastructure.PrepareSentry()

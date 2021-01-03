@@ -7,6 +7,8 @@ import (
 	"github.com/nugrohosam/gosampleapi/services/http/controllers"
 	"github.com/nugrohosam/gosampleapi/services/http/exceptions"
 	"github.com/spf13/viper"
+
+	"github.com/nugrohosam/gosampleapi/services/http/middlewares"
 )
 
 // Routes ...
@@ -26,6 +28,10 @@ func Serve() error {
 
 // Prepare ...
 func Prepare() {
+
+	// initial roles
+	adminRole := viper.GetString("config.role.admin")
+
 	Routes = gin.New()
 	Routes.Use(exceptions.Recovery500())
 	Routes.Static("/assets", "./assets")
@@ -46,5 +52,19 @@ func Prepare() {
 	{
 		auth.POST("/login", controllers.AuthHandlerLogin())
 		auth.POST("/register", controllers.AuthHandlerRegister())
+	}
+
+	role := v1.Group("/role")
+	role.Use(middlewares.AuthJwt())
+
+	role.Use(middlewares.CanAccessBy(
+		[]string{
+			"admin",
+		},
+	))
+	{
+		role.POST("/role", controllers.RoleHandlerCreate())
+		role.PUT("/role/:id", controllers.RoleHandlerUpdate())
+		role.DELETE("/role/:id", controllers.RoleHandlerDelete())
 	}
 }

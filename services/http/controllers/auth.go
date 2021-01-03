@@ -7,6 +7,7 @@ import (
 	validator "github.com/go-playground/validator/v10"
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
 	auth "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
+	resource "github.com/nugrohosam/gosampleapi/services/http/resources/v1"
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
 
@@ -30,11 +31,11 @@ func AuthHandlerLogin() gin.HandlerFunc {
 			return
 		}
 
-		dataResponse := map[string]interface{}{
-			"token": token,
+		dataResponse := resource.AuthSuccess{
+			Token: token,
 		}
 
-		c.JSON(http.StatusOK, helpers.Response(dataResponse))
+		c.JSON(http.StatusOK, helpers.ResponseModelStruct(dataResponse))
 	}
 }
 

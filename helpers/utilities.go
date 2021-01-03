@@ -1,7 +1,12 @@
 package helpers
 
 import (
+	"net/http"
 	"reflect"
+	"unicode"
+
+	"github.com/gorilla/sessions"
+	viper "github.com/spf13/viper"
 )
 
 // MaxDepth ...
@@ -27,6 +32,56 @@ func merge(dst, src map[string]interface{}, depth int) map[string]interface{} {
 		dst[key] = srcVal
 	}
 	return dst
+}
+
+// UcFirst ..
+func UcFirst(s string) string {
+	for index, value := range s {
+		return string(unicode.ToUpper(value)) + s[index+1:]
+	}
+	return ""
+}
+
+// LcFirst ..
+func LcFirst(s string) string {
+	for index, value := range s {
+		return string(unicode.ToLower(value)) + s[index+1:]
+	}
+	return ""
+}
+
+// StoreSessionData ..
+func StoreSessionData(request *http.Request, writer http.ResponseWriter, nameSession string, data interface{}) {
+	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
+	sessionNow, err := sessionStore.Get(request, nameSession)
+	if err != nil {
+		panic(err)
+	}
+
+	sessionNow.Values["data"] = data
+	sessionNow.Save(request, writer)
+}
+
+// GetSessionData ..
+func GetSessionData(request *http.Request, writer http.ResponseWriter, nameSession string) map[interface{}]interface{} {
+	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
+	sessionNow, err := sessionStore.Get(request, nameSession)
+	if err != nil {
+		panic(err)
+	}
+
+	return sessionNow.Values
+}
+
+// AuthUserId ..
+func AuthUserId(request *http.Request, writer http.ResponseWriter, nameSession string) map[interface{}]interface{} {
+	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
+	sessionNow, err := sessionStore.Get(request, nameSession)
+	if err != nil {
+		panic(err)
+	}
+
+	return sessionNow.Values
 }
 
 func mapify(i interface{}) (map[string]interface{}, bool) {

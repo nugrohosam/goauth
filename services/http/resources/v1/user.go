@@ -2,19 +2,19 @@ package v1
 
 // UserItems ...
 type UserItems struct {
-	Name string
+	Name string `json:"name"`
 }
 
 // UserDetail ...
 type UserDetail struct {
-	Name  string
-	Email string
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 // UserPaginate ...
 type UserPaginate struct {
 	Item        []UserItems
-	Total       int
-	PerPage     int
-	CurrentPage int
+	Total       int `json:"total"`
+	PerPage     int `json:"per_page"`
+	CurrentPage int `json:"current_page"`
 }

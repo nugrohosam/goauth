@@ -1,0 +1,4 @@
+role:
+  admin: "admin"
+session: 
+  user: "user-session"

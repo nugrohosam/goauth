@@ -12,7 +12,7 @@ import (
 // PrepareSentry ...
 func PrepareSentry() {
 	if err := sentry.Init(sentry.ClientOptions{
-		Dsn: viper.GetString("sentry_dns"),
+		Dsn: viper.GetString("sentry_dsn"),
 	}); err != nil {
 		fmt.Printf("Sentry initialization failed: %v\n", err)
 	}

@@ -6,17 +6,14 @@ import (
 	"net/http"
 	"testing"
 
-	userRepo "github.com/nugrohosam/gosampleapi/repositories/user"
 	factories "github.com/nugrohosam/gosampleapi/tests/factories"
 	utilities "github.com/nugrohosam/gosampleapi/tests/utilities"
 	viper "github.com/spf13/viper"
 	assert "github.com/stretchr/testify/assert"
 )
 
-var user userRepo.User
-
-// TestRun ...
-func TestRun(t *testing.T) {
+// AuthTestRun ...
+func AuthTestRun(t *testing.T) {
 	InitialTest(t)
 	defer utilities.DbCleaner(t)
 
@@ -26,6 +23,10 @@ func TestRun(t *testing.T) {
 	t.Log("=======>>>> <<<<======")
 	testAuthRegister(t)
 	testAuthLogin(t)
+
+	t.Log("Test Positive")
+	t.Log("=======>>>> <<<<======")
+	testGetToken(t)
 
 	t.Log("Test Negative")
 	negativeTestAuthRegister(t)
@@ -69,6 +70,16 @@ func testAuthLogin(t *testing.T) {
 	loginWithUsername(t, endpoint)
 }
 
+func testGetToken(t *testing.T) {
+	url := viper.GetString("app.url")
+	port := viper.GetString("app.port")
+
+	endpoint := "http://" + url + ":" + port + "/v1/auth/login"
+
+	t.Log("Test Positive Login via email")
+	loginGetToken(t, endpoint)
+}
+
 func negativeTestAuthRegister(t *testing.T) {
 	url := viper.GetString("app.url")
 	port := viper.GetString("app.port")
@@ -107,6 +118,24 @@ func negativeTestAuthLogin(t *testing.T) {
 }
 
 func loginWithEmail(t *testing.T, endpoint string) {
+	data, err := json.Marshal(map[string]interface{}{
+		"emailOrUsername": user.Email,
+		"password":        user.Password,
+	},
+	)
+
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	reader := bytes.NewBuffer(data)
+	resp := PerformRequest(Routes, "POST", endpoint, "application/json", reader)
+	assert.Equal(t, http.StatusOK, resp.Code)
+	assert.Contains(t, resp.Body.String(), "token")
+	assert.Contains(t, resp.Body.String(), "version")
+}
+
+func loginGetToken(t *testing.T, endpoint string) string {
 	data, err := json.Marshal(map[string]interface{}{
 		"emailOrUsername": user.Email,
 		"password":        user.Password,

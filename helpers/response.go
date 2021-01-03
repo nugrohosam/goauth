@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"github.com/fatih/structs"
 	"github.com/gin-gonic/gin"
 	viper "github.com/spf13/viper"
 )
@@ -46,6 +47,26 @@ func ResponseMany(data []map[string]interface{}) gin.H {
 		MergeMap(respData, map[string]interface{}{
 			"items": data,
 		}),
+	)
+	return resp
+}
+
+// ResponseModel ...
+func ResponseModel(data interface{}) gin.H {
+	initialResponse()
+	resp := gin.H(
+		MergeMap(respData, map[string]interface{}{
+			"data": data,
+		}),
+	)
+	return resp
+}
+
+// ResponseModelStruct ...
+func ResponseModelStruct(data interface{}) gin.H {
+	initialResponse()
+	resp := gin.H(
+		MergeMap(respData, structs.Map(data)),
 	)
 	return resp
 }

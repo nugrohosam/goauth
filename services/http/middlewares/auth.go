@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 
 	validator "github.com/go-playground/validator/v10"
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
@@ -33,6 +34,9 @@ func AuthJwt() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+
+		userData, _ := usecases.GetDataAuth(token)
+		helpers.StoreSessionData(c.Request, c.Writer, viper.GetString("config.session.user"), userData)
 
 		c.Next()
 	}
