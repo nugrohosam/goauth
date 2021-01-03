@@ -13,7 +13,7 @@ func Create(roleID, userID int) (UserRole, error) {
 
 	userRole := UserRole{RoleID: roleID, UserID: userID}
 	roleExisting := UserRole{}
-	isExists := database.Where("role_id = ? AND user_id = ?", userRole.RoleID, userRole.UserID).Find(&userRole).RowsAffected
+	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", userRole.RoleID, userRole.UserID).Find(&userRole).RowsAffected
 
 	if isExists != 0 {
 		return roleExisting, errors.New("Role Permission is exists")
@@ -38,17 +38,13 @@ func FindByUserIDAndRoleName(userID int, roleName []string) UserRole {
 	database := *conn.Db
 
 	rolePermission := UserRole{}
-	database.Preload("Role", "name IN (?)", strings.Join(roleName, ",")).Where("user_id = ?", userID).First(&rolePermission)
+	database.Table(TableName).Preload("Role", "name IN (?)", strings.Join(roleName, ",")).Where("user_id = ?", userID).First(&rolePermission)
 
 	return rolePermission
 }
 
 // IsExistsByUserIDAndRoleName is using
 func IsExistsByUserIDAndRoleName(userID int, roleName []string) bool {
-	database := *conn.Db
-
-	var count int64
-	database.Preload("Role", "name IN (?)", strings.Join(roleName, ",")).Where("user_id = ?", userID).Count(&count)
-
-	return count > 0
+	data := FindByUserIDAndRoleName(userID, roleName)
+	return data.ID > 0
 }

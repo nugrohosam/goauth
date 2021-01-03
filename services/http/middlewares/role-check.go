@@ -16,7 +16,7 @@ func CanAccessBy(s []string) gin.HandlerFunc {
 		userID := helpers.GetSessionDataString(c.Request, c.Writer, viper.GetString("config.session.userID"))
 		userIDInt, _ := strconv.Atoi(userID)
 		if isExists, err := usecases.IsHaveAnyRole(userIDInt, s); !isExists || err != nil {
-			c.JSON(http.StatusNotAcceptable, helpers.ResponseErr(err.Error()))
+			c.JSON(http.StatusNotAcceptable, helpers.ResponseErr("Cannot Access With Your Role"))
 			c.Abort()
 			return
 		}

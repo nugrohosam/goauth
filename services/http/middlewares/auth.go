@@ -36,7 +36,8 @@ func AuthJwt() gin.HandlerFunc {
 		}
 
 		userData, _ := usecases.GetDataAuth(token)
-		helpers.StoreSessionData(c.Request, c.Writer, viper.GetString("config.session.user"), userData["ID"])
+		userSessionName := viper.GetString("config.session.userID")
+		helpers.StoreSessionData(c.Request, c.Writer, userSessionName, userData["id"].(string))
 
 		c.Next()
 	}
