@@ -13,9 +13,9 @@ import (
 // CanAccessBy using for ..
 func CanAccessBy(s []string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		user := helpers.GetSessionData(c.Request, c.Writer, viper.GetString("config.session.user"))
-		userID, _ := strconv.Atoi(user["data".(string)]["ID"].String())
-		if isExists, err := usecases.IsHaveAnyRole(userID, s); !isExists || err != nil {
+		userID := helpers.GetSessionDataString(c.Request, c.Writer, viper.GetString("config.session.userID"))
+		userIDInt, _ := strconv.Atoi(userID)
+		if isExists, err := usecases.IsHaveAnyRole(userIDInt, s); !isExists || err != nil {
 			c.JSON(http.StatusNotAcceptable, helpers.ResponseErr(err.Error()))
 			c.Abort()
 			return

@@ -1,16 +1,18 @@
 package main
 
 import (
-	"database/sql"
 	"flag"
 	"fmt"
 	"strconv"
 
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/golang-migrate/migrate"
-	"github.com/golang-migrate/migrate/database/mysql"
-	_ "github.com/golang-migrate/migrate/source/file"
 	"github.com/spf13/viper"
+
+	"database/sql"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/mysql"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 func main() {
@@ -59,7 +61,9 @@ func main() {
 	dbPort := viper.GetString("databse.port")
 	dbName := viper.GetString("databse.name")
 
-	db, errConn := sql.Open("mysql", dbUsername+":"+dbPassword+"@tcp("+dbHost+":"+dbPort+")/"+dbName+"?multiStatements=true")
+	urlConn := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?multiStatements=true"
+
+	db, errConn := sql.Open("mysql", urlConn)
 	if errConn != nil {
 		fmt.Println(errConn)
 		return
@@ -72,7 +76,7 @@ func main() {
 	}
 
 	m, errInstance := migrate.NewWithDatabaseInstance(
-		"file://migrations/",
+		"file://migrations",
 		"mysql",
 		driver,
 	)

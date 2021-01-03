@@ -62,26 +62,26 @@ func StoreSessionData(request *http.Request, writer http.ResponseWriter, nameSes
 	sessionNow.Save(request, writer)
 }
 
-// GetSessionData ..
-func GetSessionData(request *http.Request, writer http.ResponseWriter, nameSession string) map[interface{}]interface{} {
+// GetSessionDataString ..
+func GetSessionDataString(request *http.Request, writer http.ResponseWriter, nameSession string) string {
 	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
 	sessionNow, err := sessionStore.Get(request, nameSession)
 	if err != nil {
-		panic(err)
+		return ""
 	}
 
-	return sessionNow.Values
+	return sessionNow.Values["data"].(string)
 }
 
-// AuthUserId ..
-func AuthUserId(request *http.Request, writer http.ResponseWriter, nameSession string) map[interface{}]interface{} {
+// GetSessionDataString ..
+func GetSessionData(request *http.Request, writer http.ResponseWriter, nameSession string) interface{} {
 	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
 	sessionNow, err := sessionStore.Get(request, nameSession)
 	if err != nil {
-		panic(err)
+		return ""
 	}
 
-	return sessionNow.Values
+	return sessionNow.Values["data"]
 }
 
 func mapify(i interface{}) (map[string]interface{}, bool) {

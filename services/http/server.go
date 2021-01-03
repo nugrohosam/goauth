@@ -59,7 +59,7 @@ func Prepare() {
 
 	role.Use(middlewares.CanAccessBy(
 		[]string{
-			"admin",
+			adminRole,
 		},
 	))
 	{

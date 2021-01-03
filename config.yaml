@@ -2,3 +2,4 @@ role:
   admin: "admin"
 session: 
   user: "user-session"
+  userID: "user-id-session"
