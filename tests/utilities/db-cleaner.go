@@ -11,11 +11,11 @@ import (
 // DbCleaner ...
 func DbCleaner(t *testing.T) {
 
-	dbUsername := viper.GetString("databse.username")
-	dbPassword := viper.GetString("databse.password")
-	dbHost := viper.GetString("databse.host")
-	dbPort := viper.GetString("databse.port")
-	dbName := viper.GetString("databse.name")
+	dbUsername := viper.GetString("database.username")
+	dbPassword := viper.GetString("database.password")
+	dbHost := viper.GetString("database.host")
+	dbPort := viper.GetString("database.port")
+	dbName := viper.GetString("database.name")
 
 	connectionDb := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?multiStatements=true"
 	db, errConn := sql.Open("mysql", connectionDb)

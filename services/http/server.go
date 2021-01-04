@@ -30,7 +30,7 @@ func Serve() error {
 func Prepare() {
 
 	// initial roles
-	adminRole := viper.GetString("config.role.admin")
+	adminRole := viper.GetString("role.admin")
 
 	Routes = gin.New()
 	Routes.Use(exceptions.Recovery500())
@@ -54,6 +54,7 @@ func Prepare() {
 		auth.POST("/register", controllers.AuthHandlerRegister())
 	}
 
+	// v1/role
 	role := v1.Group("/role")
 	role.Use(middlewares.AuthJwt()).Use(middlewares.CanAccessBy(
 		[]string{
@@ -64,6 +65,15 @@ func Prepare() {
 		role.POST("/", controllers.RoleHandlerCreate())
 		role.PUT("/:id", controllers.RoleHandlerUpdate())
 		role.DELETE("/:id", controllers.RoleHandlerDelete())
+	}
+
+	userrole := v1.Group("/user-role")
+	userrole.Use(middlewares.AuthJwt())
+	{
+		userrole.POST("/", controllers.UserRoleHandlerCreate())
+		userrole.PUT("/:id", controllers.UserRoleHandlerUpdate())
+		userrole.DELETE("/:id", controllers.UserRoleHandlerDelete())
+
 	}
 
 }

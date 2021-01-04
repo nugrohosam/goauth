@@ -1,0 +1,4 @@
+# roel.yaml file
+role:
+  admin: "admin"
+  staff: "staff"

@@ -9,10 +9,13 @@ import (
 )
 
 // Create using for userRole
-func Create(roleID, userID int) (UserRole, error) {
+func Create(roleID, userID string) (UserRole, error) {
 	database := *conn.Db
 
-	userRole := UserRole{RoleID: roleID, UserID: userID}
+	roleIDInt, _ := strconv.Atoi(roleID)
+	userIDInt, _ := strconv.Atoi(userID)
+
+	userRole := UserRole{RoleID: roleIDInt, UserID: userIDInt}
 	roleExisting := UserRole{}
 	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", userRole.RoleID, userRole.UserID).Find(&userRole).RowsAffected
 
@@ -21,6 +24,25 @@ func Create(roleID, userID int) (UserRole, error) {
 	}
 
 	database.Create(&userRole)
+	return userRole, nil
+}
+
+// Update using for userRole
+func Update(ID, roleID, userID string) (UserRole, error) {
+	database := *conn.Db
+
+	roleIDInt, _ := strconv.Atoi(roleID)
+	userIDInt, _ := strconv.Atoi(userID)
+
+	userRole := UserRole{RoleID: roleIDInt, UserID: userIDInt}
+	roleExisting := UserRole{}
+	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", userRole.RoleID, userRole.UserID).Where("id != ?", ID).Find(&userRole).RowsAffected
+
+	if isExists != 0 {
+		return roleExisting, errors.New("User is has this role")
+	}
+
+	database.Table(TableName).Model(UserRole{}).Where("id = ?", ID).Updates(&userRole)
 	return userRole, nil
 }
 
@@ -35,7 +57,7 @@ func Find(id string) UserRole {
 }
 
 // FindByUserIDAndRoleName is using
-func FindByUserIDAndRoleName(userID int, roleName []string) UserRole {
+func FindByUserIDAndRoleName(userID string, roleName []string) UserRole {
 	database := *conn.Db
 
 	userRole := UserRole{}
@@ -45,7 +67,7 @@ func FindByUserIDAndRoleName(userID int, roleName []string) UserRole {
 }
 
 // GetByUserID is using
-func GetByUserID(userID int) []UserRole {
+func GetByUserID(userID string) []UserRole {
 	database := *conn.Db
 
 	userRoles := []UserRole{}
@@ -54,8 +76,8 @@ func GetByUserID(userID int) []UserRole {
 	return userRoles
 }
 
-// GetRolesID is using
-func GetRolesID(userRoles []UserRole) []string {
+// PluckRolesID is using
+func PluckRolesID(userRoles []UserRole) []string {
 
 	i := 0
 	lengthUserRoles := cap(userRoles)
@@ -70,7 +92,13 @@ func GetRolesID(userRoles []UserRole) []string {
 }
 
 // IsExistsByUserIDAndRoleName is using
-func IsExistsByUserIDAndRoleName(userID int, roleName []string) bool {
+func IsExistsByUserIDAndRoleName(userID string, roleName []string) bool {
 	data := FindByUserIDAndRoleName(userID, roleName)
 	return data.ID > 0
+}
+
+// Delete is using
+func Delete(ID string) {
+	database := *conn.Db
+	database.Delete(&UserRole{}, ID)
 }

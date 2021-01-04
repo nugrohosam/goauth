@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
@@ -13,9 +12,8 @@ import (
 // CanAccessBy using for ..
 func CanAccessBy(s []string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userID := helpers.GetSessionDataString(c.Request, c.Writer, viper.GetString("config.session.userID"))
-		userIDInt, _ := strconv.Atoi(userID)
-		if isExists, err := usecases.IsHaveAnyRole(userIDInt, s); !isExists || err != nil {
+		userID := helpers.GetSessionDataString(c.Request, c.Writer, viper.GetString("session.userID"))
+		if isExists, err := usecases.IsHaveAnyRole(userID, s); !isExists || err != nil {
 			c.JSON(http.StatusNotAcceptable, helpers.ResponseErr("Cannot Access With Your Role"))
 			c.Abort()
 			return

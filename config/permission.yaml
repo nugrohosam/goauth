@@ -1,0 +1,11 @@
+# permission.yaml file
+
+permission:
+  role:
+    update: "update-role"
+    delete: "delete-role"
+    create: "cerate-role"
+  permission:
+    update: "update-permission"
+    delete: "delete-permission"
+    create: "cerate-permission"

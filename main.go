@@ -2,32 +2,19 @@ package main
 
 import (
 	"bufio"
-	"flag"
 	"os"
+	"path/filepath"
+	"strings"
 
 	database "github.com/nugrohosam/gosampleapi/services/databases"
 	grpcConn "github.com/nugrohosam/gosampleapi/services/grpc"
 	httpConn "github.com/nugrohosam/gosampleapi/services/http"
 	infrastructure "github.com/nugrohosam/gosampleapi/services/insfrastructure"
-	viper "github.com/spf13/viper"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	stage := flag.String("stage", "dev", "-")
-
-	flag.Parse()
-
-	// initial call to envinronment variable
-	if *stage == "prod" {
-		viper.SetConfigFile(".env.prod.yaml")
-	} else {
-		viper.SetConfigFile(".env.yaml")
-	}
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(err)
-	}
+	loadConfigFile()
 
 	infrastructure.PrepareSentry()
 
@@ -52,4 +39,42 @@ func main() {
 
 	reader := bufio.NewReader(os.Stdin)
 	reader.ReadString('\n')
+}
+
+func loadConfigFile() {
+
+	viper.SetConfigType("yaml")
+
+	viper.SetConfigName(".env")
+	viper.AddConfigPath("./")
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err)
+	}
+
+	// Load all files in config folders
+	var files []string
+
+	configName := "config"
+	root := "./" + configName
+	if err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if info.Name() != configName {
+			files = append(files, info.Name())
+		}
+		return nil
+	}); err != nil {
+		panic(err)
+	}
+
+	var nameConfig string
+
+	for _, file := range files {
+		nameConfig = strings.ReplaceAll(file, ".yaml", "")
+
+		viper.SetConfigName(nameConfig)
+		viper.AddConfigPath(root)
+
+		if err := viper.MergeInConfig(); err != nil {
+			panic(err)
+		}
+	}
 }

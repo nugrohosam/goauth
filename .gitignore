@@ -1,5 +1,6 @@
 .env.yaml
+env.yaml
 .env.test.yaml
-.env.prod.yaml
+env.test.yaml
 third_party
 vendor
