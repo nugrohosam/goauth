@@ -2,9 +2,23 @@ package permission
 
 import (
 	"errors"
+	"strconv"
 
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
 )
+
+// Get using for permission
+func Get(search, limit, offset, orderBy string) (Permissions, error) {
+	var permissions = Permissions{}
+	database := *conn.DbOrm
+
+	limitInt, _ := strconv.Atoi(limit)
+	offsetInt, _ := strconv.Atoi(offset)
+
+	database.Where("name like ?", "%"+search+"%").Limit(limitInt).Offset(offsetInt).Order("name " + orderBy).Find(&permissions)
+
+	return permissions, nil
+}
 
 // Create using for permission
 func Create(name string) (Permission, error) {

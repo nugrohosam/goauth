@@ -6,8 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// TableName ...
-const TableName = "permissions"
+// TablePermission ...
+const TablePermission = "permissions"
 
 // Permission struct
 type Permission struct {

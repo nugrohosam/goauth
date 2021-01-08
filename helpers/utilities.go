@@ -3,6 +3,7 @@ package helpers
 import (
 	"net/http"
 	"reflect"
+	"strconv"
 	"unicode"
 
 	"github.com/gorilla/sessions"
@@ -50,6 +51,36 @@ func LcFirst(s string) string {
 	return ""
 }
 
+// GenerateLimitOffset ..
+func GenerateLimitOffset(perPage, page string) (string, string) {
+	limit := perPage
+	pageInt, _ := strconv.Atoi(page)
+	perPageInt, _ := strconv.Atoi(perPage)
+	offset := perPageInt * pageInt
+
+	return limit, strconv.Itoa(offset)
+}
+
+// Find ..
+func Find(a []string, x string) int {
+	for i, n := range a {
+		if x == n {
+			return i
+		}
+	}
+	return len(a)
+}
+
+// Contains tells whether a contains x.
+func Contains(a []string, x string) bool {
+	for _, n := range a {
+		if x == n {
+			return true
+		}
+	}
+	return false
+}
+
 // StoreSessionString ..
 func StoreSessionString(request *http.Request, writer http.ResponseWriter, nameSession string, data string) {
 	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
@@ -73,7 +104,7 @@ func GetSessionDataString(request *http.Request, writer http.ResponseWriter, nam
 	return sessionNow.Values["data"].(string)
 }
 
-// GetSessionDataString ..
+// GetSessionData ..
 func GetSessionData(request *http.Request, writer http.ResponseWriter, nameSession string) interface{} {
 	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
 	sessionNow, err := sessionStore.Get(request, nameSession)
