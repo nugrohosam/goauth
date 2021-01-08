@@ -33,10 +33,12 @@ func PermissionHandlerIndex() gin.HandlerFunc {
 				var permissionItem = resource.PermissionListItems{}
 				copier.Copy(&permissionItem, &permissions)
 				perPage, _ := strconv.Atoi(queryParams.PerPage)
+				page, _ := strconv.Atoi(queryParams.Page)
 				resource := resource.PermissionPaginate{
-					Items:   permissionItem,
-					PerPage: perPage,
-					Total:   cap(permissions),
+					Items:       permissionItem,
+					PerPage:     perPage,
+					Total:       cap(permissionItem),
+					CurrentPage: page,
 				}
 
 				c.JSON(http.StatusOK, helpers.ResponseModelStruct(resource))
