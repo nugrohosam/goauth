@@ -8,7 +8,7 @@ import (
 
 // Create using for permission
 func Create(name string) (Permission, error) {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	permission := Permission{Name: name}
 	permissionExisting := Permission{}
@@ -24,7 +24,7 @@ func Create(name string) (Permission, error) {
 
 // Update using for permission
 func Update(ID string, name string) (Permission, error) {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	permission := Permission{Name: name}
 	permissionExisting := Permission{}
@@ -40,13 +40,13 @@ func Update(ID string, name string) (Permission, error) {
 
 // Delete is using
 func Delete(ID string) {
-	database := *conn.Db
+	database := *conn.DbOrm
 	database.Delete(&Permission{}, ID)
 }
 
 // Find is using
 func Find(ID string) Permission {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	permission := Permission{}
 	database.Where("id = ?", ID).First(&permission)
@@ -56,7 +56,7 @@ func Find(ID string) Permission {
 
 // FindByEmailOrPermissionname ...
 func FindByEmailOrPermissionname(emailOrPermissionname string) Permission {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	permission := Permission{}
 	database.Where("permissionname = ? OR email = ?", emailOrPermissionname, emailOrPermissionname).First(&permission)

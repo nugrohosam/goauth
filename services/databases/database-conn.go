@@ -1,17 +1,15 @@
 package databases
 
 import (
-	"time"
+	"database/sql"
 
 	"github.com/spf13/viper"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
 
 // Db using to conn global
-var Db *gorm.DB
+var Db *sql.DB
 
-// Conn use to connect db gorm
+// Conn ..
 func Conn() error {
 	dbUsername := viper.GetString("database.username")
 	dbPassword := viper.GetString("database.password")
@@ -20,22 +18,20 @@ func Conn() error {
 	dbName := viper.GetString("database.name")
 
 	dsn := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := sql.Open("mysql", dsn)
 
-	db, errOpen := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if errOpen != nil {
-		return errOpen
+	// if there is an error opening the connection, handle it
+	if err != nil {
+		panic(err.Error())
 	}
-
-	sqlDB, errSet := db.DB()
-	if errSet != nil {
-		return errSet
-	}
-
-	sqlDB.SetMaxIdleConns(10)
-	sqlDB.SetMaxOpenConns(100)
-	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	Db = db
 
+	return nil
+}
+
+// Close ..
+func Close() error {
+	Db.Close()
 	return nil
 }

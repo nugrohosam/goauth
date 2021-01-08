@@ -27,7 +27,7 @@ func InitialTest(t *testing.T) {
 		panic(err)
 	}
 
-	if err := database.Conn(); err != nil {
+	if err := database.ConnOrm(); err != nil {
 		t.Error(err.Error())
 		panic(err)
 	}

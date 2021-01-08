@@ -50,8 +50,8 @@ func LcFirst(s string) string {
 	return ""
 }
 
-// StoreSessionData ..
-func StoreSessionData(request *http.Request, writer http.ResponseWriter, nameSession string, data interface{}) {
+// StoreSessionString ..
+func StoreSessionString(request *http.Request, writer http.ResponseWriter, nameSession string, data string) {
 	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
 	sessionNow, err := sessionStore.Get(request, nameSession)
 	if err != nil {

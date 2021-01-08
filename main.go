@@ -18,7 +18,7 @@ func main() {
 
 	infrastructure.PrepareSentry()
 
-	if err := database.Conn(); err != nil {
+	if err := database.ConnOrm(); err != nil {
 		panic(err)
 	}
 
@@ -42,7 +42,6 @@ func main() {
 }
 
 func loadConfigFile() {
-
 	viper.SetConfigType("yaml")
 
 	viper.SetConfigName(".env")
@@ -54,10 +53,10 @@ func loadConfigFile() {
 	// Load all files in config folders
 	var files []string
 
-	configName := "config"
-	root := "./" + configName
+	configFolderName := "config"
+	root := "./" + configFolderName
 	if err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if info.Name() != configName {
+		if info.Name() != configFolderName {
 			files = append(files, info.Name())
 		}
 		return nil

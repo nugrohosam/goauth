@@ -1,0 +1,49 @@
+package main
+
+import (
+	"flag"
+	"fmt"
+	"io/ioutil"
+	"strings"
+
+	database "github.com/nugrohosam/gosampleapi/services/databases"
+	"github.com/romanyx/polluter"
+	"github.com/spf13/viper"
+)
+
+func main() {
+
+	viper.SetConfigType("yaml")
+
+	viper.SetConfigName(".env")
+	viper.AddConfigPath("./")
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err)
+	}
+
+	file := flag.String("file", "none", "-")
+
+	flag.Parse()
+
+	if *file == "none" {
+		fmt.Println("flag [-file=?] must be spellied")
+		return
+	}
+
+	filePath := "./sedeers/" + *file
+
+	database.Conn()
+	defer database.Close()
+
+	p := polluter.New(polluter.MySQLEngine(database.Db))
+
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		fmt.Printf("failed to get file: %s", err)
+		return
+	}
+
+	if err := p.Pollute(strings.NewReader(string(content))); err != nil {
+		fmt.Printf("failed to pollute: %s", err)
+	}
+}

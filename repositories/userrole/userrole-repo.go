@@ -10,7 +10,7 @@ import (
 
 // Create using for userRole
 func Create(roleID, userID string) (UserRole, error) {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	roleIDInt, _ := strconv.Atoi(roleID)
 	userIDInt, _ := strconv.Atoi(userID)
@@ -29,7 +29,7 @@ func Create(roleID, userID string) (UserRole, error) {
 
 // Update using for userRole
 func Update(ID, roleID, userID string) (UserRole, error) {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	roleIDInt, _ := strconv.Atoi(roleID)
 	userIDInt, _ := strconv.Atoi(userID)
@@ -48,7 +48,7 @@ func Update(ID, roleID, userID string) (UserRole, error) {
 
 // Find is using
 func Find(id string) UserRole {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	userRole := UserRole{}
 	database.Where("id = ?", id).First(&userRole)
@@ -58,7 +58,7 @@ func Find(id string) UserRole {
 
 // FindByUserIDAndRoleName is using
 func FindByUserIDAndRoleName(userID string, roleName []string) UserRole {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	userRole := UserRole{}
 	database.Table(TableName).Preload("Role", "name IN (?)", strings.Join(roleName, ",")).Where("user_id = ?", userID).First(&userRole)
@@ -68,7 +68,7 @@ func FindByUserIDAndRoleName(userID string, roleName []string) UserRole {
 
 // GetByUserID is using
 func GetByUserID(userID string) []UserRole {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	userRoles := []UserRole{}
 	database.Table(TableName).Where("user_id = ?", userID).Find(&userRoles)
@@ -99,6 +99,6 @@ func IsExistsByUserIDAndRoleName(userID string, roleName []string) bool {
 
 // Delete is using
 func Delete(ID string) {
-	database := *conn.Db
+	database := *conn.DbOrm
 	database.Delete(&UserRole{}, ID)
 }

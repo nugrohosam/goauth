@@ -1,11 +1,34 @@
 # permission.yaml file
 
 permission:
+  global: 
+    open: "open-all"
+    close: "close-all"
   role:
+    retrieve: "retrieve-role"
     update: "update-role"
     delete: "delete-role"
     create: "cerate-role"
+  user:
+    retrieve: "retrieve-user"
+    update: "update-user"
+    delete: "delete-user"
+    create: "cerate-user"
   permission:
+    retrieve: "retrieve-permission"
     update: "update-permission"
     delete: "delete-permission"
     create: "cerate-permission"
+  role-permission:
+    retrieve: "retrieve-role-permission"
+    update: "update-role-permission"
+    delete: "delete-role-permission"
+    create: "cerate-role-permission"
+  user-role:
+    retrieve: "retrieve-user-role"
+    update: "update-user-role"
+    delete: "delete-user-role"
+    create: "cerate-user-role"
+    update-his-own: "update-user-role-his-own"
+    delete-his-own: "delete-user-role-his-own"
+    create-his-own: "cerate-user-role-his-own"

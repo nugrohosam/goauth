@@ -11,7 +11,7 @@ import (
 
 // FindByUserIDAndPermissionName is using
 func FindByUserIDAndPermissionName(userID string, permissionName []string) RolePermission {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	rolePermission := RolePermission{}
 	userRoles := userRoleRepo.GetByUserID(userID)
@@ -30,7 +30,7 @@ func IsExistsByUserIDAndPermissionName(userID string, permissionName []string) b
 
 // Create using for rolePermission
 func Create(roleID, permissionID string) (RolePermission, error) {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	roleIDInt, _ := strconv.Atoi(roleID)
 	permissionIDInt, _ := strconv.Atoi(permissionID)

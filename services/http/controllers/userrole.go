@@ -10,6 +10,27 @@ import (
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
 
+// UserRoleHandlerIndex ..
+func UserRoleHandlerIndex() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var role role.CreateRole
+		c.BindJSON(&role)
+
+		validate := validator.New()
+		if err := validate.Struct(role); err != nil {
+			validationErrors := err.(validator.ValidationErrors)
+			fieldsErrors := helpers.TransformValidations(validationErrors)
+			c.JSON(http.StatusBadRequest, helpers.ResponseErrValidation(fieldsErrors))
+			return
+		}
+
+		if err := usecases.CreateRole(role.Name); err != nil {
+			c.JSON(http.StatusBadRequest, helpers.ResponseErr(err.Error()))
+			return
+		}
+	}
+}
+
 // UserRoleHandlerCreate ..
 func UserRoleHandlerCreate() gin.HandlerFunc {
 	return func(c *gin.Context) {

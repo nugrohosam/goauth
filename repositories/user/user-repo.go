@@ -8,7 +8,7 @@ import (
 
 // Create using for user
 func Create(name, username, email, password string) (User, error) {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	user := User{Name: name, Username: username, Email: email, Password: password}
 	userExisting := User{}
@@ -24,7 +24,7 @@ func Create(name, username, email, password string) (User, error) {
 
 // Find is using
 func Find(id string) User {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	user := User{}
 	database.Where("id = ?", id).First(&user)
@@ -34,7 +34,7 @@ func Find(id string) User {
 
 // FindByEmailOrUsername ...
 func FindByEmailOrUsername(emailOrUsername string) User {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	user := User{}
 	database.Where("username = ? OR email = ?", emailOrUsername, emailOrUsername).First(&user)

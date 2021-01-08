@@ -8,7 +8,7 @@ import (
 
 // Create using for role
 func Create(name string) (Role, error) {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	role := Role{Name: name}
 	roleExisting := Role{}
@@ -24,7 +24,7 @@ func Create(name string) (Role, error) {
 
 // Update using for role
 func Update(ID string, name string) (Role, error) {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	role := Role{Name: name}
 	roleExisting := Role{}
@@ -40,13 +40,13 @@ func Update(ID string, name string) (Role, error) {
 
 // Delete is using
 func Delete(ID string) {
-	database := *conn.Db
+	database := *conn.DbOrm
 	database.Delete(&Role{}, ID)
 }
 
 // Find is using
 func Find(id string) Role {
-	database := *conn.Db
+	database := *conn.DbOrm
 
 	role := Role{}
 	database.Where("id = ?", id).First(&role)
