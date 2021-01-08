@@ -46,8 +46,8 @@ if you want to create some migration, run `$ migrate -state=down -stage=dev -how
 ## Checklist
 
 - [x] Register Users
-- [x] Auth JWT Login
-- [x] Middleware access denied
+- [x] Auth JWT
+- [x] Middlewares
 - [x] Test api
 - [x] Cleaner DB Test
 - [x] Request gRPC
