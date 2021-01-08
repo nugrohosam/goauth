@@ -13,7 +13,6 @@ require (
 	github.com/google/go-cmp v0.5.1 // indirect
 	github.com/gorilla/sessions v1.2.1
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/romanyx/polluter v1.2.2
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899
