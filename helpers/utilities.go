@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/sessions"
 	resource "github.com/nugrohosam/gosampleapi/services/http/resources/v1"
 	viper "github.com/spf13/viper"
+	redisStore "gopkg.in/boj/redistore.v1"
 )
 
 // MaxDepth ...
@@ -80,6 +81,15 @@ func TypeName(t reflect.Type) string {
 	return t.Name()
 }
 
+// SessionRedis ..
+func SessionRedis(key string) {
+	store, err := redisStore.NewRediStore(10, "tcp", ":6379", "", []byte(key))
+	if err != nil {
+		panic(err)
+	}
+	defer store.Close()
+}
+
 // Find ..
 func Find(a []string, x string) int {
 	for i, n := range a {
@@ -100,8 +110,23 @@ func Contains(a []string, x string) bool {
 	return false
 }
 
+func redisStoreSesssion() *redisStore.RediStore {
+	redisKey := viper.GetString("reids.key")
+	store, err := redisStore.NewRediStore(10, "tcp", ":6379", "", []byte(redisKey))
+	if err != nil {
+		panic(err)
+	}
+
+	return store
+}
+
 // StoreSessionString ..
 func StoreSessionString(request *http.Request, writer http.ResponseWriter, nameSession string, data string) {
+	if viper.GetString("session.driver") == "redis" {
+		store := redisStoreSesssion()
+		defer store.Close()
+	}
+
 	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
 	sessionNow, err := sessionStore.Get(request, nameSession)
 	if err != nil {
@@ -114,6 +139,11 @@ func StoreSessionString(request *http.Request, writer http.ResponseWriter, nameS
 
 // GetSessionDataString ..
 func GetSessionDataString(request *http.Request, writer http.ResponseWriter, nameSession string) string {
+	if viper.GetString("session.driver") == "redis" {
+		store := redisStoreSesssion()
+		defer store.Close()
+	}
+
 	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
 	sessionNow, err := sessionStore.Get(request, nameSession)
 	if err != nil {
@@ -121,6 +151,25 @@ func GetSessionDataString(request *http.Request, writer http.ResponseWriter, nam
 	}
 
 	return sessionNow.Values["data"].(string)
+}
+
+// DeleteSessionDataString ..
+func DeleteSessionDataString(request *http.Request, writer http.ResponseWriter, nameSession string) error {
+	if viper.GetString("session.driver") == "redis" {
+		store := redisStoreSesssion()
+		defer store.Close()
+	}
+
+	sessionStore := sessions.NewCookieStore([]byte(viper.GetString("app.key")))
+	sessionNow, err := sessionStore.Get(request, nameSession)
+	if err != nil {
+		panic(err)
+	}
+
+	sessionNow.Options.MaxAge = -1
+	err = sessionNow.Save(request, writer)
+
+	return err
 }
 
 // GetSessionData ..

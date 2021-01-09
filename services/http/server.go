@@ -1,8 +1,11 @@
 package http
 
 import (
+	"time"
+
 	sentrygin "github.com/getsentry/sentry-go/gin"
 
+	"github.com/cnjack/throttle"
 	"github.com/gin-gonic/gin"
 	"github.com/nugrohosam/gosampleapi/services/http/controllers"
 	"github.com/nugrohosam/gosampleapi/services/http/exceptions"
@@ -31,10 +34,23 @@ func Prepare() {
 
 	Routes = gin.New()
 	Routes.Use(exceptions.Recovery500())
+
+	rateLimiterCount := viper.GetUint64("rate-limiter.count")
+	rateLimiterTime := viper.GetInt("rate-limiter.time-in-minutes")
+	Routes.Use(throttle.Policy(&throttle.Quota{
+		Limit:  rateLimiterCount,
+		Within: time.Duration(rateLimiterTime) * time.Minute,
+	}))
+
 	Routes.Static("/assets", "./assets")
+
 	Routes.Use(sentrygin.New(sentrygin.Options{
 		Repanic: true,
 	}))
+
+	Routes.Any("/test-throttle", func(c *gin.Context) {
+		c.Writer.Write([]byte("hello world"))
+	})
 
 	// test-sentry
 	Routes.GET("/test-sentry", func(ctx *gin.Context) {
@@ -63,10 +79,36 @@ func Prepare() {
 	rolePermission := v1.Group("/role-permission")
 	rolePermission.Use(middlewares.AuthJwt())
 	{
-		rolePermission.GET("/", controllers.RolePermissionHandlerIndex())
-		rolePermission.POST("/", controllers.RolePermissionHandlerCreate())
-		rolePermission.PUT("/:id", controllers.RolePermissionHandlerUpdate())
-		rolePermission.DELETE("/:id", controllers.RolePermissionHandlerDelete())
+
+		retrieveRolePermission := rolePermission.Use(middlewares.CanAccessWith(
+			[]string{
+				viper.GetString("permission.role.retrieve"),
+			},
+		))
+		{
+			retrieveRolePermission.GET("/", controllers.RolePermissionHandlerIndex())
+			retrieveRolePermission.GET("/:id", controllers.RolePermissionHandlerShow())
+		}
+
+		rolePermission.POST("/", controllers.RolePermissionHandlerCreate()).Use(middlewares.CanAccessWith(
+			[]string{
+				viper.GetString("permission.role.create"),
+			},
+		))
+	}
+
+	role := v1.Group("/role")
+	role.Use(middlewares.AuthJwt())
+	{
+		retrieveRole := role.Use(middlewares.CanAccessWith(
+			[]string{
+				viper.GetString("permission.role.retrieve"),
+			},
+		))
+		{
+			retrieveRole.GET("/", controllers.RoleHandlerIndex())
+			retrieveRole.GET("/:id", controllers.RoleHandlerShow())
+		}
 	}
 
 	permission := v1.Group("/permission")
