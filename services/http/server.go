@@ -72,10 +72,14 @@ func Prepare() {
 	permission := v1.Group("/permission")
 	permission.Use(middlewares.AuthJwt())
 	{
-		permission.GET("/", controllers.PermissionHandlerIndex()).Use(middlewares.CanAccessWith(
+		retrievePermission := permission.Use(middlewares.CanAccessWith(
 			[]string{
 				viper.GetString("permission.permission.retrieve"),
 			},
 		))
+		{
+			retrievePermission.GET("/", controllers.PermissionHandlerIndex())
+			retrievePermission.GET("/:id", controllers.PermissionHandlerShow())
+		}
 	}
 }

@@ -1,12 +1,12 @@
 package usecases
 
 import (
-	helper "github.com/nugrohosam/gosampleapi/helpers"
+	helpers "github.com/nugrohosam/gosampleapi/helpers"
 	permissionRepo "github.com/nugrohosam/gosampleapi/repositories/permission"
 )
 
 // GetPermission ...
-func GetPermission(serach, perPage, page, order string) ([]permissionRepo.Permission, error) {
+func GetPermission(serach, perPage, page, order string) ([]permissionRepo.Permission, int, error) {
 
 	availableOrder := map[string]string{
 		"atoz": "asc",
@@ -14,14 +14,21 @@ func GetPermission(serach, perPage, page, order string) ([]permissionRepo.Permis
 	}
 
 	orderBy := availableOrder[order]
-	limit, offset := helper.GenerateLimitOffset(perPage, page)
+	limit, offset := helpers.GenerateLimitOffset(perPage, page)
 
-	permissions, err := permissionRepo.Get(serach, limit, offset, orderBy)
+	permissions, total, err := permissionRepo.Get(serach, limit, offset, orderBy)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
-	return permissions, nil
+	return permissions, total, nil
+}
+
+// ShowPermission ...
+func ShowPermission(ID string) permissionRepo.Permission {
+	permission := permissionRepo.FindWithID(ID)
+
+	return permission
 }
 
 // CreatePermission ...

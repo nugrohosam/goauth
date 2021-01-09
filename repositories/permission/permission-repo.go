@@ -8,16 +8,17 @@ import (
 )
 
 // Get using for permission
-func Get(search, limit, offset, orderBy string) (Permissions, error) {
+func Get(search, limit, offset, orderBy string) (Permissions, int, error) {
 	var permissions = Permissions{}
 	database := *conn.DbOrm
 
 	limitInt, _ := strconv.Atoi(limit)
 	offsetInt, _ := strconv.Atoi(offset)
 
+	totalRows := database.Where("name like ?", "%"+search+"%").Find(&permissions).RowsAffected
 	database.Where("name like ?", "%"+search+"%").Limit(limitInt).Offset(offsetInt).Order("name " + orderBy).Find(&permissions)
 
-	return permissions, nil
+	return permissions, int(totalRows), nil
 }
 
 // Create using for permission
@@ -58,8 +59,8 @@ func Delete(ID string) {
 	database.Delete(&Permission{}, ID)
 }
 
-// Find is using
-func Find(ID string) Permission {
+// FindWithID is using
+func FindWithID(ID string) Permission {
 	database := *conn.DbOrm
 
 	permission := Permission{}

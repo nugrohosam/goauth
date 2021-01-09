@@ -1,16 +1,16 @@
 package v1
 
-// PermissionItem ...
-type PermissionItem struct {
+// RoleItem ...
+type RoleItem struct {
 	ID   int    `structs:"id" json:"id" copier:"field:ID"`
 	Name string `structs:"name" json:"name" copier:"field:Name"`
 }
 
-// PermissionDetail ...
-type PermissionDetail struct {
+// RoleDetail ...
+type RoleDetail struct {
 	ID   int    `structs:"id" json:"id" copier:"field:ID"`
 	Name string `structs:"name" json:"name" copier:"field:Name"`
 }
 
-// PermissionListItems ..
-type PermissionListItems []PermissionItem
+// RoleListItems ..
+type RoleListItems []RoleItem

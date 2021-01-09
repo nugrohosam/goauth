@@ -25,7 +25,7 @@ func FindByUserIDAndPermissionName(userID string, permissionName []string) RoleP
 // IsExistsByUserIDAndPermissionName is using
 func IsExistsByUserIDAndPermissionName(userID string, permissionName []string) bool {
 	data := FindByUserIDAndPermissionName(userID, permissionName)
-	return data.ID > 0
+	return data.Permission.ID > 0
 }
 
 // Create using for rolePermission

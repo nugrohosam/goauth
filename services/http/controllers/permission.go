@@ -1,9 +1,7 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	validator "github.com/go-playground/validator/v10"
@@ -20,32 +18,46 @@ func PermissionHandlerIndex() gin.HandlerFunc {
 		var queryParams permission.ListQuery
 		c.BindQuery(&queryParams)
 
-		permissions, err := usecases.GetPermission(queryParams.Search, queryParams.PerPage, queryParams.Page, queryParams.OrderBy)
+		permissions, total, err := usecases.GetPermission(queryParams.Search, queryParams.PerPage, queryParams.Page, queryParams.OrderBy)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, helpers.ResponseErr(err.Error()))
 			return
 		}
-		fmt.Println(permissions)
 
 		if cap(permissions) > 0 {
+			var listPermissionsResource = resource.PermissionListItems{}
+			copier.Copy(&listPermissionsResource, &permissions)
 			if queryParams.Paginate {
-				var permissionItem = resource.PermissionListItems{}
-				copier.Copy(&permissionItem, &permissions)
-				perPage, _ := strconv.Atoi(queryParams.PerPage)
-				page, _ := strconv.Atoi(queryParams.Page)
-				resource := resource.PermissionPaginate{
-					Items:       permissionItem,
-					PerPage:     perPage,
-					Total:       cap(permissionItem),
-					CurrentPage: page,
-				}
-
-				c.JSON(http.StatusOK, helpers.ResponseModelStruct(resource))
+				resourceData := helpers.BuildPaginate(queryParams.PerPage, queryParams.Page, total, &permissions, &listPermissionsResource)
+				c.JSON(http.StatusOK, helpers.ResponseModelStruct(resourceData))
 			} else {
-				c.JSON(http.StatusOK, helpers.ResponseModelStruct(permissions))
+				c.JSON(http.StatusOK, helpers.ResponseMany(listPermissionsResource))
+			}
+		} else {
+			c.JSON(http.StatusOK, helpers.ResponseMany(nil))
+		}
+	}
+}
+
+// PermissionHandlerShow ..
+func PermissionHandlerShow() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ID := c.Param("id")
+
+		if len(ID) < 1 {
+			c.JSON(http.StatusBadRequest, helpers.ResponseErr("params id should filled"))
+		} else {
+			permission := usecases.ShowPermission(ID)
+			var permissionItem = resource.PermissionDetail{}
+			copier.Copy(&permissionItem, &permission)
+			if permission.ID > 0 {
+				c.JSON(http.StatusOK, helpers.ResponseOne(permissionItem))
+			} else {
+				c.JSON(http.StatusOK, helpers.ResponseOne(nil))
 			}
 		}
+
 	}
 }
 

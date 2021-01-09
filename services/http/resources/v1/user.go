@@ -13,11 +13,3 @@ type UserDetail struct {
 
 // UsetListItems ..
 type UsetListItems []UserItems
-
-// UserPaginate ...
-type UserPaginate struct {
-	Items       UsetListItems `structs:"items" json:"items"`
-	Total       int           `structs:"total" json:"total"`
-	PerPage     int           `structs:"per_page" json:"per_page"`
-	CurrentPage int           `structs:"current_page" json:"current_page"`
-}

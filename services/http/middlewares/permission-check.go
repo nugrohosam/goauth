@@ -17,10 +17,8 @@ func CanAccessWith(s []string) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		userID := helpers.GetSessionDataString(c.Request, c.Writer, viper.GetString("session.userID"))
-		if isExists, err := usecases.IsHaveAnyPermission(userID, []string{globalAccessOpen}); !isExists || err != nil {
-			c.JSON(http.StatusNotAcceptable, helpers.ResponseErr("Cannot Access With Your Permission"))
-			c.Abort()
-			return
+		if isExists, err := usecases.IsHaveAnyPermission(userID, []string{globalAccessOpen}); isExists || err != nil {
+			c.Next()
 		} else if isExists, err := usecases.IsHaveAnyPermission(userID, []string{globalAccessClose}); isExists || err != nil {
 			c.JSON(http.StatusNotAcceptable, helpers.ResponseErr("Cannot Access With Your Permission"))
 			c.Abort()

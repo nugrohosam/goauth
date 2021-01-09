@@ -41,7 +41,7 @@ func ResponseErr(message string) gin.H {
 }
 
 // ResponseMany ...
-func ResponseMany(data []map[string]interface{}) gin.H {
+func ResponseMany(data interface{}) gin.H {
 	initialResponse()
 	resp := gin.H(
 		MergeMap(respData, map[string]interface{}{
@@ -71,21 +71,8 @@ func ResponseModelStruct(data interface{}) gin.H {
 	return resp
 }
 
-// ResponseManyWithPagination ...
-func ResponseManyWithPagination(data []map[string]interface{}, pagination []map[string]interface{}) gin.H {
-	initialResponse()
-	resp := gin.H(
-		MergeMap(respData, map[string]interface{}{
-			"data":       data,
-			"pagination": pagination,
-		}),
-	)
-
-	return resp
-}
-
 // ResponseOne ...
-func ResponseOne(data map[string]interface{}) gin.H {
+func ResponseOne(data interface{}) gin.H {
 	initialResponse()
 	resp := gin.H(
 		MergeMap(respData, map[string]interface{}{

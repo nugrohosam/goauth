@@ -7,6 +7,7 @@ import (
 	"unicode"
 
 	"github.com/gorilla/sessions"
+	resource "github.com/nugrohosam/gosampleapi/services/http/resources/v1"
 	viper "github.com/spf13/viper"
 )
 
@@ -59,6 +60,24 @@ func GenerateLimitOffset(perPage, page string) (string, string) {
 	offset := perPageInt * pageInt
 
 	return limit, strconv.Itoa(offset)
+}
+
+// BuildPaginate ..
+func BuildPaginate(perPage string, page string, total int, listItems interface{}, listItemResource interface{}) interface{} {
+	perPageInt, _ := strconv.Atoi(perPage)
+	pageInt, _ := strconv.Atoi(page)
+
+	return resource.Paginate{
+		Items:       listItemResource,
+		PerPage:     perPageInt,
+		Total:       total,
+		CurrentPage: pageInt,
+	}
+}
+
+// TypeName ..
+func TypeName(t reflect.Type) string {
+	return t.Name()
 }
 
 // Find ..

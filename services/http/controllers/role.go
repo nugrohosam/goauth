@@ -5,10 +5,62 @@ import (
 
 	"github.com/gin-gonic/gin"
 	validator "github.com/go-playground/validator/v10"
+	copier "github.com/jinzhu/copier"
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
+	permission "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
 	role "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
+	resource "github.com/nugrohosam/gosampleapi/services/http/resources/v1"
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
+
+// RoleHandlerIndex ..
+func RoleHandlerIndex() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var queryParams permission.ListQuery
+		c.BindQuery(&queryParams)
+
+		permissions, total, err := usecases.GetRole(queryParams.Search, queryParams.PerPage, queryParams.Page, queryParams.OrderBy)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, helpers.ResponseErr(err.Error()))
+			return
+		}
+
+		if cap(permissions) > 0 {
+			var listRolesResource = resource.RoleListItems{}
+			copier.Copy(&listRolesResource, &permissions)
+			if queryParams.Paginate {
+				resourceData := helpers.BuildPaginate(queryParams.PerPage, queryParams.Page, total, &permissions, &listRolesResource)
+				c.JSON(http.StatusOK, helpers.ResponseModelStruct(resourceData))
+			} else {
+				c.JSON(http.StatusOK, helpers.ResponseMany(listRolesResource))
+			}
+		} else {
+			c.JSON(http.StatusOK, helpers.ResponseMany(nil))
+		}
+	}
+}
+
+// RoleHandlerShow ..
+func RoleHandlerShow() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ID := c.Param("id")
+
+		if len(ID) < 1 {
+			c.JSON(http.StatusBadRequest, helpers.ResponseErr("params id should filled"))
+		} else {
+			permission := usecases.ShowRole(ID)
+			var permissionItem = resource.RoleDetail{}
+			copier.Copy(&permissionItem, &permission)
+			if permission.ID > 0 {
+				c.JSON(http.StatusOK, helpers.ResponseOne(permissionItem))
+			} else {
+				c.JSON(http.StatusOK, helpers.ResponseOne(nil))
+			}
+		}
+
+	}
+}
 
 // RoleHandlerCreate ..
 func RoleHandlerCreate() gin.HandlerFunc {

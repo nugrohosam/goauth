@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http/httputil"
 
-	"github.com/nugrohosam/gosampleapi/helpers"
+	helpers "github.com/nugrohosam/gosampleapi/helpers"
 
 	"github.com/go-errors/errors"
 
