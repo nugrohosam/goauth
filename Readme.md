@@ -54,4 +54,5 @@ if you want to create some migration, run `$ migrate -state=down -stage=dev -how
 - [x] Test gRPC
 - [x] Migration tools
 - [x] Seeder tools
+- [x] Pagination
 
