@@ -34,8 +34,5 @@ func (getRoleServiceServer *getRoleServiceServer) GetRoleWithID(context context.
 		return &pb.GetRoleResponse{}, nil
 	}
 
-	return &pb.GetRoleResponse{
-		Id:   int64(role.ID),
-		Name: role.Name,
-	}, nil
+	return role.ToProto(), nil
 }

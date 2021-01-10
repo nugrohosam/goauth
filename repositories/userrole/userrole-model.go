@@ -3,6 +3,7 @@ package userrole
 import (
 	"github.com/nugrohosam/gosampleapi/repositories/role"
 	"github.com/nugrohosam/gosampleapi/repositories/user"
+	pb "github.com/nugrohosam/gosampleapi/services/grpc/pb"
 )
 
 // TableName ...
@@ -19,3 +20,23 @@ type UserRole struct {
 
 // UserRoles using for many user_role
 type UserRoles []UserRole
+
+// ToProto ..
+func (userRoles *UserRoles) ToProto() []*pb.UserRole {
+
+	userRolesResource := make([]*pb.UserRole, cap(*userRoles))
+	for i, userRoleItem := range *userRoles {
+		userRolesResource[i] = userRoleItem.ToProto()
+	}
+
+	return userRolesResource
+}
+
+// ToProto ..
+func (userRole *UserRole) ToProto() *pb.UserRole {
+	return &pb.UserRole{
+		Id:     int64(userRole.ID),
+		UserId: int64(userRole.UserID),
+		RoleId: int64(userRole.RoleID),
+	}
+}

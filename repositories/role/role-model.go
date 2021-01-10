@@ -3,6 +3,8 @@ package role
 import (
 	"fmt"
 
+	pb "github.com/nugrohosam/gosampleapi/services/grpc/pb"
+
 	"gorm.io/gorm"
 )
 
@@ -28,4 +30,11 @@ func (role *Role) BeforeCreate(tx *gorm.DB) error {
 func (role *Role) AfterCreate(tx *gorm.DB) error {
 	fmt.Println("afterCreate Called")
 	return nil
+}
+
+func (role *Role) ToProto() (*pb.GetRoleResponse) {
+	return &pb.GetRoleResponse{
+		Id:   int64(role.ID),
+		Name: role.Name,
+	}
 }

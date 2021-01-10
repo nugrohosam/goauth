@@ -33,16 +33,7 @@ func (getUserRoleServiceServer *getUserRoleServiceServer) GetUserRole(context co
 		return &pb.GetUserRoleResponse{}, nil
 	}
 
-	userRolesResource := make([]*pb.UserRole, cap(userRoles))
-	for i, userRoleItem := range userRoles {
-		userRolesResource[i] = &pb.UserRole{
-			Id:     int64(userRoleItem.ID),
-			UserId: int64(userRoleItem.UserID),
-			RoleId: int64(userRoleItem.RoleID),
-		}
-	}
-
 	return &pb.GetUserRoleResponse{
-		Items: userRolesResource,
+		Items: userRoles.ToProto(),
 	}, nil
 }
