@@ -60,4 +60,3 @@ if you want to create some migration, run `$ migrate -state=down -stage=dev -how
 - [x] Seeder tools
 - [x] Pagination
 - [x] Kafka features
-

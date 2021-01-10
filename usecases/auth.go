@@ -26,16 +26,20 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 	}
 
 	tokenExpiredInHour, _ := strconv.ParseInt(viper.GetString("token.expired_time"), 24, 64)
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	data := map[string]interface{}{
 		"id":          strconv.Itoa(user.ID),
 		"name":        user.Name,
 		"username":    user.Username,
 		"email":       user.Email,
 		"expiredTime": time.Now().Add(time.Hour * time.Duration(tokenExpiredInHour)),
-	})
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims(data))
 
 	bytedString := helpers.GetBytedSecret()
 	tokenString, err := token.SignedString(bytedString) // always use byted string
+
+	tokenString = helpers.Encrypt(tokenString, viper.GetString("secret"))
 	if err != nil {
 		return "", errors.New("Cannot make token")
 	}
@@ -45,6 +49,9 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 
 // AuthorizationValidation ...
 func AuthorizationValidation(tokenString string) error {
+
+	tokenString = helpers.Decrypt(tokenString, viper.GetString("secret"))
+
 	token, err := jwt.Parse(tokenString, validateToken)
 	if err != nil {
 		return errors.New("Wrong token input")
@@ -68,6 +75,9 @@ func AuthorizationValidation(tokenString string) error {
 
 // GetDataAuth ...
 func GetDataAuth(tokenString string) (map[string]interface{}, error) {
+
+	tokenString = helpers.Decrypt(tokenString, viper.GetString("secret"))
+
 	token, err := jwt.Parse(tokenString, validateToken)
 	data, ok := token.Claims.(jwt.MapClaims)
 

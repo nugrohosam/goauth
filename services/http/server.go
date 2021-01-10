@@ -33,7 +33,11 @@ func Serve() error {
 func Prepare() {
 
 	Routes = gin.New()
-	Routes.Use(exceptions.Recovery500())
+
+	isDebug := viper.GetBool("debug")
+	if !isDebug {
+		Routes.Use(exceptions.Recovery500())
+	}
 
 	rateLimiterCount := viper.GetUint64("rate-limiter.count")
 	rateLimiterTime := viper.GetInt("rate-limiter.time-in-minutes")

@@ -31,6 +31,5 @@ func CompareHash(hashedPassword []byte, plainPassword string) bool {
 // GetBytedSecret ...
 func GetBytedSecret() []byte {
 	secret := viper.GetString("secret")
-
 	return []byte(secret)
 }
