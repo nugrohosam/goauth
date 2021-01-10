@@ -9,7 +9,7 @@ import (
 	database "github.com/nugrohosam/gosampleapi/services/databases"
 	grpcConn "github.com/nugrohosam/gosampleapi/services/grpc"
 	httpConn "github.com/nugrohosam/gosampleapi/services/http"
-	infrastructure "github.com/nugrohosam/gosampleapi/services/insfrastructure"
+	infrastructure "github.com/nugrohosam/gosampleapi/services/infrastructure"
 	"github.com/spf13/viper"
 )
 

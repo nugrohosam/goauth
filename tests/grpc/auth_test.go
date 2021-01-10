@@ -36,14 +36,14 @@ func authGetWithToken(t *testing.T) {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	client := pb.NewGetServiceClient(conn)
+	client := pb.NewGetAuthServiceClient(conn)
 
 	// Contact the server and prnt out its riesponse.
 	ctx := context.Background()
 	token := "Anjeng"
 
-	req := &pb.GetRequest{Token: token}
-	res, err := client.Get(ctx, req)
+	req := &pb.GetAuthRequest{Token: token}
+	res, err := client.GetAuth(ctx, req)
 	if err != nil {
 		t.Error(err.Error())
 	}
@@ -62,14 +62,14 @@ func authGetIDWithToken(t *testing.T) {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	client := pb.NewGetServiceClient(conn)
+	client := pb.NewGetAuthServiceClient(conn)
 
 	// Contact the server and prnt out its riesponse.
 	ctx := context.Background()
 	token := "Anjeng"
 
-	req := &pb.GetRequest{Token: token}
-	res, err := client.GetID(ctx, req)
+	req := &pb.GetAuthRequest{Token: token}
+	res, err := client.GetAuthID(ctx, req)
 	if err != nil {
 		t.Error(err.Error())
 	}
@@ -92,7 +92,7 @@ func authValidationWithToken(t *testing.T) {
 	ctx := context.Background()
 	token := "Anjeng"
 
-	req := &pb.GetRequest{Token: token}
+	req := &pb.GetAuthRequest{Token: token}
 	res, err := client.Validate(ctx, req)
 	if err != nil {
 		t.Error(err.Error())

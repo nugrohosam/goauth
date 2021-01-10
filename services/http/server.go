@@ -43,6 +43,7 @@ func Prepare() {
 	}))
 
 	Routes.Static("/assets", "./assets")
+	Routes.Static("/web", "./web")
 
 	Routes.Use(sentrygin.New(sentrygin.Options{
 		Repanic: true,

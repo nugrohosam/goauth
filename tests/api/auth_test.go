@@ -25,10 +25,9 @@ func AuthTestRun(t *testing.T) {
 	testAuthLogin(t)
 
 	t.Log("Test Negative")
+	t.Log("=======>>>> <<<<======")
 	negativeTestAuthRegister(t)
 	negativeTestAuthLogin(t)
-	t.Log("=======>>>> <<<<======")
-	t.Log("Process...")
 }
 
 func testAuthRegister(t *testing.T) {
@@ -50,6 +49,7 @@ func testAuthRegister(t *testing.T) {
 	reader := bytes.NewBuffer(data)
 	endpoint := "http://" + url + ":" + port + "/v1/auth/register"
 
+	t.Log("Test Positive Register")
 	resp := PerformRequest(Routes, "POST", endpoint, "application/json", reader)
 	assert.Equal(t, http.StatusOK, resp.Code)
 }
