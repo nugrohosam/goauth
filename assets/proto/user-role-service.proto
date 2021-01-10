@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package proto;
+
+message GetUserRoleRequest {
+    string token = 1;
+}
+
+message UserRole {
+    int64 id = 1;
+    int64 user_id = 2;
+    int64 role_id = 3;
+}
+
+message GetUserRoleResponse {
+    repeated UserRole items = 1;
+}
+
+service GetUserRoleService {
+    rpc GetUserRole(GetUserRoleRequest) returns (GetUserRoleResponse);
+}

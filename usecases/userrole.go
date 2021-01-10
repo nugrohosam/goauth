@@ -4,6 +4,13 @@ import (
 	userRoleRepo "github.com/nugrohosam/gosampleapi/repositories/userrole"
 )
 
+// GetUserRoleWithUserID ..
+func GetUserRoleWithUserID(userID string) userRoleRepo.UserRoles {
+	userRoles := userRoleRepo.GetByUserID(userID)
+
+	return userRoles
+}
+
 // IsHaveAnyRole ...
 func IsHaveAnyRole(userID string, roleName []string) (bool, error) {
 	isExist := userRoleRepo.IsExistsByUserIDAndRoleName(userID, roleName)

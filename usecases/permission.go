@@ -3,7 +3,25 @@ package usecases
 import (
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
 	permissionRepo "github.com/nugrohosam/gosampleapi/repositories/permission"
+	"github.com/spf13/viper"
 )
+
+// CheckPermissionUser ..
+func CheckPermissionUser(userID string, permissionAccess []string) bool {
+
+	globalAccessOpen := viper.GetString("permission.global.open")
+	globalAccessClose := viper.GetString("permission.global.close")
+
+	if isExists, err := IsHaveAnyPermission(userID, []string{globalAccessOpen}); isExists || err != nil {
+		return true
+	} else if isExists, err := IsHaveAnyPermission(userID, []string{globalAccessClose}); isExists || err != nil {
+		return false
+	} else if isExists, err := IsHaveAnyPermission(userID, permissionAccess); !isExists || err != nil {
+		return false
+	}
+
+	return true
+}
 
 // GetPermission ...
 func GetPermission(serach, perPage, page, order string) ([]permissionRepo.Permission, int, error) {

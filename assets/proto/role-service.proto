@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proto;
+
+message GetRoleRequest {
+    string token = 1;
+    string role_id = 2;
+}
+
+message GetRoleResponse {
+    int64 id = 1;
+    string name = 2;
+}
+
+service GetRoleService {
+    rpc GetRoleWithID(GetRoleRequest) returns (GetRoleResponse);
+}
