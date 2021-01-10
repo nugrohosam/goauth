@@ -23,7 +23,6 @@ type UserRoles []UserRole
 
 // ToProto ..
 func (userRoles *UserRoles) ToProto() []*pb.UserRole {
-
 	userRolesResource := make([]*pb.UserRole, cap(*userRoles))
 	for i, userRoleItem := range *userRoles {
 		userRolesResource[i] = userRoleItem.ToProto()
