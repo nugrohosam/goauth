@@ -21,6 +21,16 @@ import (
 // MaxDepth ...
 const MaxDepth = 32
 
+// SetAuth ..
+func SetAuth(auth *Auth) {
+	AuthUser = auth
+}
+
+// GetAuth ..
+func GetAuth() *Auth {
+	return AuthUser
+}
+
 // MergeMap ...
 func MergeMap(dst, src map[string]interface{}) map[string]interface{} {
 	return merge(dst, src, 0)

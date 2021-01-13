@@ -72,6 +72,12 @@ func Prepare() {
 		auth.POST("/register", controllers.AuthHandlerRegister())
 	}
 
+	user := v1.Group("/user")
+	user.Use(middlewares.AuthJwt())
+	{
+		user.GET("/profile", controllers.UserHandlerShow())
+	}
+
 	userRole := v1.Group("/user-role")
 	userRole.Use(middlewares.AuthJwt())
 	{

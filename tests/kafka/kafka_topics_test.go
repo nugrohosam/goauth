@@ -24,8 +24,6 @@ func KafkaTopicsTestRun(t *testing.T) {
 	for _, p := range partitions {
 		m[p.Topic] = struct{}{}
 	}
-
-	for k := range m {
-		t.Log(k)
-	}
+	
+	t.Log(m)
 }
