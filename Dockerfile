@@ -6,11 +6,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN go get -v
-
 RUN cp .env.yaml.example .env.yaml
 
-RUN go build -ldflags='[pattern=]args list'
+RUN make
 
 EXPOSE 8080
 

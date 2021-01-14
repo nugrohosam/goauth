@@ -1,0 +1,7 @@
+# session.yaml file
+
+kafka:
+  server-1: 
+    port: 9092
+    host: "localhost"
+  

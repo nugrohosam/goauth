@@ -18,21 +18,27 @@
 
 - $ go get
 - $ go mod tidy
+## Run Makefile
 
+- $ make
 ## Migration Create
 
-if you want to create some migration, run `$ migrate-create -namefile=namefileyouwant` it will automaticaly create 2 files in migrations folder 
+if you want to create some migration, run `$ ./cmd/migrate-create -namefile=namefileyouwant` it will automaticaly create 2 files in migrations folder 
 
 - {number}{nameofmigration}.up.sql
 - {number}{nameofmigration}.down.sql
 
 ## Migration Up
 
-if you want to create some migration, run `$ migrate -state=up -stage=dev` it will automaticaly migration up
+if you want to create some migration, run `$ ./cmd/migrate -state=up -stage=dev` it will automaticaly migration up
 
 ## Migration Down
 
-if you want to create some migration, run `$ migrate -state=down -stage=dev -howmanystep=1` it will rollback 1 file .down.sql
+if you want to create some migration, run `$ ./cmd/migrate -state=down -stage=dev -howmanystep=1` it will rollback 1 file .down.sql
+
+## Seeder Down
+
+if you want to seder data, run `$ ./cmd/seeder -file=namefile.yaml`
 
 ## Run Server
 - $ go run main.go

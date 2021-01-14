@@ -11,11 +11,14 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-errors/errors v1.0.1
 	github.com/go-playground/validator/v10 v10.4.0
+	github.com/go-sql-driver/mysql v1.5.0
+	github.com/golang-migrate/migrate/v4 v4.14.1
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.1 // indirect
 	github.com/gorilla/sessions v1.2.1
 	github.com/jinzhu/copier v0.1.0
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/romanyx/polluter v1.2.2 // indirect
 	github.com/segmentio/kafka-go v0.4.8
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1

@@ -7,7 +7,7 @@ import (
 // TestRun ...
 func TestRun(t *testing.T) {
 	// KafkaProducerTestRun(t)
-	KafkaDialLeaderProducerTestRun(t)
+	// KafkaDialLeaderProducerTestRun(t)
 	// KafkaTopicsTestRun(t)
 	// KafkaConsumerTestRun(t)
 }

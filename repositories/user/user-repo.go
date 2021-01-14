@@ -23,11 +23,11 @@ func Create(name, username, email, password string) (User, error) {
 }
 
 // Find is using
-func Find(id string) User {
+func Find(ID string) User {
 	database := *conn.DbOrm
 
 	user := User{}
-	database.Where("id = ?", id).First(&user)
+	database.Where("id = ?", ID).First(&user)
 
 	return user
 }

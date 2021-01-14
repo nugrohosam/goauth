@@ -4,3 +4,9 @@ env.yaml
 env.test.yaml
 third_party
 vendor
+
+app
+cmd/*
+*.exe
+*.so
+*.bin
