@@ -1,13 +1,24 @@
 package producers
 
-const Topic = "topic-user-role-behavior-"
+// UserRoleTopic ..
+const UserRoleTopic = "topic-user-role-behavior"
 
-// DeletedRolePermission ..
-func DeletedUserRolePermission(ID string) {
-	
+// DeletedUserRoleKey ..
+const DeletedUserRoleKey = "deleted-user-role"
+
+// ChangedUserRoleKey ..
+const ChangedUserRoleKey = "changed-user-role"
+
+// DeletedUserRole ..
+func DeletedUserRole(ID string) {
+	kafkaConfig.ConfigureKafka(url, UserRoleTopic)
+	kafkaConfig.PushMessageKafka(DeletedUserRoleKey, ID)
+	kafkaConfig.CloseKafkaConn()
 }
 
-// DeletedRolePermission ..
-func ChangedUserRolePermission(ID string) {
-	
+// ChangedUserRole ..
+func ChangedUserRole(ID string) {
+	kafkaConfig.ConfigureKafka(url, UserRoleTopic)
+	kafkaConfig.PushMessageKafka(ChangedUserRoleKey, ID)
+	kafkaConfig.CloseKafkaConn()
 }

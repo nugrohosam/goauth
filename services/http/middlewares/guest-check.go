@@ -13,6 +13,12 @@ var GuestMiddlewre = "guest"
 // AuthGuest using for ..
 func AuthGuest() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		accessAll := c.GetBool(AdminCanAccessAllKey)
+		if accessAll {
+			c.Next()
+			return
+		}
+
 		userSessionName := viper.GetString("session.userID")
 		helpers.StoreSessionString(c.Request, c.Writer, userSessionName, GuestMiddlewre)
 

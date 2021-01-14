@@ -15,6 +15,12 @@ import (
 // AuthJwt using for ..
 func AuthJwt() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		accessAll := c.GetBool(AdminCanAccessAllKey)
+		if accessAll {
+			c.Next()
+			return
+		}
+
 		var header header.HeaderJwt
 		c.BindHeader(&header)
 
@@ -36,10 +42,10 @@ func AuthJwt() gin.HandlerFunc {
 
 		userData, _ := usecases.GetDataAuth(token)
 		helpers.SetAuth(&helpers.Auth{
-			ID: userData["id"].(string), 
-			Name: userData["name"].(string), 
-			Username: userData["username"].(string), 
-			Email: userData["email"].(string),
+			ID:       userData["id"].(string),
+			Name:     userData["name"].(string),
+			Username: userData["username"].(string),
+			Email:    userData["email"].(string),
 		})
 
 		c.Next()

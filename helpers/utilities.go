@@ -76,7 +76,7 @@ func GenerateLimitOffset(perPage, page string) (string, string) {
 	perPageInt, _ := strconv.Atoi(perPage)
 	offset := perPageInt * pageInt
 
-	return limit, strconv.Itoa(offset)
+	return limit, fmt.Sprint(offset)
 }
 
 // BuildPaginate ..

@@ -7,7 +7,7 @@ import (
 )
 
 // KafkaConfig ..
-type KafkaConfig struct{
+type KafkaConfig struct {
 	Writer *kafka.Writer
 }
 
@@ -21,7 +21,7 @@ func (kafkaConfig *KafkaConfig) ConfigureKafka(url string, topic string) {
 }
 
 // CloseKafkaConn ..
-func (kafkaConfig *KafkaConfig) CloseKafkaConn() (error) {
+func (kafkaConfig *KafkaConfig) CloseKafkaConn() error {
 	if err := kafkaConfig.Writer.Close(); err != nil {
 		return err
 	}
@@ -30,7 +30,7 @@ func (kafkaConfig *KafkaConfig) CloseKafkaConn() (error) {
 }
 
 // PushMessageKafka ..
-func (kafkaConfig *KafkaConfig) PushMessageKafka() error {
+func (kafkaConfig *KafkaConfig) PushMessageKafka(key, value string) error {
 	err := kafkaConfig.Writer.WriteMessages(context.Background(),
 		kafka.Message{
 			Key:   []byte("Key-A"),

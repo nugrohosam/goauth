@@ -2,6 +2,7 @@ package userrole
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -84,7 +85,7 @@ func PluckRolesID(userRoles []UserRole) []string {
 	mapped := make([]string, lengthUserRoles)
 
 	for _, userRole := range userRoles {
-		mapped[i] = strconv.Itoa(userRole.RoleID)
+		mapped[i] = fmt.Sprint(userRole.RoleID)
 		i++
 	}
 

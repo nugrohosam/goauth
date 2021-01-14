@@ -1,10 +1,12 @@
 package helpers
 
+// AuthUser ..
 var AuthUser *Auth
 
-type Auth struct{
-	ID string 
-	Name string 
-	Username string 
-	Email string 
+// Auth ..
+type Auth struct {
+	ID       string
+	Name     string
+	Username string
+	Email    string
 }

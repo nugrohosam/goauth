@@ -6,6 +6,7 @@ import (
 	sentrygin "github.com/getsentry/sentry-go/gin"
 
 	"github.com/cnjack/throttle"
+	"github.com/gin-gonic/contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/nugrohosam/gosampleapi/services/http/controllers"
 	"github.com/nugrohosam/gosampleapi/services/http/exceptions"
@@ -67,19 +68,20 @@ func Prepare() {
 
 	// v1/auth
 	auth := v1.Group("/auth")
+	auth.Use(gzip.Gzip(gzip.DefaultCompression))
 	{
 		auth.POST("/login", controllers.AuthHandlerLogin())
 		auth.POST("/register", controllers.AuthHandlerRegister())
 	}
 
 	user := v1.Group("/user")
-	user.Use(middlewares.AuthJwt())
+	user.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt(), middlewares.AdminCanAccessAll())
 	{
 		user.GET("/profile", controllers.UserHandlerShow())
 	}
 
 	userRole := v1.Group("/user-role")
-	userRole.Use(middlewares.AuthJwt())
+	userRole.Use(middlewares.AuthJwt()).Use(gzip.Gzip(gzip.DefaultCompression))
 	{
 		userRole.GET("/", controllers.UserRoleHandlerIndex())
 		userRole.POST("/", controllers.UserRoleHandlerCreate())
@@ -88,7 +90,7 @@ func Prepare() {
 	}
 
 	rolePermission := v1.Group("/role-permission")
-	rolePermission.Use(middlewares.AuthJwt())
+	rolePermission.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt(), middlewares.AdminCanAccessAll())
 	{
 
 		retrieveRolePermission := rolePermission.Use(middlewares.CanAccessWith(
@@ -109,7 +111,7 @@ func Prepare() {
 	}
 
 	role := v1.Group("/role")
-	role.Use(middlewares.AuthJwt())
+	role.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt(), middlewares.AdminCanAccessAll())
 	{
 		retrieveRole := role.Use(middlewares.CanAccessWith(
 			[]string{
@@ -123,7 +125,7 @@ func Prepare() {
 	}
 
 	permission := v1.Group("/permission")
-	permission.Use(middlewares.AuthJwt())
+	permission.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt(), middlewares.AdminCanAccessAll())
 	{
 		retrievePermission := permission.Use(middlewares.CanAccessWith(
 			[]string{

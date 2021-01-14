@@ -21,12 +21,12 @@ func GetRolePermission(serach, perPage, page, order string) ([]rolePermissionRep
 	orderBy := availableOrder[order]
 	limit, offset := helpers.GenerateLimitOffset(perPage, page)
 
-	permissions, total, err := rolePermissionRepo.Get(serach, limit, offset, orderBy)
+	rolePermissions, total, err := rolePermissionRepo.Get(serach, limit, offset, orderBy)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	return permissions, total, nil
+	return rolePermissions, total, nil
 }
 
 // ShowRolePermission ...

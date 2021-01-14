@@ -27,7 +27,7 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 
 	tokenExpiredInHour, _ := strconv.ParseInt(viper.GetString("token.expired_time"), 24, 64)
 	data := map[string]interface{}{
-		"id":          strconv.Itoa(user.ID),
+		"id":          fmt.Sprint(user.ID),
 		"name":        user.Name,
 		"username":    user.Username,
 		"email":       user.Email,

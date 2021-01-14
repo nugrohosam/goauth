@@ -8,7 +8,7 @@ import (
 	copier "github.com/jinzhu/copier"
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
 	role "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
-	rolePerission "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
+	rolePermission "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
 	resource "github.com/nugrohosam/gosampleapi/services/http/resources/v1"
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
@@ -16,21 +16,21 @@ import (
 // RolePermissionHandlerIndex ..
 func RolePermissionHandlerIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var queryParams rolePerission.ListQuery
+		var queryParams rolePermission.ListQuery
 		c.BindQuery(&queryParams)
 
-		rolePerissions, total, err := usecases.GetRolePermission(queryParams.Search, queryParams.PerPage, queryParams.Page, queryParams.OrderBy)
+		rolePermissions, total, err := usecases.GetRolePermission(queryParams.Search, queryParams.PerPage, queryParams.Page, queryParams.OrderBy)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, helpers.ResponseErr(err.Error()))
 			return
 		}
 
-		if cap(rolePerissions) > 0 {
+		if cap(rolePermissions) > 0 {
 			var listRolePermissionsResource = resource.RolePermissionListItems{}
-			copier.Copy(&listRolePermissionsResource, &rolePerissions)
+			copier.Copy(&listRolePermissionsResource, &rolePermissions)
 			if queryParams.Paginate {
-				resourceData := helpers.BuildPaginate(queryParams.PerPage, queryParams.Page, total, &rolePerissions, &listRolePermissionsResource)
+				resourceData := helpers.BuildPaginate(queryParams.PerPage, queryParams.Page, total, &rolePermissions, &listRolePermissionsResource)
 				c.JSON(http.StatusOK, helpers.ResponseModelStruct(resourceData))
 			} else {
 				c.JSON(http.StatusOK, helpers.ResponseMany(listRolePermissionsResource))
@@ -49,11 +49,11 @@ func RolePermissionHandlerShow() gin.HandlerFunc {
 		if len(ID) < 1 {
 			c.JSON(http.StatusBadRequest, helpers.ResponseErr("params id should filled"))
 		} else {
-			rolePerission := usecases.ShowRolePermission(ID)
-			var rolePerissionItem = resource.RolePermissionDetail{}
-			copier.Copy(&rolePerissionItem, &rolePerission)
-			if rolePerission.ID > 0 {
-				c.JSON(http.StatusOK, helpers.ResponseOne(rolePerissionItem))
+			rolePermission := usecases.ShowRolePermission(ID)
+			var rolePermissionItem = resource.RolePermissionDetail{}
+			copier.Copy(&rolePermissionItem, &rolePermission)
+			if rolePermission.ID > 0 {
+				c.JSON(http.StatusOK, helpers.ResponseOne(rolePermissionItem))
 			} else {
 				c.JSON(http.StatusOK, helpers.ResponseOne(nil))
 			}

@@ -11,6 +11,12 @@ import (
 // CanAccessBy using for ..
 func CanAccessBy(s []string) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		accessAll := c.GetBool(AdminCanAccessAllKey)
+		if accessAll {
+			c.Next()
+			return
+		}
+
 		auth := helpers.GetAuth()
 		if isExists, err := usecases.IsHaveAnyRole(auth.ID, s); !isExists || err != nil {
 			c.JSON(http.StatusNotAcceptable, helpers.ResponseErr("Cannot Access With Your Role"))

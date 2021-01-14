@@ -8,11 +8,11 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/garyburd/redigo v1.6.2 // indirect
 	github.com/getsentry/sentry-go v0.7.0
+	github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-errors/errors v1.0.1
 	github.com/go-playground/validator/v10 v10.4.0
-	github.com/go-sql-driver/mysql v1.5.0
-	github.com/golang-migrate/migrate/v4 v4.14.1
+	github.com/golang-migrate/migrate/v4 v4.14.1 // indirect
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.1 // indirect
 	github.com/gorilla/sessions v1.2.1
