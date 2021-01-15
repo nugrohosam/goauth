@@ -41,6 +41,20 @@ func main() {
 	reader.ReadString('\n')
 }
 
+func initiateRedisCache() {
+	cacheRedisPrefixKey := viper.GetString("cache.redis.prefix-key")
+	configCacheRedis := viper.GetStringMap("cache.redis.hosts")
+	redisHostsCache := make(map[string]string)
+
+	for key, value := range configCacheRedis {
+		keyRedis := cacheRedisPrefixKey + key
+		valueReal := value.(map[string]string)
+		redisHostsCache[keyRedis] = valueReal["host"] + ":" + valueReal["port"]
+	}
+
+	infrastructure.InitiateRedisCache(redisHostsCache)
+}
+
 func loadConfigFile() {
 	viper.SetConfigType("yaml")
 

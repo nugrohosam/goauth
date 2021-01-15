@@ -5,22 +5,26 @@ import (
 	"strconv"
 	"strings"
 
+	roleRepo "github.com/nugrohosam/gosampleapi/repositories/role"
 	userRoleRepo "github.com/nugrohosam/gosampleapi/repositories/userrole"
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
+	"gorm.io/gorm/clause"
 )
 
 // Get using for rolePermission
 func Get(search, limit, offset, orderBy string) (RolePermissions, int, error) {
-	var rolePermission = RolePermissions{}
+	var rolePermissions = RolePermissions{}
 	database := *conn.DbOrm
 
 	limitInt, _ := strconv.Atoi(limit)
 	offsetInt, _ := strconv.Atoi(offset)
 
-	totalRows := database.Table(TableName).Preload("Role", "name like ?", "%"+search+"%").Find(&rolePermission).RowsAffected
-	database.Table(TableName).Preload("Role", "name like ?", "%"+search+"%").Limit(limitInt).Offset(offsetInt).Order("id " + orderBy).Find(&rolePermission)
+	rolesSearchNameSubQuery := database.Table(roleRepo.TableName).Select("count(id)").Where("name like ?", "%"+search+"%")
 
-	return rolePermission, int(totalRows), nil
+	totalRows := database.Table(TableName).Where("0 < ?", rolesSearchNameSubQuery).Find(&RolePermissions{}).RowsAffected
+	database.Table(TableName).Where("0 < (?)", rolesSearchNameSubQuery).Limit(limitInt).Offset(offsetInt).Order("id " + orderBy).Find(&rolePermissions)
+
+	return rolePermissions, int(totalRows), nil
 }
 
 // FindWithID is using
@@ -28,7 +32,7 @@ func FindWithID(ID string) RolePermission {
 	database := *conn.DbOrm
 
 	rolePermission := RolePermission{}
-	database.Table(TableName).Where("id = ?", ID).First(&rolePermission)
+	database.Table(TableName).Preload(clause.Associations).Where("id = ?", ID).First(&rolePermission)
 
 	return rolePermission
 }

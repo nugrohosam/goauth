@@ -14,6 +14,7 @@ import (
 
 	"github.com/gorilla/sessions"
 	resource "github.com/nugrohosam/gosampleapi/services/http/resources/v1"
+	infrastructure "github.com/nugrohosam/gosampleapi/services/infrastructure"
 	viper "github.com/spf13/viper"
 	redisStore "gopkg.in/boj/redistore.v1"
 )
@@ -29,6 +30,16 @@ func SetAuth(auth *Auth) {
 // GetAuth ..
 func GetAuth() *Auth {
 	return AuthUser
+}
+
+// StoreCache ..
+func StoreCache(key, data string) error {
+	return infrastructure.StoreCacheRedis(key, data)
+}
+
+// GetCache ..
+func GetCache(key, data string) string {
+	return infrastructure.GetCacheRedis(key)
 }
 
 // MergeMap ...
@@ -74,7 +85,7 @@ func GenerateLimitOffset(perPage, page string) (string, string) {
 	limit := perPage
 	pageInt, _ := strconv.Atoi(page)
 	perPageInt, _ := strconv.Atoi(perPage)
-	offset := perPageInt * pageInt
+	offset := perPageInt * (pageInt - 1)
 
 	return limit, fmt.Sprint(offset)
 }

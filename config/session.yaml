@@ -1,7 +1,7 @@
 # session.yaml file
 
 session:
-  # file, redis
+  # memory, redis
   driver: "file"
   key: "session-key"
   user: "user-session"
