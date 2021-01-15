@@ -33,12 +33,20 @@ func GetAuth() *Auth {
 }
 
 // StoreCache ..
-func StoreCache(key, data string) error {
+func StoreCache(key string, data interface{}) error {
 	return infrastructure.StoreCacheRedis(key, data)
 }
 
+// UnsetMap ..
+func UnsetMap(data []interface{}, indexRemove int) []interface{} {
+	var firstSlice []interface{} = data[:indexRemove]
+	var lastSlice []interface{} = data[indexRemove+1:]
+
+	return append(firstSlice, lastSlice)
+}
+
 // GetCache ..
-func GetCache(key, data string) string {
+func GetCache(key string) (interface{}, error) {
 	return infrastructure.GetCacheRedis(key)
 }
 

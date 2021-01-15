@@ -44,14 +44,13 @@ func StoreCacheRedis(key string, data interface{}) error {
 }
 
 // GetCacheRedis ..
-func GetCacheRedis(key string) string {
-
+func GetCacheRedis(key string) (interface{}, error) {
 	var data string
 	ctx := context.TODO()
 
 	if err := CacheConfigRing.Get(ctx, key, data); err == nil {
-		return data
+		return data, nil
+	} else {
+		return nil, err
 	}
-
-	return ""
 }

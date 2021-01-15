@@ -8,7 +8,7 @@ import (
 
 	validator "github.com/go-playground/validator/v10"
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
-	header "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
+	requests "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
 
@@ -21,7 +21,7 @@ func AuthJwt() gin.HandlerFunc {
 			return
 		}
 
-		var header header.HeaderJwt
+		var header requests.HeaderJwt
 		c.BindHeader(&header)
 
 		validate := validator.New()

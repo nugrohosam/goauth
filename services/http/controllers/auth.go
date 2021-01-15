@@ -11,9 +11,6 @@ import (
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
 
-// KeyMiddlewareAuth ..
-const KeyMiddlewareAuth = "auth-middleware"
-
 // AuthHandlerLogin is use
 func AuthHandlerLogin() gin.HandlerFunc {
 	return func(c *gin.Context) {
