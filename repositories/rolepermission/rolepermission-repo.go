@@ -3,10 +3,9 @@ package rolepermission
 import (
 	"errors"
 	"strconv"
-	"strings"
 
-	roleRepo "github.com/nugrohosam/gosampleapi/repositories/role"
-	userRoleRepo "github.com/nugrohosam/gosampleapi/repositories/userrole"
+	"github.com/nugrohosam/gosampleapi/repositories/permission"
+	"github.com/nugrohosam/gosampleapi/repositories/role"
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
 	"gorm.io/gorm/clause"
 )
@@ -19,12 +18,21 @@ func Get(search, limit, offset, orderBy string) (RolePermissions, int, error) {
 	limitInt, _ := strconv.Atoi(limit)
 	offsetInt, _ := strconv.Atoi(offset)
 
-	rolesSearchNameSubQuery := database.Table(roleRepo.TableName).Select("count(id)").Where("name like ?", "%"+search+"%")
-
-	totalRows := database.Table(TableName).Where("0 < ?", rolesSearchNameSubQuery).Find(&RolePermissions{}).RowsAffected
-	database.Table(TableName).Where("0 < (?)", rolesSearchNameSubQuery).Limit(limitInt).Offset(offsetInt).Order("id " + orderBy).Find(&rolePermissions)
+	roleIds := RoleIDs(&database).Where("name LIKE ?", "%"+search+"%")
+	totalRows := database.Table(TableName).Where("id IN (?)", roleIds).Find(&RolePermissions{}).RowsAffected
+	database.Table(TableName).Where("role_id IN (?)", roleIds).Limit(limitInt).Offset(offsetInt).Order("id " + orderBy).Find(&rolePermissions)
 
 	return rolePermissions, int(totalRows), nil
+}
+
+// GetByRoleIDs is using
+func GetByRoleIDs(roleIDs []role.RoleID) RolePermissions {
+	database := *conn.DbOrm
+
+	var rolePermissions = RolePermissions{}
+	database.Table(TableName).Where("role_id IN ?", roleIDs).Find(&rolePermissions)
+
+	return rolePermissions
 }
 
 // FindWithID is using
@@ -41,36 +49,28 @@ func FindWithID(ID string) RolePermission {
 func FindByUserIDAndPermissionName(userID string, permissionName []string) RolePermission {
 	database := *conn.DbOrm
 
-	roleRolePermission := RolePermission{}
-	userRoles := userRoleRepo.GetByUserID(userID)
-	rolesIds := userRoleRepo.PluckRolesID(userRoles)
+	rolePermission := RolePermission{}
 
-	database.Table(TableName).Preload("Permission", "name IN (?)", strings.Join(permissionName, ",")).Where("role_id IN (?)", strings.Join(rolesIds, ",")).First(&roleRolePermission)
+	roleIds := RoleIDsUser(&database, userID)
+	permissionIds := PermissionIDs(&database).Where("name IN ?", permissionName)
 
-	return roleRolePermission
+	database.Table(TableName).Where("permission_id IN (?)", permissionIds).Where("role_id IN (?)", roleIds).First(&rolePermission)
+
+	return rolePermission
 }
 
-// IsExistsByUserIDAndPermissionName is using
-func IsExistsByUserIDAndPermissionName(userID string, permissionName []string) bool {
-	data := FindByUserIDAndPermissionName(userID, permissionName)
-	return data.Permission.ID > 0
-}
-
-// Create using for roleRolePermission
-func Create(roleID, permissionID string) (RolePermission, error) {
+// Create using for rolePermission
+func Create(roleID, permissionID interface{}) (RolePermission, error) {
 	database := *conn.DbOrm
 
-	roleIDInt, _ := strconv.Atoi(roleID)
-	permissionIDInt, _ := strconv.Atoi(permissionID)
-
-	roleRolePermission := RolePermission{RoleID: roleIDInt, PermissionID: permissionIDInt}
+	rolePermission := RolePermission{RoleID: roleID.(role.RoleID), PermissionID: permissionID.(permission.PermissionID)}
 	roleExisting := RolePermission{}
-	isExists := database.Table(TableName).Where("role_id = ? AND permission_id = ?", roleRolePermission.RoleID, roleRolePermission.PermissionID).Find(&roleRolePermission).RowsAffected
+	isExists := database.Table(TableName).Where("role_id = ? AND permission_id = ?", rolePermission.RoleID, rolePermission.PermissionID).Find(&rolePermission).RowsAffected
 
 	if isExists != 0 {
 		return roleExisting, errors.New("Role RolePermission is exists")
 	}
 
-	database.Table(TableName).Create(&roleRolePermission)
-	return roleRolePermission, nil
+	database.Table(TableName).Create(&rolePermission)
+	return rolePermission, nil
 }

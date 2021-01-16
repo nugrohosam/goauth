@@ -28,8 +28,8 @@ func SetAuth(auth *Auth) {
 }
 
 // GetAuth ..
-func GetAuth() *Auth {
-	return AuthUser
+func GetAuth() Auth {
+	return *AuthUser
 }
 
 // StoreCache ..

@@ -7,6 +7,12 @@ type UserRoleItem struct {
 	RoleID int `structs:"role_id" json:"role_id" copier:"field:RoleID"`
 }
 
+// UserRoleItsOwnItem ...
+type UserRoleItsOwnItem struct {
+	ID     int `structs:"id" json:"id" copier:"field:ID"`
+	RoleID int `structs:"role_id" json:"role_id" copier:"field:RoleID"`
+}
+
 // UserRoleDetail ...
 type UserRoleDetail struct {
 	ID           int        `structs:"id" json:"id" copier:"field:ID"`
@@ -18,3 +24,6 @@ type UserRoleDetail struct {
 
 // UserRoleListItems ..
 type UserRoleListItems []UserRoleItem
+
+// UserRoleItsOwnListItems ..
+type UserRoleItsOwnListItems []UserRoleItsOwnItem

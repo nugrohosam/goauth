@@ -6,17 +6,30 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/nugrohosam/gosampleapi/repositories/role"
+	"github.com/nugrohosam/gosampleapi/repositories/user"
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
 )
 
-// Create using for userRole
-func Create(roleID, userID string) (UserRole, error) {
+// Get using for permission
+func Get(search, limit, offset, orderBy string) (UserRoles, int, error) {
+	var userRoles = UserRoles{}
 	database := *conn.DbOrm
 
-	roleIDInt, _ := strconv.Atoi(roleID)
-	userIDInt, _ := strconv.Atoi(userID)
+	limitInt, _ := strconv.Atoi(limit)
+	offsetInt, _ := strconv.Atoi(offset)
 
-	userRole := UserRole{RoleID: roleIDInt, UserID: userIDInt}
+	totalRows := database.Table(TableName).Find(&userRoles).RowsAffected
+	database.Table(TableName).Limit(limitInt).Offset(offsetInt).Order("id " + orderBy).Find(&userRoles)
+
+	return userRoles, int(totalRows), nil
+}
+
+// Create using for userRole
+func Create(roleID, userID interface{}) (UserRole, error) {
+	database := *conn.DbOrm
+
+	userRole := UserRole{RoleID: roleID.(role.RoleID), UserID: userID.(user.UserID)}
 	roleExisting := UserRole{}
 	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", userRole.RoleID, userRole.UserID).Find(&userRole).RowsAffected
 
@@ -24,18 +37,15 @@ func Create(roleID, userID string) (UserRole, error) {
 		return roleExisting, errors.New("Role Permission is exists")
 	}
 
-	database.Create(&userRole)
+	database.Table(TableName).Create(&userRole)
 	return userRole, nil
 }
 
 // Update using for userRole
-func Update(ID, roleID, userID string) (UserRole, error) {
+func Update(ID, roleID, userID interface{}) (UserRole, error) {
 	database := *conn.DbOrm
 
-	roleIDInt, _ := strconv.Atoi(roleID)
-	userIDInt, _ := strconv.Atoi(userID)
-
-	userRole := UserRole{RoleID: roleIDInt, UserID: userIDInt}
+	userRole := UserRole{RoleID: roleID.(role.RoleID), UserID: userID.(user.UserID)}
 	roleExisting := UserRole{}
 	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", userRole.RoleID, userRole.UserID).Where("id != ?", ID).Find(&userRole).RowsAffected
 
@@ -52,7 +62,7 @@ func Find(id string) UserRole {
 	database := *conn.DbOrm
 
 	userRole := UserRole{}
-	database.Where("id = ?", id).First(&userRole)
+	database.Table(TableName).Where("id = ?", id).First(&userRole)
 
 	return userRole
 }
@@ -68,10 +78,10 @@ func FindByUserIDAndRoleName(userID string, roleName []string) UserRole {
 }
 
 // GetByUserID is using
-func GetByUserID(userID string) []UserRole {
+func GetByUserID(userID string) UserRoles {
 	database := *conn.DbOrm
 
-	userRoles := []UserRole{}
+	userRoles := UserRoles{}
 	database.Table(TableName).Where("user_id = ?", userID).Find(&userRoles)
 
 	return userRoles
@@ -101,5 +111,5 @@ func IsExistsByUserIDAndRoleName(userID string, roleName []string) bool {
 // Delete is using
 func Delete(ID string) {
 	database := *conn.DbOrm
-	database.Delete(&UserRole{}, ID)
+	database.Table(TableName).Delete(&UserRole{}, ID)
 }

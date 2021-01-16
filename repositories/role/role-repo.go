@@ -15,8 +15,8 @@ func Get(search, limit, offset, orderBy string) (Roles, int, error) {
 	limitInt, _ := strconv.Atoi(limit)
 	offsetInt, _ := strconv.Atoi(offset)
 
-	totalRows := database.Where("name like ?", "%"+search+"%").Find(&roles).RowsAffected
-	database.Where("name like ?", "%"+search+"%").Limit(limitInt).Offset(offsetInt).Order("name " + orderBy).Find(&roles)
+	totalRows := database.Where("name LIKE ?", "%"+search+"%").Find(&roles).RowsAffected
+	database.Where("name LIKE ?", "%"+search+"%").Limit(limitInt).Offset(offsetInt).Order("name " + orderBy).Find(&roles)
 
 	return roles, int(totalRows), nil
 }

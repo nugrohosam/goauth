@@ -19,18 +19,18 @@ func RoleHandlerIndex() gin.HandlerFunc {
 		var queryParams permission.ListQuery
 		c.BindQuery(&queryParams)
 
-		permissions, total, err := usecases.GetRole(queryParams.Search, queryParams.PerPage, queryParams.Page, queryParams.OrderBy)
+		roles, total, err := usecases.GetRole(queryParams.Search, queryParams.PerPage, queryParams.Page, queryParams.OrderBy)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, helpers.ResponseErr(err.Error()))
 			return
 		}
 
-		if cap(permissions) > 0 {
+		if cap(roles) > 0 {
 			var listRolesResource = resource.RoleListItems{}
-			copier.Copy(&listRolesResource, &permissions)
+			copier.Copy(&listRolesResource, &roles)
 			if queryParams.Paginate {
-				resourceData := helpers.BuildPaginate(queryParams.PerPage, queryParams.Page, total, &permissions, &listRolesResource)
+				resourceData := helpers.BuildPaginate(queryParams.PerPage, queryParams.Page, total, &roles, &listRolesResource)
 				c.JSON(http.StatusOK, helpers.ResponseModelStruct(resourceData))
 			} else {
 				c.JSON(http.StatusOK, helpers.ResponseMany(listRolesResource))

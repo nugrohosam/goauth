@@ -75,13 +75,15 @@ func Prepare() {
 	}
 
 	user := v1.Group("/user")
-	user.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt(), middlewares.AdminCanAccessAll())
+	user.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt())
 	{
 		user.GET("/profile", controllers.UserHandlerShow())
+		user.GET("/permissions", controllers.UserPermissionItsOwnHandlerIndex())
+		user.GET("/roles", controllers.UserRoleItsOwnHandlerIndex())
 	}
 
 	userRole := v1.Group("/user-role")
-	userRole.Use(middlewares.AuthJwt()).Use(gzip.Gzip(gzip.DefaultCompression))
+	userRole.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt())
 	{
 		userRole.GET("/", controllers.UserRoleHandlerIndex())
 		userRole.POST("/", controllers.UserRoleHandlerCreate())
@@ -90,7 +92,7 @@ func Prepare() {
 	}
 
 	rolePermission := v1.Group("/role-permission")
-	rolePermission.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt(), middlewares.AdminCanAccessAll())
+	rolePermission.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt())
 	{
 
 		retrieveRolePermission := rolePermission.Use(middlewares.CanAccessWith(
@@ -111,7 +113,7 @@ func Prepare() {
 	}
 
 	role := v1.Group("/role")
-	role.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt(), middlewares.AdminCanAccessAll())
+	role.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt())
 	{
 		retrieveRole := role.Use(middlewares.CanAccessWith(
 			[]string{
@@ -125,7 +127,7 @@ func Prepare() {
 	}
 
 	permission := v1.Group("/permission")
-	permission.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt(), middlewares.AdminCanAccessAll())
+	permission.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt())
 	{
 		retrievePermission := permission.Use(middlewares.CanAccessWith(
 			[]string{

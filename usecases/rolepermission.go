@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"fmt"
+	"strconv"
 
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
 	rolePermissionRepo "github.com/nugrohosam/gosampleapi/repositories/rolepermission"
@@ -9,12 +10,12 @@ import (
 
 // IsHaveAnyPermission ...
 func IsHaveAnyPermission(userID string, permissionName []string) (bool, error) {
-	isExist := rolePermissionRepo.IsExistsByUserIDAndPermissionName(userID, permissionName)
-	return isExist, nil
+	rolePermission := rolePermissionRepo.FindByUserIDAndPermissionName(userID, permissionName)
+	return (rolePermission.ID > 0), nil
 }
 
 // GetRolePermission ...
-func GetRolePermission(serach, perPage, page, order string) (rolePermissionRepo.RolePermissions, int, error) {
+func GetRolePermission(search, perPage, page, order string) (rolePermissionRepo.RolePermissions, int, error) {
 	availableOrder := map[string]string{
 		"atoz": "asc",
 		"ztoa": "desc",
@@ -23,7 +24,7 @@ func GetRolePermission(serach, perPage, page, order string) (rolePermissionRepo.
 	orderBy := availableOrder[order]
 	limit, offset := helpers.GenerateLimitOffset(perPage, page)
 
-	rolePermissions, total, err := rolePermissionRepo.Get(serach, limit, offset, orderBy)
+	rolePermissions, total, err := rolePermissionRepo.Get(search, limit, offset, orderBy)
 	fmt.Println(rolePermissions)
 	if err != nil {
 		return nil, 0, err
@@ -41,6 +42,10 @@ func ShowRolePermission(ID string) rolePermissionRepo.RolePermission {
 
 // CreateRolePermission ...
 func CreateRolePermission(roleID, permissionID string) error {
-	_, err := rolePermissionRepo.Create(roleID, permissionID)
+
+	roleIDInt, _ := strconv.Atoi(roleID)
+	permissionIDInt, _ := strconv.Atoi(permissionID)
+
+	_, err := rolePermissionRepo.Create(roleIDInt, permissionIDInt)
 	return err
 }

@@ -12,7 +12,7 @@ func CheckPermissionUser(userID string, permissionAccess []string) bool {
 	globalAccessOpen := viper.GetString("permission.global.open")
 	globalAccessClose := viper.GetString("permission.global.close")
 
-	if isExists, err := IsHaveAnyPermission(userID, []string{globalAccessOpen}); isExists || err != nil {
+	if isExists, err := IsHaveAnyPermission(userID, []string{globalAccessOpen}); isExists && err == nil {
 		return true
 	} else if isExists, err := IsHaveAnyPermission(userID, []string{globalAccessClose}); isExists || err != nil {
 		return false
@@ -24,7 +24,7 @@ func CheckPermissionUser(userID string, permissionAccess []string) bool {
 }
 
 // GetPermission ...
-func GetPermission(serach, perPage, page, order string) ([]permissionRepo.Permission, int, error) {
+func GetPermission(search, perPage, page, order string) ([]permissionRepo.Permission, int, error) {
 
 	availableOrder := map[string]string{
 		"atoz": "asc",
@@ -34,7 +34,7 @@ func GetPermission(serach, perPage, page, order string) ([]permissionRepo.Permis
 	orderBy := availableOrder[order]
 	limit, offset := helpers.GenerateLimitOffset(perPage, page)
 
-	permissions, total, err := permissionRepo.Get(serach, limit, offset, orderBy)
+	permissions, total, err := permissionRepo.Get(search, limit, offset, orderBy)
 	if err != nil {
 		return nil, 0, err
 	}

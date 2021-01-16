@@ -6,7 +6,7 @@ import (
 )
 
 // GetRole ...
-func GetRole(serach, perPage, page, order string) ([]roleRepo.Role, int, error) {
+func GetRole(search, perPage, page, order string) ([]roleRepo.Role, int, error) {
 
 	availableOrder := map[string]string{
 		"atoz": "asc",
@@ -16,7 +16,7 @@ func GetRole(serach, perPage, page, order string) ([]roleRepo.Role, int, error) 
 	orderBy := availableOrder[order]
 	limit, offset := helpers.GenerateLimitOffset(perPage, page)
 
-	roles, total, err := roleRepo.Get(serach, limit, offset, orderBy)
+	roles, total, err := roleRepo.Get(search, limit, offset, orderBy)
 	if err != nil {
 		return nil, 0, err
 	}
