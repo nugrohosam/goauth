@@ -67,7 +67,7 @@ func PermissionHandlerCreate() gin.HandlerFunc {
 		var permission permission.CreateRole
 		c.BindJSON(&permission)
 
-		validate := validator.New()
+		validate := helpers.NewValidation()
 		if err := validate.Struct(permission); err != nil {
 			validationErrors := err.(validator.ValidationErrors)
 			fieldsErrors := helpers.TransformValidations(validationErrors)
@@ -88,7 +88,7 @@ func PermissionHandlerUpdate() gin.HandlerFunc {
 		var permission permission.UpdateRole
 		c.BindJSON(&permission)
 
-		validate := validator.New()
+		validate := helpers.NewValidation()
 		if err := validate.Struct(permission); err != nil {
 			validationErrors := err.(validator.ValidationErrors)
 			fieldsErrors := helpers.TransformValidations(validationErrors)

@@ -24,7 +24,7 @@ func AuthJwt() gin.HandlerFunc {
 		var header requests.HeaderJwt
 		c.BindHeader(&header)
 
-		validate := validator.New()
+		validate := helpers.NewValidation()
 		if err := validate.Struct(header); err != nil {
 			validationErrors := err.(validator.ValidationErrors)
 			fieldsErrors := helpers.TransformValidations(validationErrors)

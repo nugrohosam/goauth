@@ -17,7 +17,7 @@ func AuthHandlerLogin() gin.HandlerFunc {
 		var authLogin auth.AuthLogin
 		c.BindJSON(&authLogin)
 
-		validate := validator.New()
+		validate := helpers.NewValidation()
 		if err := validate.Struct(authLogin); err != nil {
 			validationErrors := err.(validator.ValidationErrors)
 			fieldsErrors := helpers.TransformValidations(validationErrors)
@@ -45,7 +45,7 @@ func AuthHandlerRegister() gin.HandlerFunc {
 		var authRegister auth.AuthRegister
 		c.BindJSON(&authRegister)
 
-		validate := validator.New()
+		validate := helpers.NewValidation()
 		if err := validate.Struct(authRegister); err != nil {
 			validationErrors := err.(validator.ValidationErrors)
 			fieldsErrors := helpers.TransformValidations(validationErrors)

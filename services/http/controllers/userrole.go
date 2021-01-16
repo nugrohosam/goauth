@@ -63,7 +63,7 @@ func UserRoleHandlerCreate() gin.HandlerFunc {
 		var role role.CreateRole
 		c.BindJSON(&role)
 
-		validate := validator.New()
+		validate := helpers.NewValidation()
 		if err := validate.Struct(role); err != nil {
 			validationErrors := err.(validator.ValidationErrors)
 			fieldsErrors := helpers.TransformValidations(validationErrors)
@@ -84,7 +84,7 @@ func UserRoleHandlerUpdate() gin.HandlerFunc {
 		var role role.UpdateRole
 		c.BindJSON(&role)
 
-		validate := validator.New()
+		validate := helpers.NewValidation()
 		if err := validate.Struct(role); err != nil {
 			validationErrors := err.(validator.ValidationErrors)
 			fieldsErrors := helpers.TransformValidations(validationErrors)

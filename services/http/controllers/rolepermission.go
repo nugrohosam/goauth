@@ -66,9 +66,9 @@ func RolePermissionHandlerShow() gin.HandlerFunc {
 func RolePermissionHandlerCreate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var rolePermission rolePermission.CreateRolePermission
-		c.BindJSON(&rolePermission)
+		c.ShouldBindJSON(&rolePermission)
 
-		validate := validator.New()
+		validate := helpers.NewValidation()
 		if err := validate.Struct(rolePermission); err != nil {
 			validationErrors := err.(validator.ValidationErrors)
 			fieldsErrors := helpers.TransformValidations(validationErrors)
@@ -76,7 +76,7 @@ func RolePermissionHandlerCreate() gin.HandlerFunc {
 			return
 		}
 
-		if err := usecases.CreateRolePermission(rolePermission.RoleID, rolePermission.PermisisonID); err != nil {
+		if err := usecases.CreateRolePermission(rolePermission.RoleID.(int), rolePermission.PermisisonID.(int)); err != nil {
 			c.JSON(http.StatusBadRequest, helpers.ResponseErr(err.Error()))
 			return
 		}
