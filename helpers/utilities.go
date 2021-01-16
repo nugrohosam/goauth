@@ -39,8 +39,8 @@ func StoreCache(key string, data interface{}) error {
 
 // UnsetMap ..
 func UnsetMap(data []interface{}, indexRemove int) []interface{} {
-	var firstSlice []interface{} = data[:indexRemove]
-	var lastSlice []interface{} = data[indexRemove+1:]
+	firstSlice := data[:indexRemove]
+	lastSlice := data[indexRemove+1:]
 
 	return append(firstSlice, lastSlice)
 }

@@ -9,12 +9,9 @@ import (
 // TableName ...
 const TableName = "permissions"
 
-// PermissionID ..
-type PermissionID int
-
 // Permission struct
 type Permission struct {
-	ID   PermissionID
+	ID   int
 	Name string
 }
 

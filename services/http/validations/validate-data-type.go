@@ -6,28 +6,22 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// ShouldBeType ..
+type ShouldBeType struct {
+	Key      string
+	Function func(validator.FieldLevel) bool
+}
+
 // ValidateShouldBeInteger ...
-var ValidateShouldBeInteger = ShouldBeInteger{
+var ValidateShouldBeInteger = ShouldBeType{
 	Key:      "should-be-integer",
 	Function: ShouldBeIntegerFunc,
 }
 
 // ValidateShouldBeString ...
-var ValidateShouldBeString = ShouldBeString{
-	Key:      "should-be-integer",
-	Function: ShouldBeIntegerFunc,
-}
-
-// ShouldBeInteger ..
-type ShouldBeInteger struct {
-	Key      string
-	Function func(validator.FieldLevel) bool
-}
-
-// ShouldBeString ..
-type ShouldBeString struct {
-	Key      string
-	Function func(validator.FieldLevel) bool
+var ValidateShouldBeString = ShouldBeType{
+	Key:      "should-be-string",
+	Function: ShouldBeStringFunc,
 }
 
 // ShouldBeIntegerFunc ..
