@@ -1,6 +1,6 @@
 package v1
 
-// ParamsID using for ...
-type ParamsID struct {
-	ID string `url:"id" default:""`
+// UserRoleURI using for ...
+type UserRoleURI struct {
+	ID int `uri:"id" default:"0"`
 }

@@ -6,9 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/nugrohosam/gosampleapi/repositories/role"
-	"github.com/nugrohosam/gosampleapi/repositories/user"
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
+	"gorm.io/gorm/clause"
 )
 
 // Get using for permission
@@ -26,12 +25,12 @@ func Get(search, limit, offset, orderBy string) (UserRoles, int, error) {
 }
 
 // Create using for userRole
-func Create(roleID, userID interface{}) (UserRole, error) {
+func Create(roleID, userID int) (UserRole, error) {
 	database := *conn.DbOrm
 
-	userRole := UserRole{RoleID: roleID.(role.RoleID), UserID: userID.(user.UserID)}
+	userRole := UserRole{RoleID: roleID, UserID: userID}
 	roleExisting := UserRole{}
-	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", userRole.RoleID, userRole.UserID).Find(&userRole).RowsAffected
+	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", roleID, userID).Find(&userRole).RowsAffected
 
 	if isExists != 0 {
 		return roleExisting, errors.New("Role Permission is exists")
@@ -42,12 +41,12 @@ func Create(roleID, userID interface{}) (UserRole, error) {
 }
 
 // Update using for userRole
-func Update(ID, roleID, userID interface{}) (UserRole, error) {
+func Update(ID, roleID, userID int) (UserRole, error) {
 	database := *conn.DbOrm
 
-	userRole := UserRole{RoleID: roleID.(role.RoleID), UserID: userID.(user.UserID)}
+	userRole := UserRole{RoleID: roleID, UserID: userID}
 	roleExisting := UserRole{}
-	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", userRole.RoleID, userRole.UserID).Where("id != ?", ID).Find(&userRole).RowsAffected
+	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", roleID, userID).Where("id != ?", ID).Find(&userRole).RowsAffected
 
 	if isExists != 0 {
 		return roleExisting, errors.New("User is has this role")
@@ -58,11 +57,11 @@ func Update(ID, roleID, userID interface{}) (UserRole, error) {
 }
 
 // Find is using
-func Find(id string) UserRole {
+func Find(ID int) UserRole {
 	database := *conn.DbOrm
 
 	userRole := UserRole{}
-	database.Table(TableName).Where("id = ?", id).First(&userRole)
+	database.Table(TableName).Preload(clause.Associations).Where("id = ?", ID).First(&userRole)
 
 	return userRole
 }
@@ -95,7 +94,7 @@ func PluckRolesID(userRoles []UserRole) []string {
 	mapped := make([]string, lengthUserRoles)
 
 	for _, userRole := range userRoles {
-		mapped[i] = fmt.Sprint(userRole.RoleID)
+		mapped[i] = fmt.Sprint(userRole)
 		i++
 	}
 

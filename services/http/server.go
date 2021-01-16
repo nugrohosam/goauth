@@ -85,16 +85,20 @@ func Prepare() {
 	userRole := v1.Group("/user-role")
 	userRole.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt())
 	{
-		userRole.GET("/", controllers.UserRoleHandlerIndex())
-		userRole.POST("/", controllers.UserRoleHandlerCreate())
-		userRole.PUT("/:id", controllers.UserRoleHandlerUpdate())
-		userRole.DELETE("/:id", controllers.UserRoleHandlerDelete())
+		retrieveUserRolePermission := userRole.Use(middlewares.CanAccessWith(
+			[]string{
+				viper.GetString("permission.user-role.retrieve"),
+			},
+		))
+		{
+			retrieveUserRolePermission.GET("/", controllers.UserRoleHandlerIndex())
+			retrieveUserRolePermission.GET("/:id", controllers.UserRoleHandlerShow())
+		}
 	}
 
 	rolePermission := v1.Group("/role-permission")
 	rolePermission.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt())
 	{
-
 		retrieveRolePermission := rolePermission.Use(middlewares.CanAccessWith(
 			[]string{
 				viper.GetString("permission.role.retrieve"),

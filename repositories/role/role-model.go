@@ -11,12 +11,9 @@ import (
 // TableName ...
 const TableName = "roles"
 
-// RoleID ..
-type RoleID int
-
 // Role struct
 type Role struct {
-	ID   RoleID
+	ID   int
 	Name string
 }
 
@@ -35,6 +32,7 @@ func (role *Role) AfterCreate(tx *gorm.DB) error {
 	return nil
 }
 
+// ToProto ..
 func (role *Role) ToProto() *pb.GetRoleResponse {
 	return &pb.GetRoleResponse{
 		Id:   int64(role.ID),

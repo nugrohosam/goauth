@@ -7,8 +7,8 @@ import (
 	validator "github.com/go-playground/validator/v10"
 	copier "github.com/jinzhu/copier"
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
-	role "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
 	rolePermission "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
+	rolePermissionPermission "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
 	resource "github.com/nugrohosam/gosampleapi/services/http/resources/v1"
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
@@ -16,21 +16,21 @@ import (
 // RolePermissionHandlerIndex ..
 func RolePermissionHandlerIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var queryParams rolePermission.ListQuery
+		var queryParams rolePermissionPermission.ListQuery
 		c.BindQuery(&queryParams)
 
-		rolePermissions, total, err := usecases.GetRolePermission(queryParams.Search, queryParams.PerPage, queryParams.Page, queryParams.OrderBy)
+		rolePermissionPermissions, total, err := usecases.GetRolePermission(queryParams.Search, queryParams.PerPage, queryParams.Page, queryParams.OrderBy)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, helpers.ResponseErr(err.Error()))
 			return
 		}
 
-		if cap(rolePermissions) > 0 {
+		if cap(rolePermissionPermissions) > 0 {
 			var listRolePermissionsResource = resource.RolePermissionListItems{}
-			copier.Copy(&listRolePermissionsResource, &rolePermissions)
+			copier.Copy(&listRolePermissionsResource, &rolePermissionPermissions)
 			if queryParams.Paginate {
-				resourceData := helpers.BuildPaginate(queryParams.PerPage, queryParams.Page, total, &rolePermissions, &listRolePermissionsResource)
+				resourceData := helpers.BuildPaginate(queryParams.PerPage, queryParams.Page, total, &rolePermissionPermissions, &listRolePermissionsResource)
 				c.JSON(http.StatusOK, helpers.ResponseModelStruct(resourceData))
 			} else {
 				c.JSON(http.StatusOK, helpers.ResponseMany(listRolePermissionsResource))
@@ -49,11 +49,11 @@ func RolePermissionHandlerShow() gin.HandlerFunc {
 		if len(ID) < 1 {
 			c.JSON(http.StatusBadRequest, helpers.ResponseErr("params id should filled"))
 		} else {
-			rolePermission := usecases.ShowRolePermission(ID)
-			var rolePermissionItem = resource.RolePermissionDetail{}
-			copier.Copy(&rolePermissionItem, &rolePermission)
-			if rolePermission.ID > 0 {
-				c.JSON(http.StatusOK, helpers.ResponseOne(rolePermissionItem))
+			rolePermissionPermission := usecases.ShowRolePermission(ID)
+			var rolePermissionPermissionItem = resource.RolePermissionDetail{}
+			copier.Copy(&rolePermissionPermissionItem, &rolePermissionPermission)
+			if rolePermissionPermission.ID > 0 {
+				c.JSON(http.StatusOK, helpers.ResponseOne(rolePermissionPermissionItem))
 			} else {
 				c.JSON(http.StatusOK, helpers.ResponseOne(nil))
 			}
@@ -65,40 +65,18 @@ func RolePermissionHandlerShow() gin.HandlerFunc {
 // RolePermissionHandlerCreate ..
 func RolePermissionHandlerCreate() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var role role.CreateRole
-		c.BindJSON(&role)
+		var rolePermission rolePermission.CreateRolePermission
+		c.BindJSON(&rolePermission)
 
 		validate := validator.New()
-		if err := validate.Struct(role); err != nil {
+		if err := validate.Struct(rolePermission); err != nil {
 			validationErrors := err.(validator.ValidationErrors)
 			fieldsErrors := helpers.TransformValidations(validationErrors)
 			c.JSON(http.StatusBadRequest, helpers.ResponseErrValidation(fieldsErrors))
 			return
 		}
 
-		if err := usecases.CreateRole(role.Name); err != nil {
-			c.JSON(http.StatusBadRequest, helpers.ResponseErr(err.Error()))
-			return
-		}
-	}
-}
-
-// RolePermissionHandlerUpdate ..
-func RolePermissionHandlerUpdate() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var role role.UpdateRole
-		c.BindJSON(&role)
-
-		validate := validator.New()
-		if err := validate.Struct(role); err != nil {
-			validationErrors := err.(validator.ValidationErrors)
-			fieldsErrors := helpers.TransformValidations(validationErrors)
-			c.JSON(http.StatusBadRequest, helpers.ResponseErrValidation(fieldsErrors))
-			return
-		}
-
-		roleID := c.Param("id")
-		if err := usecases.UpdateRole(roleID, role.Name); err != nil {
+		if err := usecases.CreateRolePermission(rolePermission.RoleID, rolePermission.PermisisonID); err != nil {
 			c.JSON(http.StatusBadRequest, helpers.ResponseErr(err.Error()))
 			return
 		}

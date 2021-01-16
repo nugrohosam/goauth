@@ -16,9 +16,9 @@ const TableName = "role_permission"
 // RolePermission struct
 type RolePermission struct {
 	ID           int
-	RoleID       role.RoleID
+	RoleID       int
 	Role         role.Role `gorm:"constraint:OnDelete:CASCADE;references:id"`
-	PermissionID permission.PermissionID
+	PermissionID int
 	Permission   permission.Permission `gorm:"constraint:OnDelete:CASCADE;references:id"`
 }
 

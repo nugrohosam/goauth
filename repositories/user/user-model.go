@@ -3,11 +3,9 @@ package user
 // TableName ...
 const TableName = "users"
 
-type UserID int
-
 // User struct
 type User struct {
-	ID          UserID
+	ID          int
 	Name        string
 	Username    string
 	Email       string

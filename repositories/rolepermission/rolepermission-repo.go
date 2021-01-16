@@ -4,8 +4,6 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/nugrohosam/gosampleapi/repositories/permission"
-	"github.com/nugrohosam/gosampleapi/repositories/role"
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
 	"gorm.io/gorm/clause"
 )
@@ -26,7 +24,7 @@ func Get(search, limit, offset, orderBy string) (RolePermissions, int, error) {
 }
 
 // GetByRoleIDs is using
-func GetByRoleIDs(roleIDs []role.RoleID) RolePermissions {
+func GetByRoleIDs(roleIDs []int) RolePermissions {
 	database := *conn.DbOrm
 
 	var rolePermissions = RolePermissions{}
@@ -60,12 +58,12 @@ func FindByUserIDAndPermissionName(userID string, permissionName []string) RoleP
 }
 
 // Create using for rolePermission
-func Create(roleID, permissionID interface{}) (RolePermission, error) {
+func Create(roleID int, permissionID int) (RolePermission, error) {
 	database := *conn.DbOrm
 
-	rolePermission := RolePermission{RoleID: roleID.(role.RoleID), PermissionID: permissionID.(permission.PermissionID)}
+	rolePermission := RolePermission{RoleID: roleID, PermissionID: permissionID}
 	roleExisting := RolePermission{}
-	isExists := database.Table(TableName).Where("role_id = ? AND permission_id = ?", rolePermission.RoleID, rolePermission.PermissionID).Find(&rolePermission).RowsAffected
+	isExists := database.Table(TableName).Where("role_id = ? AND permission_id = ?", roleID, permissionID).Find(&rolePermission).RowsAffected
 
 	if isExists != 0 {
 		return roleExisting, errors.New("Role RolePermission is exists")

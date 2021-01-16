@@ -2,12 +2,6 @@ package v1
 
 // CreateRolePermission ...
 type CreateRolePermission struct {
-	RoleID       string `json:"role_id" validate:"required,ascii"`
-	PermisisonID string `json:"permission_id" validate:"required,ascii"`
-}
-
-// UpdateRolePermission ...
-type UpdateRolePermission struct {
-	RoleID       string `json:"role_id" validate:"required,ascii"`
-	PermisisonID string `json:"permission_id" validate:"required,ascii"`
+	RoleID       int `form:"role_id" json:"role_id" binding:"required,numeric"`
+	PermisisonID int `form:"permission_id" json:"permission_id" binding:"required,numeric"`
 }

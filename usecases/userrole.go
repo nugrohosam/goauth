@@ -24,6 +24,12 @@ func GetUserRole(search, perPage, page, order string) (userRoleRepo.UserRoles, i
 	return userRoles, total, nil
 }
 
+// ShowUserRole ..
+func ShowUserRole(ID int) userRoleRepo.UserRole {
+	userRole := userRoleRepo.Find(ID)
+	return userRole
+}
+
 // GetUserRoleWithUserID ..
 func GetUserRoleWithUserID(userID string) userRoleRepo.UserRoles {
 	userRoles := userRoleRepo.GetByUserID(userID)
@@ -37,13 +43,13 @@ func IsHaveAnyRole(userID string, roleName []string) (bool, error) {
 }
 
 // CreateUserRole ...
-func CreateUserRole(userID, roleID string) error {
+func CreateUserRole(userID, roleID int) error {
 	_, err := userRoleRepo.Create(userID, roleID)
 	return err
 }
 
 // UpdateUserRole ...
-func UpdateUserRole(ID, roleID, userID string) error {
+func UpdateUserRole(ID, roleID, userID int) error {
 	_, err := userRoleRepo.Update(ID, roleID, userID)
 	return err
 }

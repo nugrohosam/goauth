@@ -2,7 +2,6 @@ package usecases
 
 import (
 	"fmt"
-	"strconv"
 
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
 	rolePermissionRepo "github.com/nugrohosam/gosampleapi/repositories/rolepermission"
@@ -41,11 +40,7 @@ func ShowRolePermission(ID string) rolePermissionRepo.RolePermission {
 }
 
 // CreateRolePermission ...
-func CreateRolePermission(roleID, permissionID string) error {
-
-	roleIDInt, _ := strconv.Atoi(roleID)
-	permissionIDInt, _ := strconv.Atoi(permissionID)
-
-	_, err := rolePermissionRepo.Create(roleIDInt, permissionIDInt)
+func CreateRolePermission(roleID int, permissionID int) error {
+	_, err := rolePermissionRepo.Create(roleID, permissionID)
 	return err
 }

@@ -7,8 +7,8 @@ import (
 	validator "github.com/go-playground/validator/v10"
 	copier "github.com/jinzhu/copier"
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
-	permission "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
 	role "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
+	userRole "github.com/nugrohosam/gosampleapi/services/http/requests/v1"
 	resource "github.com/nugrohosam/gosampleapi/services/http/resources/v1"
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
@@ -16,7 +16,7 @@ import (
 // UserRoleHandlerIndex ..
 func UserRoleHandlerIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var queryParams permission.ListQuery
+		var queryParams userRole.ListQuery
 		c.BindQuery(&queryParams)
 
 		userRoles, total, err := usecases.GetUserRole(queryParams.Search, queryParams.PerPage, queryParams.Page, queryParams.OrderBy)
@@ -36,6 +36,23 @@ func UserRoleHandlerIndex() gin.HandlerFunc {
 			}
 		} else {
 			c.JSON(http.StatusOK, helpers.ResponseMany(nil))
+		}
+	}
+}
+
+// UserRoleHandlerShow ..
+func UserRoleHandlerShow() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var userRoleURI userRole.UserRoleURI
+		c.ShouldBindUri(&userRoleURI)
+
+		userRole := usecases.ShowUserRole(userRoleURI.ID)
+		var userRoleItem = resource.UserRoleDetail{}
+		copier.Copy(&userRoleItem, &userRole)
+		if userRole.ID > 0 {
+			c.JSON(http.StatusOK, helpers.ResponseOne(userRoleItem))
+		} else {
+			c.JSON(http.StatusOK, helpers.ResponseOne(nil))
 		}
 	}
 }

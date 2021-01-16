@@ -58,7 +58,6 @@ func RoleHandlerShow() gin.HandlerFunc {
 				c.JSON(http.StatusOK, helpers.ResponseOne(nil))
 			}
 		}
-
 	}
 }
 

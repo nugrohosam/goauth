@@ -12,9 +12,9 @@ const TableName = "user_role"
 // UserRole struct
 type UserRole struct {
 	ID     int
-	UserID user.UserID
+	UserID int
 	User   user.User `gorm:"constraint:OnDelete:CASCADE;references:id"`
-	RoleID role.RoleID
+	RoleID int
 	Role   role.Role `gorm:"constraint:OnDelete:CASCADE;references:id"`
 }
 
@@ -22,10 +22,10 @@ type UserRole struct {
 type UserRoles []UserRole
 
 // PluckRoleID ..
-func (userRoles *UserRoles) PluckRoleID() []role.RoleID {
-	roleIDs := make([]role.RoleID, cap(*userRoles))
+func (userRoles *UserRoles) PluckRoleID() []int {
+	roleIDs := make([]int, cap(*userRoles))
 	for i, userRole := range *userRoles {
-		roleIDs[i] = userRole.RoleID
+		roleIDs[i] = userRole.ID
 	}
 
 	return roleIDs

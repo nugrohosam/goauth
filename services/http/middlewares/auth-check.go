@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -33,8 +32,6 @@ func AuthJwt() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
-		fmt.Println(header.Authorization)
 
 		token := strings.Replace(header.Authorization, "Bearer ", "", len(header.Authorization))
 		if err := usecases.AuthorizationValidation(token); err != nil {
