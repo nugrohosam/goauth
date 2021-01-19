@@ -42,7 +42,7 @@ func AuthJwt() gin.HandlerFunc {
 
 		userData, _ := usecases.GetDataAuth(token)
 		helpers.SetAuth(&helpers.Auth{
-			ID:       userData["id"].(string),
+			ID:       userData["id"].(int),
 			Name:     userData["name"].(string),
 			Username: userData["username"].(string),
 			Email:    userData["email"].(string),

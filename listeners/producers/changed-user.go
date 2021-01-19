@@ -1,5 +1,7 @@
 package producers
 
+import "fmt"
+
 // UserTopic ..
 const UserTopic = "topic-user-behavior"
 
@@ -10,15 +12,15 @@ const DeletedUserKey = "deleted-user"
 const ChangedUserKey = "changed-user"
 
 // DeletedUser ..
-func DeletedUser(ID string) {
+func DeletedUser(ID int) {
 	kafkaConfig.ConfigureKafka(url, UserTopic)
-	kafkaConfig.PushMessageKafka(DeletedUserKey, ID)
+	kafkaConfig.PushMessageKafka(DeletedUserKey, fmt.Sprint(ID))
 	kafkaConfig.CloseKafkaConn()
 }
 
 // ChangedUser ..
-func ChangedUser(ID string) {
+func ChangedUser(ID int) {
 	kafkaConfig.ConfigureKafka(url, UserTopic)
-	kafkaConfig.PushMessageKafka(ChangedUserKey, ID)
+	kafkaConfig.PushMessageKafka(ChangedUserKey, fmt.Sprint(ID))
 	kafkaConfig.CloseKafkaConn()
 }

@@ -77,6 +77,15 @@ func Prepare() {
 	user := v1.Group("/user")
 	user.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt())
 	{
+
+		retrieveUserPermission := user.Use(middlewares.CanAccessWith(
+			[]string{
+				viper.GetString("permission.user.retrieve"),
+			},
+		))
+		{
+			retrieveUserPermission.GET("/", controllers.UserHandlerIndex())
+		}
 		user.GET("/profile", controllers.UserHandlerShow())
 		user.GET("/permissions", controllers.UserPermissionItsOwnHandlerIndex())
 		user.GET("/roles", controllers.UserRoleItsOwnHandlerIndex())
@@ -94,6 +103,18 @@ func Prepare() {
 			retrieveUserRolePermission.GET("/", controllers.UserRoleHandlerIndex())
 			retrieveUserRolePermission.GET("/:id", controllers.UserRoleHandlerShow())
 		}
+
+		userRole.POST("/", controllers.UserRoleHandlerCreate()).Use(middlewares.CanAccessWith(
+			[]string{
+				viper.GetString("user-role.role.create"),
+			},
+		))
+
+		userRole.DELETE("/:id", controllers.UserRoleHandlerDelete()).Use(middlewares.CanAccessWith(
+			[]string{
+				viper.GetString("user-role.role.delete"),
+			},
+		))
 	}
 
 	rolePermission := v1.Group("/role-permission")
@@ -112,6 +133,12 @@ func Prepare() {
 		rolePermission.POST("/", controllers.RolePermissionHandlerCreate()).Use(middlewares.CanAccessWith(
 			[]string{
 				viper.GetString("permission.role.create"),
+			},
+		))
+
+		rolePermission.DELETE("/:id", controllers.RolePermissionHandlerDelete()).Use(middlewares.CanAccessWith(
+			[]string{
+				viper.GetString("permission.role.delete"),
 			},
 		))
 	}

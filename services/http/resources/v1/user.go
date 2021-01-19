@@ -11,5 +11,5 @@ type UserDetail struct {
 	Email string `structs:"email" json:"email"`
 }
 
-// UsetListItems ..
-type UsetListItems []UserItems
+// UserListItems ..
+type UserListItems []UserItems

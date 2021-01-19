@@ -4,6 +4,8 @@ import (
 	"errors"
 	"strconv"
 
+	permissionRepo "github.com/nugrohosam/gosampleapi/repositories/permission"
+	userRoleRepo "github.com/nugrohosam/gosampleapi/repositories/userrole"
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
 	"gorm.io/gorm/clause"
 )
@@ -34,7 +36,7 @@ func GetByRoleIDs(roleIDs []int) RolePermissions {
 }
 
 // FindWithID is using
-func FindWithID(ID string) RolePermission {
+func FindWithID(ID int) RolePermission {
 	database := *conn.DbOrm
 
 	rolePermission := RolePermission{}
@@ -43,8 +45,21 @@ func FindWithID(ID string) RolePermission {
 	return rolePermission
 }
 
+// GetPermissions ..
+func GetPermissions(ID int) permissionRepo.Permissions {
+	database := *conn.DbOrm
+
+	var permissions = permissionRepo.Permissions{}
+
+	subQueryRoleIdsUserRole := database.Table(userRoleRepo.TableName).Select("role_id").Where("user_id = ?", ID)
+	subQueryIdsInRolePermission := database.Table(TableName).Select("permission_id").Where("role_id in (?)", subQueryRoleIdsUserRole)
+	database.Table(permissionRepo.TableName).Where("id in (?)", subQueryIdsInRolePermission).Find(&permissions)
+
+	return permissions
+}
+
 // FindByUserIDAndPermissionName is using
-func FindByUserIDAndPermissionName(userID string, permissionName []string) RolePermission {
+func FindByUserIDAndPermissionName(userID int, permissionName []string) RolePermission {
 	database := *conn.DbOrm
 
 	rolePermission := RolePermission{}
@@ -70,5 +85,15 @@ func Create(roleID int, permissionID int) (RolePermission, error) {
 	}
 
 	database.Table(TableName).Create(&rolePermission)
+	return rolePermission, nil
+}
+
+// Delete using for rolePermission
+func Delete(ID int) (RolePermission, error) {
+	database := *conn.DbOrm
+
+	rolePermission := RolePermission{}
+	database.Delete(&rolePermission, ID)
+
 	return rolePermission, nil
 }

@@ -1,8 +1,6 @@
 package rolepermission
 
 import (
-	"fmt"
-
 	"github.com/nugrohosam/gosampleapi/listeners/producers"
 	"github.com/nugrohosam/gosampleapi/repositories/permission"
 	"github.com/nugrohosam/gosampleapi/repositories/role"
@@ -38,7 +36,7 @@ func PermissionIDs(database *gorm.DB) *gorm.DB {
 }
 
 // RoleIDsUser ...
-func RoleIDsUser(database *gorm.DB, userID string) *gorm.DB {
+func RoleIDsUser(database *gorm.DB, userID int) *gorm.DB {
 	return database.Table(userRoleRepo.TableName).Select("role_id").Where("user_id = ?", userID)
 }
 
@@ -54,6 +52,6 @@ func (rolePermission *RolePermission) AfterDelete(tx *gorm.DB) error {
 
 // AfterUpdate ..
 func (rolePermission *RolePermission) AfterUpdate(tx *gorm.DB) error {
-	producers.ChangedRolePermission(fmt.Sprint(rolePermission.ID))
+	producers.ChangedRolePermission(rolePermission.ID)
 	return nil
 }

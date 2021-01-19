@@ -35,7 +35,7 @@ func (role *Role) AfterCreate(tx *gorm.DB) error {
 // ToProto ..
 func (role *Role) ToProto() *pb.GetRoleResponse {
 	return &pb.GetRoleResponse{
-		Id:   int64(role.ID),
+		Id:   uint64(role.ID),
 		Name: role.Name,
 	}
 }

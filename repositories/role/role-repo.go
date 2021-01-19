@@ -38,7 +38,7 @@ func Create(name string) (Role, error) {
 }
 
 // FindWithID is using
-func FindWithID(ID string) Role {
+func FindWithID(ID int) Role {
 	database := *conn.DbOrm
 
 	role := Role{}
@@ -48,7 +48,7 @@ func FindWithID(ID string) Role {
 }
 
 // Update using for role
-func Update(ID string, name string) (Role, error) {
+func Update(ID int, name string) (Role, error) {
 	database := *conn.DbOrm
 
 	role := Role{Name: name}
@@ -64,17 +64,17 @@ func Update(ID string, name string) (Role, error) {
 }
 
 // Delete is using
-func Delete(ID string) {
+func Delete(ID int) {
 	database := *conn.DbOrm
 	database.Delete(&Role{}, ID)
 }
 
 // Find is using
-func Find(id string) Role {
+func Find(ID int) Role {
 	database := *conn.DbOrm
 
 	role := Role{}
-	database.Where("id = ?", id).First(&role)
+	database.Where("id = ?", ID).First(&role)
 
 	return role
 }

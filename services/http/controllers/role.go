@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	validator "github.com/go-playground/validator/v10"
@@ -49,7 +50,8 @@ func RoleHandlerShow() gin.HandlerFunc {
 		if len(ID) < 1 {
 			c.JSON(http.StatusBadRequest, helpers.ResponseErr("params id should filled"))
 		} else {
-			permission := usecases.ShowRole(ID)
+			IDInt, _ := strconv.Atoi(ID)
+			permission := usecases.ShowRole(IDInt)
 			var permissionItem = resource.RoleDetail{}
 			copier.Copy(&permissionItem, &permission)
 			if permission.ID > 0 {
@@ -97,7 +99,9 @@ func RoleHandlerUpdate() gin.HandlerFunc {
 		}
 
 		roleID := c.Param("id")
-		if err := usecases.UpdateRole(roleID, role.Name); err != nil {
+		roleIDInt, _ := strconv.Atoi(roleID)
+
+		if err := usecases.UpdateRole(roleIDInt, role.Name); err != nil {
 			c.JSON(http.StatusBadRequest, helpers.ResponseErr(err.Error()))
 			return
 		}

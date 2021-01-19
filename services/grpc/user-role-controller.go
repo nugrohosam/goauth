@@ -20,7 +20,7 @@ func (getUserRoleServiceServer *getUserRoleServiceServer) GetUserRole(context co
 
 	data, _ := usecases.GetDataAuth(token)
 
-	if isPermited := usecases.CheckPermissionUser(data["id"].(string), []string{
+	if isPermited := usecases.CheckPermissionUser(data["id"].(int), []string{
 		viper.GetString("permission.user-role.retrieve"),
 	}); !isPermited {
 		if usecases.AuthorizationValidation(token) != nil {
@@ -28,7 +28,7 @@ func (getUserRoleServiceServer *getUserRoleServiceServer) GetUserRole(context co
 		}
 	}
 
-	userRoles := usecases.GetUserRoleWithUserID(data["id"].(string))
+	userRoles := usecases.GetUserRoleWithUserID(data["id"].(int))
 	if cap(userRoles) < 1 {
 		return &pb.GetUserRoleResponse{}, nil
 	}
