@@ -108,7 +108,11 @@ func IsExistsByUserIDAndRoleName(userID int, roleName []string) bool {
 }
 
 // Delete is using
-func Delete(ID int) {
+func Delete(ID int) (UserRole, error) {
 	database := *conn.DbOrm
-	database.Table(TableName).Delete(&UserRole{}, ID)
+
+	userRole := UserRole{}
+	database.Table(TableName).Delete(&userRole, ID)
+
+	return userRole, nil
 }

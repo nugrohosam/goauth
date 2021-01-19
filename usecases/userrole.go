@@ -56,6 +56,6 @@ func UpdateUserRole(ID, roleID, userID int) error {
 
 // DeleteUserRole ...
 func DeleteUserRole(ID int) error {
-	userRoleRepo.Delete(ID)
-	return nil
+	_, err := userRoleRepo.Delete(ID)
+	return err
 }

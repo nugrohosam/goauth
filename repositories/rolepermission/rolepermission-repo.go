@@ -91,9 +91,7 @@ func Create(roleID int, permissionID int) (RolePermission, error) {
 // Delete using for rolePermission
 func Delete(ID int) (RolePermission, error) {
 	database := *conn.DbOrm
-
 	rolePermission := RolePermission{}
-	database.Delete(&rolePermission, ID)
-
+	database.Table(TableName).Delete(&rolePermission, ID)
 	return rolePermission, nil
 }

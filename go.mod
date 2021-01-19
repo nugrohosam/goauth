@@ -14,10 +14,12 @@ require (
 	github.com/go-playground/validator/v10 v10.4.0
 	github.com/go-redis/cache/v8 v8.3.0
 	github.com/go-redis/redis/v8 v8.4.8
+	github.com/golang-migrate/migrate/v4 v4.14.1 // indirect
 	github.com/golang/protobuf v1.4.3
 	github.com/gorilla/sessions v1.2.1
 	github.com/jinzhu/copier v0.1.0
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/romanyx/polluter v1.2.2 // indirect
 	github.com/segmentio/kafka-go v0.4.8
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1

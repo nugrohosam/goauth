@@ -79,7 +79,7 @@ func RolePermissionHandlerCreate() gin.HandlerFunc {
 			return
 		}
 
-		if err := usecases.CreateRolePermission(rolePermission.RoleID.(int), rolePermission.PermisisonID.(int)); err != nil {
+		if err := usecases.CreateRolePermission(int(rolePermission.RoleID.(float64)), int(rolePermission.PermisisonID.(float64))); err != nil {
 			c.JSON(http.StatusBadRequest, helpers.ResponseErr(err.Error()))
 			return
 		}
