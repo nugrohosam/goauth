@@ -28,7 +28,7 @@ func (getAuthServiceServer *getAuthServiceServer) GetAuth(context context.Contex
 		Username: data["username"].(string),
 		Name:     data["name"].(string),
 		Email:    data["email"].(string),
-		Id:       data["id"].(string),
+		Id:       data["id"].(uint64),
 	}, nil
 }
 
@@ -46,7 +46,7 @@ func (getAuthServiceServer *getAuthServiceServer) GetAuthID(context context.Cont
 	}
 
 	return &pb.GetAuthIdResponse{
-		Id: data["id"].(string),
+		Id: data["id"].(uint64),
 	}, nil
 }
 

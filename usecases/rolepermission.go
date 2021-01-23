@@ -8,7 +8,7 @@ import (
 )
 
 // IsHaveAnyPermission ...
-func IsHaveAnyPermission(userID string, permissionName []string) (bool, error) {
+func IsHaveAnyPermission(userID int, permissionName []string) (bool, error) {
 	rolePermission := rolePermissionRepo.FindByUserIDAndPermissionName(userID, permissionName)
 	return (rolePermission.ID > 0), nil
 }
@@ -33,14 +33,19 @@ func GetRolePermission(search, perPage, page, order string) (rolePermissionRepo.
 }
 
 // ShowRolePermission ...
-func ShowRolePermission(ID string) rolePermissionRepo.RolePermission {
+func ShowRolePermission(ID int) rolePermissionRepo.RolePermission {
 	permission := rolePermissionRepo.FindWithID(ID)
-
 	return permission
 }
 
 // CreateRolePermission ...
 func CreateRolePermission(roleID int, permissionID int) error {
 	_, err := rolePermissionRepo.Create(roleID, permissionID)
+	return err
+}
+
+// DeleteRolePermission ...
+func DeleteRolePermission(ID int) error {
+	_, err := rolePermissionRepo.Delete(ID)
 	return err
 }

@@ -7,7 +7,7 @@ import (
 )
 
 // CheckPermissionUser ..
-func CheckPermissionUser(userID string, permissionAccess []string) bool {
+func CheckPermissionUser(userID int, permissionAccess []string) bool {
 
 	globalAccessOpen := viper.GetString("permission.global.open")
 	globalAccessClose := viper.GetString("permission.global.close")
@@ -43,7 +43,7 @@ func GetPermission(search, perPage, page, order string) ([]permissionRepo.Permis
 }
 
 // ShowPermission ...
-func ShowPermission(ID string) permissionRepo.Permission {
+func ShowPermission(ID int) permissionRepo.Permission {
 	permission := permissionRepo.FindWithID(ID)
 
 	return permission
@@ -56,13 +56,13 @@ func CreatePermission(name string) error {
 }
 
 // UpdatePermission ...
-func UpdatePermission(ID string, name string) error {
+func UpdatePermission(ID int, name string) error {
 	_, err := permissionRepo.Update(ID, name)
 	return err
 }
 
 // DeletePermission ...
-func DeletePermission(ID string) error {
+func DeletePermission(ID int) error {
 	permissionRepo.Delete(ID)
 	return nil
 }

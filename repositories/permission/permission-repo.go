@@ -38,7 +38,7 @@ func Create(name string) (Permission, error) {
 }
 
 // Update using for permission
-func Update(ID string, name string) (Permission, error) {
+func Update(ID int, name string) (Permission, error) {
 	database := *conn.DbOrm
 
 	permission := Permission{Name: name}
@@ -54,13 +54,13 @@ func Update(ID string, name string) (Permission, error) {
 }
 
 // Delete is using
-func Delete(ID string) {
+func Delete(ID int) {
 	database := *conn.DbOrm
 	database.Delete(&Permission{}, ID)
 }
 
 // FindWithID is using
-func FindWithID(ID string) Permission {
+func FindWithID(ID int) Permission {
 	database := *conn.DbOrm
 
 	permission := Permission{}

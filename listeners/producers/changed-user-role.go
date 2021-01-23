@@ -1,5 +1,7 @@
 package producers
 
+import "fmt"
+
 // UserRoleTopic ..
 const UserRoleTopic = "topic-user-role-behavior"
 
@@ -10,15 +12,15 @@ const DeletedUserRoleKey = "deleted-user-role"
 const ChangedUserRoleKey = "changed-user-role"
 
 // DeletedUserRole ..
-func DeletedUserRole(ID string) {
+func DeletedUserRole(ID int) {
 	kafkaConfig.ConfigureKafka(url, UserRoleTopic)
-	kafkaConfig.PushMessageKafka(DeletedUserRoleKey, ID)
+	kafkaConfig.PushMessageKafka(DeletedUserRoleKey, fmt.Sprint(ID))
 	kafkaConfig.CloseKafkaConn()
 }
 
 // ChangedUserRole ..
-func ChangedUserRole(ID string) {
+func ChangedUserRole(ID int) {
 	kafkaConfig.ConfigureKafka(url, UserRoleTopic)
-	kafkaConfig.PushMessageKafka(ChangedUserRoleKey, ID)
+	kafkaConfig.PushMessageKafka(ChangedUserRoleKey, fmt.Sprint(ID))
 	kafkaConfig.CloseKafkaConn()
 }

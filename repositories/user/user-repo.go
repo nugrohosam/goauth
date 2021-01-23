@@ -2,9 +2,24 @@ package user
 
 import (
 	"errors"
+	"strconv"
 
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
 )
+
+// Get using for permission
+func Get(search, limit, offset, orderBy string) (Users, int, error) {
+	var permissions = Users{}
+	database := *conn.DbOrm
+
+	limitInt, _ := strconv.Atoi(limit)
+	offsetInt, _ := strconv.Atoi(offset)
+
+	totalRows := database.Where("name LIKE ? or email LIKE ?", "%"+search+"%", "%"+search+"%").Find(&permissions).RowsAffected
+	database.Where("name LIKE ? or email LIKE ?", "%"+search+"%", "%"+search+"%").Limit(limitInt).Offset(offsetInt).Order("name " + orderBy).Find(&permissions)
+
+	return permissions, int(totalRows), nil
+}
 
 // Create using for user
 func Create(name, username, email, password string) (User, error) {
@@ -23,7 +38,7 @@ func Create(name, username, email, password string) (User, error) {
 }
 
 // Find is using
-func Find(ID string) User {
+func Find(ID int) User {
 	database := *conn.DbOrm
 
 	user := User{}

@@ -44,8 +44,8 @@ func (userRoles *UserRoles) ToProto() []*pb.UserRole {
 // ToProto ..
 func (userRole *UserRole) ToProto() *pb.UserRole {
 	return &pb.UserRole{
-		Id:     int64(userRole.ID),
-		UserId: int64(userRole.UserID),
-		RoleId: int64(userRole.RoleID),
+		Id:     uint64(userRole.ID),
+		UserId: uint64(userRole.UserID),
+		RoleId: uint64(userRole.RoleID),
 	}
 }

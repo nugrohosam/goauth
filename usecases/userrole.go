@@ -31,13 +31,13 @@ func ShowUserRole(ID int) userRoleRepo.UserRole {
 }
 
 // GetUserRoleWithUserID ..
-func GetUserRoleWithUserID(userID string) userRoleRepo.UserRoles {
+func GetUserRoleWithUserID(userID int) userRoleRepo.UserRoles {
 	userRoles := userRoleRepo.GetByUserID(userID)
 	return userRoles
 }
 
 // IsHaveAnyRole ...
-func IsHaveAnyRole(userID string, roleName []string) (bool, error) {
+func IsHaveAnyRole(userID int, roleName []string) (bool, error) {
 	isExist := userRoleRepo.IsExistsByUserIDAndRoleName(userID, roleName)
 	return isExist, nil
 }
@@ -55,7 +55,7 @@ func UpdateUserRole(ID, roleID, userID int) error {
 }
 
 // DeleteUserRole ...
-func DeleteUserRole(ID string) error {
-	userRoleRepo.Delete(ID)
-	return nil
+func DeleteUserRole(ID int) error {
+	_, err := userRoleRepo.Delete(ID)
+	return err
 }

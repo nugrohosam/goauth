@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"strconv"
 
 	pb "github.com/nugrohosam/gosampleapi/services/grpc/pb"
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
@@ -13,7 +14,6 @@ type getRoleServiceServer struct{}
 // Get ...
 func (getRoleServiceServer *getRoleServiceServer) GetRoleWithID(context context.Context, request *pb.GetRoleRequest) (*pb.GetRoleResponse, error) {
 	token := request.GetToken()
-	roleID := request.GetRoleId()
 
 	if usecases.AuthorizationValidation(token) != nil {
 		return &pb.GetRoleResponse{}, nil
@@ -21,7 +21,7 @@ func (getRoleServiceServer *getRoleServiceServer) GetRoleWithID(context context.
 
 	data, _ := usecases.GetDataAuth(token)
 
-	if isPermited := usecases.CheckPermissionUser(data["id"].(string), []string{
+	if isPermited := usecases.CheckPermissionUser(data["id"].(int), []string{
 		viper.GetString("permission.role.retrieve"),
 	}); !isPermited {
 		if usecases.AuthorizationValidation(token) != nil {
@@ -29,7 +29,10 @@ func (getRoleServiceServer *getRoleServiceServer) GetRoleWithID(context context.
 		}
 	}
 
-	role := usecases.ShowRole(roleID)
+	roleID := request.GetRoleId()
+	roleIDInt, _ := strconv.Atoi(roleID)
+
+	role := usecases.ShowRole(roleIDInt)
 	if role.ID < 1 {
 		return &pb.GetRoleResponse{}, nil
 	}

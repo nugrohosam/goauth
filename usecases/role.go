@@ -25,7 +25,7 @@ func GetRole(search, perPage, page, order string) ([]roleRepo.Role, int, error) 
 }
 
 // ShowRole ...
-func ShowRole(ID string) roleRepo.Role {
+func ShowRole(ID int) roleRepo.Role {
 	role := roleRepo.FindWithID(ID)
 
 	return role
@@ -38,13 +38,13 @@ func CreateRole(name string) error {
 }
 
 // UpdateRole ...
-func UpdateRole(ID string, name string) error {
+func UpdateRole(ID int, name string) error {
 	_, err := roleRepo.Update(ID, name)
 	return err
 }
 
 // DeleteRole ...
-func DeleteRole(ID string) error {
+func DeleteRole(ID int) error {
 	roleRepo.Delete(ID)
 	return nil
 }

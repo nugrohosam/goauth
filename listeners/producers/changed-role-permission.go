@@ -1,5 +1,7 @@
 package producers
 
+import "fmt"
+
 // RolePermissionTopic ..
 const RolePermissionTopic = "topic-role-permission-behavior"
 
@@ -10,16 +12,16 @@ const DeletedRolePermissionKey = "deleted-role-permission"
 const ChangedRolePermissionKey = "changed-role-permission"
 
 // DeletedRolePermission ..
-func DeletedRolePermission(ID string) {
+func DeletedRolePermission(ID int) {
 	kafkaConfig.ConfigureKafka(url, RolePermissionTopic)
-	kafkaConfig.PushMessageKafka(DeletedRolePermissionKey, ID)
+	kafkaConfig.PushMessageKafka(DeletedRolePermissionKey, fmt.Sprint(ID))
 	kafkaConfig.CloseKafkaConn()
 }
 
 // ChangedRolePermission ..
-func ChangedRolePermission(ID string) {
+func ChangedRolePermission(ID int) {
 	kafkaConfig.ConfigureKafka(url, RolePermissionTopic)
-	kafkaConfig.PushMessageKafka(ChangedRolePermissionKey, ID)
+	kafkaConfig.PushMessageKafka(ChangedRolePermissionKey, fmt.Sprint(ID))
 	kafkaConfig.CloseKafkaConn()
 
 }

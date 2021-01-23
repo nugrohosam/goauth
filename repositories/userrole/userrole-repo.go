@@ -67,7 +67,7 @@ func Find(ID int) UserRole {
 }
 
 // FindByUserIDAndRoleName is using
-func FindByUserIDAndRoleName(userID string, roleName []string) UserRole {
+func FindByUserIDAndRoleName(userID int, roleName []string) UserRole {
 	database := *conn.DbOrm
 
 	userRole := UserRole{}
@@ -77,7 +77,7 @@ func FindByUserIDAndRoleName(userID string, roleName []string) UserRole {
 }
 
 // GetByUserID is using
-func GetByUserID(userID string) UserRoles {
+func GetByUserID(userID int) UserRoles {
 	database := *conn.DbOrm
 
 	userRoles := UserRoles{}
@@ -102,13 +102,17 @@ func PluckRolesID(userRoles []UserRole) []string {
 }
 
 // IsExistsByUserIDAndRoleName is using
-func IsExistsByUserIDAndRoleName(userID string, roleName []string) bool {
+func IsExistsByUserIDAndRoleName(userID int, roleName []string) bool {
 	data := FindByUserIDAndRoleName(userID, roleName)
 	return data.ID > 0
 }
 
 // Delete is using
-func Delete(ID string) {
+func Delete(ID int) (UserRole, error) {
 	database := *conn.DbOrm
-	database.Table(TableName).Delete(&UserRole{}, ID)
+
+	userRole := UserRole{}
+	database.Table(TableName).Delete(&userRole, ID)
+
+	return userRole, nil
 }

@@ -5,7 +5,7 @@ var AuthUser *Auth
 
 // Auth ..
 type Auth struct {
-	ID       string
+	ID       int
 	Name     string
 	Username string
 	Email    string
