@@ -91,7 +91,7 @@ func Prepare() {
 			},
 		))
 		{
-			retrieveUserRolePermission.GET("/", controllers.UserRoleHandlerIndex())
+			retrieveUserRolePermission.GET("", controllers.UserRoleHandlerIndex())
 			retrieveUserRolePermission.GET("/:id", controllers.UserRoleHandlerShow())
 		}
 	}
@@ -105,11 +105,11 @@ func Prepare() {
 			},
 		))
 		{
-			retrieveRolePermission.GET("/", controllers.RolePermissionHandlerIndex())
+			retrieveRolePermission.GET("", controllers.RolePermissionHandlerIndex())
 			retrieveRolePermission.GET("/:id", controllers.RolePermissionHandlerShow())
 		}
 
-		rolePermission.POST("/", controllers.RolePermissionHandlerCreate()).Use(middlewares.CanAccessWith(
+		rolePermission.POST("", controllers.RolePermissionHandlerCreate()).Use(middlewares.CanAccessWith(
 			[]string{
 				viper.GetString("permission.role.create"),
 			},
@@ -125,7 +125,7 @@ func Prepare() {
 			},
 		))
 		{
-			retrieveRole.GET("/", controllers.RoleHandlerIndex())
+			retrieveRole.GET("", controllers.RoleHandlerIndex())
 			retrieveRole.GET("/:id", controllers.RoleHandlerShow())
 		}
 	}
@@ -139,7 +139,7 @@ func Prepare() {
 			},
 		))
 		{
-			retrievePermission.GET("/", controllers.PermissionHandlerIndex())
+			retrievePermission.GET("", controllers.PermissionHandlerIndex())
 			retrievePermission.GET("/:id", controllers.PermissionHandlerShow())
 		}
 	}
