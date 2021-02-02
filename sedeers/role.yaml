@@ -1,6 +1,6 @@
 roles:
-  # - name: "admin"
-  # - name: "staff"
+  - name: "admin"
+  - name: "staff"
   - name: "photographer"
   - name: "accountant"
   - name: "actor-actress"
