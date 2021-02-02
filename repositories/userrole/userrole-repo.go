@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"strings"
 
+	roleRepo "github.com/nugrohosam/gosampleapi/repositories/role"
+	userRepo "github.com/nugrohosam/gosampleapi/repositories/user"
 	conn "github.com/nugrohosam/gosampleapi/services/databases"
 	"gorm.io/gorm/clause"
 )
@@ -115,4 +117,28 @@ func Delete(ID int) (UserRole, error) {
 	database.Table(TableName).Delete(&userRole, ID)
 
 	return userRole, nil
+}
+
+// GetRolesWithUserID ..
+func GetRolesWithUserID(userID int) roleRepo.Roles {
+	database := *conn.DbOrm
+
+	roles := roleRepo.Roles{}
+
+	scopeQuery := database.Table(TableName).Select("role_id").Where("user_id = ?", userID)
+	database.Table(roleRepo.TableName).Where("role_id IN (?)", scopeQuery).Find(&roles)
+
+	return roles
+}
+
+// GetUsersWithRoleID ..
+func GetUsersWithRoleID(roleID int) userRepo.Users {
+	database := *conn.DbOrm
+
+	users := userRepo.Users{}
+
+	scopeQuery := database.Table(TableName).Select("user_id").Where("role_id = ?", roleID)
+	database.Table(userRepo.TableName).Where("user_id IN (?)", scopeQuery).Find(&users)
+
+	return users
 }

@@ -4,7 +4,6 @@ import (
 	"github.com/nugrohosam/gosampleapi/listeners/producers"
 	"github.com/nugrohosam/gosampleapi/repositories/permission"
 	"github.com/nugrohosam/gosampleapi/repositories/role"
-	userRoleRepo "github.com/nugrohosam/gosampleapi/repositories/userrole"
 	"gorm.io/gorm"
 )
 
@@ -27,17 +26,6 @@ type RolePermissions []RolePermission
 func RoleIDs(database *gorm.DB) *gorm.DB {
 	query := database.Table(role.TableName)
 	return query.Select("id")
-}
-
-// PermissionIDs ...
-func PermissionIDs(database *gorm.DB) *gorm.DB {
-	query := database.Table(permission.TableName)
-	return query.Select("id")
-}
-
-// RoleIDsUser ...
-func RoleIDsUser(database *gorm.DB, userID int) *gorm.DB {
-	return database.Table(userRoleRepo.TableName).Select("role_id").Where("user_id = ?", userID)
 }
 
 // AfterCreate ..

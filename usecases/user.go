@@ -1,10 +1,14 @@
 package usecases
 
 import (
+	"fmt"
+
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
 	permissionRepo "github.com/nugrohosam/gosampleapi/repositories/permission"
+	roleRepo "github.com/nugrohosam/gosampleapi/repositories/role"
 	rolePermissionRepo "github.com/nugrohosam/gosampleapi/repositories/rolepermission"
 	userRepo "github.com/nugrohosam/gosampleapi/repositories/user"
+	userRoleRepo "github.com/nugrohosam/gosampleapi/repositories/userrole"
 )
 
 // GetUser ..
@@ -33,5 +37,27 @@ func ShowUser(ID int) userRepo.User {
 
 // GetPermissionWithUserID ..
 func GetPermissionWithUserID(ID int) permissionRepo.Permissions {
-	return rolePermissionRepo.GetPermissions(ID)
+	return rolePermissionRepo.GetPermissionsWithUserID(ID)
+}
+
+// GetRoleWithUserID ..
+func GetRoleWithUserID(ID int) roleRepo.Roles {
+	return userRoleRepo.GetRolesWithUserID(ID)
+}
+
+// IsHaveAnyPermission ...
+func IsHaveAnyPermission(userID int, permissionName []string) (bool, error) {
+	permissions := GetPermissionWithUserID(userID)
+	userPermissionsName := permissions.PluckName()
+
+	isTrue := false
+	for _, value := range permissionName {
+		isTrue = helpers.StringInSlice(value, userPermissionsName)
+		fmt.Println(value, isTrue)
+		if isTrue {
+			break
+		}
+	}
+
+	return isTrue, nil
 }

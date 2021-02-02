@@ -7,12 +7,6 @@ import (
 	rolePermissionRepo "github.com/nugrohosam/gosampleapi/repositories/rolepermission"
 )
 
-// IsHaveAnyPermission ...
-func IsHaveAnyPermission(userID int, permissionName []string) (bool, error) {
-	rolePermission := rolePermissionRepo.FindByUserIDAndPermissionName(userID, permissionName)
-	return (rolePermission.ID > 0), nil
-}
-
 // GetRolePermission ...
 func GetRolePermission(search, perPage, page, order string) (rolePermissionRepo.RolePermissions, int, error) {
 	availableOrder := map[string]string{

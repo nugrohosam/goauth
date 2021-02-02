@@ -45,15 +45,15 @@ func FindWithID(ID int) RolePermission {
 	return rolePermission
 }
 
-// GetPermissions ..
-func GetPermissions(ID int) permissionRepo.Permissions {
+// GetPermissionsWithUserID ..
+func GetPermissionsWithUserID(userID int) permissionRepo.Permissions {
 	database := *conn.DbOrm
 
 	var permissions = permissionRepo.Permissions{}
 
-	subQueryRoleIdsUserRole := database.Table(userRoleRepo.TableName).Select("role_id").Where("user_id = ?", ID)
-	subQueryIdsInRolePermission := database.Table(TableName).Select("permission_id").Where("role_id in (?)", subQueryRoleIdsUserRole)
-	database.Table(permissionRepo.TableName).Where("id in (?)", subQueryIdsInRolePermission).Find(&permissions)
+	subQueryRoleIdsUserRole := database.Table(userRoleRepo.TableName).Select("role_id").Where("user_id = ?", userID)
+	subQueryIdsInRolePermission := database.Table(TableName).Select("permission_id").Where("role_id IN (?)", subQueryRoleIdsUserRole)
+	database.Table(permissionRepo.TableName).Where("id IN (?)", subQueryIdsInRolePermission).Find(&permissions)
 
 	return permissions
 }
@@ -64,8 +64,8 @@ func FindByUserIDAndPermissionName(userID int, permissionName []string) RolePerm
 
 	rolePermission := RolePermission{}
 
-	roleIds := RoleIDsUser(&database, userID)
-	permissionIds := PermissionIDs(&database).Where("name IN ?", permissionName)
+	roleIds := database.Table(userRoleRepo.TableName).Select("role_id").Where("user_id = ?", userID)
+	permissionIds := database.Table(permissionRepo.TableName).Where("name IN ?", permissionName)
 
 	database.Table(TableName).Where("permission_id IN (?)", permissionIds).Where("role_id IN (?)", roleIds).First(&rolePermission)
 

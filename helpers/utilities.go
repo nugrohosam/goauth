@@ -180,6 +180,17 @@ func Encrypt(stringToEncrypt string, keyString string) (encryptedString string) 
 	return fmt.Sprintf("%x", ciphertext)
 }
 
+// StringInSlice ..
+func StringInSlice(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+
+	return false
+}
+
 // Decrypt ..
 func Decrypt(encryptedString string, keyString string) (decryptedString string) {
 

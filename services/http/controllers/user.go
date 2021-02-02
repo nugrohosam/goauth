@@ -48,7 +48,7 @@ func UserHandlerShow() gin.HandlerFunc {
 		auth := helpers.GetAuth()
 		user := usecases.ShowUser(auth.ID)
 
-		var userItem = resource.UserDetail{}
+		userItem := resource.UserDetail{}
 		copier.Copy(&userItem, &user)
 		if user.ID > 0 {
 			c.JSON(http.StatusOK, helpers.ResponseOne(userItem))
@@ -66,7 +66,7 @@ func UserRoleItsOwnHandlerIndex() gin.HandlerFunc {
 		userRoles := usecases.GetUserRoleWithUserID(auth.ID)
 
 		if cap(userRoles) > 0 {
-			var listUserRolesResource = resource.UserRoleItsOwnListItems{}
+			listUserRolesResource := resource.UserRoleItsOwnListItems{}
 			copier.Copy(&listUserRolesResource, &userRoles)
 			c.JSON(http.StatusOK, helpers.ResponseMany(listUserRolesResource))
 		} else {
@@ -83,7 +83,7 @@ func UserPermissionItsOwnHandlerIndex() gin.HandlerFunc {
 		userUsers := usecases.GetPermissionWithUserID(auth.ID)
 
 		if cap(userUsers) > 0 {
-			var listUserRolesResource = resource.PermissionListItems{}
+			listUserRolesResource := resource.PermissionListItems{}
 			copier.Copy(&listUserRolesResource, &userUsers)
 			c.JSON(http.StatusOK, helpers.ResponseMany(listUserRolesResource))
 		} else {

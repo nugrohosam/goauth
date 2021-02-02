@@ -77,18 +77,17 @@ func Prepare() {
 	user := v1.Group("/user")
 	user.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt())
 	{
-
+		user.GET("/profile", controllers.UserHandlerShow())
+		user.GET("/permissions", controllers.UserPermissionItsOwnHandlerIndex())
+		user.GET("/roles", controllers.UserRoleItsOwnHandlerIndex())
 		retrieveUserPermission := user.Use(middlewares.CanAccessWith(
 			[]string{
 				viper.GetString("permission.user.retrieve"),
 			},
 		))
 		{
-			retrieveUserPermission.GET("/", controllers.UserHandlerIndex())
+			retrieveUserPermission.GET("", controllers.UserHandlerIndex())
 		}
-		user.GET("/profile", controllers.UserHandlerShow())
-		user.GET("/permissions", controllers.UserPermissionItsOwnHandlerIndex())
-		user.GET("/roles", controllers.UserRoleItsOwnHandlerIndex())
 	}
 
 	userRole := v1.Group("/user-role")
@@ -100,11 +99,11 @@ func Prepare() {
 			},
 		))
 		{
-			retrieveUserRolePermission.GET("", controllers.UserRoleHandlerIndex())
 			retrieveUserRolePermission.GET("/:id", controllers.UserRoleHandlerShow())
+			retrieveUserRolePermission.GET("", controllers.UserRoleHandlerIndex())
 		}
 
-		userRole.POST("/", controllers.UserRoleHandlerCreate()).Use(middlewares.CanAccessWith(
+		userRole.POST("", controllers.UserRoleHandlerCreate()).Use(middlewares.CanAccessWith(
 			[]string{
 				viper.GetString("user-role.role.create"),
 			},
@@ -126,8 +125,8 @@ func Prepare() {
 			},
 		))
 		{
-			retrieveRolePermission.GET("", controllers.RolePermissionHandlerIndex())
 			retrieveRolePermission.GET("/:id", controllers.RolePermissionHandlerShow())
+			retrieveRolePermission.GET("", controllers.RolePermissionHandlerIndex())
 		}
 
 		rolePermission.POST("", controllers.RolePermissionHandlerCreate()).Use(middlewares.CanAccessWith(
@@ -152,8 +151,8 @@ func Prepare() {
 			},
 		))
 		{
-			retrieveRole.GET("", controllers.RoleHandlerIndex())
 			retrieveRole.GET("/:id", controllers.RoleHandlerShow())
+			retrieveRole.GET("", controllers.RoleHandlerIndex())
 		}
 	}
 
@@ -166,8 +165,8 @@ func Prepare() {
 			},
 		))
 		{
-			retrievePermission.GET("", controllers.PermissionHandlerIndex())
 			retrievePermission.GET("/:id", controllers.PermissionHandlerShow())
+			retrievePermission.GET("", controllers.PermissionHandlerIndex())
 		}
 	}
 }
