@@ -1,6 +1,0 @@
-[metadata.heroku]
-  root-package = "github.com/heroku/fixture"
-  go-version = "go1.15"
-  install = [ "./cmd/...", "./" ]
-  ensure = "false"
-  additional-tools = ["github.com/golang-migrate/migrate"]
