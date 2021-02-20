@@ -2,7 +2,7 @@
 
 session:
   # memory, redis
-  driver: "file"
+  driver: "memory"
   key: "session-key"
   user: "user-session"
   userID: "user-id-session"
