@@ -1,6 +1,7 @@
 package http
 
 import (
+	"os"
 	"time"
 
 	sentrygin "github.com/getsentry/sentry-go/gin"
@@ -22,7 +23,7 @@ var Routes *gin.Engine
 func Serve() error {
 	Prepare()
 
-	port := viper.GetString("app.port")
+	port := os.Getenv("PORT")
 	if err := Routes.Run(":" + port); err != nil {
 		return err
 	}
