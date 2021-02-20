@@ -1,4 +1,4 @@
-## Try this project
+## Try this project free
 - link : https://nugrohosam-auth.herokuapp.com/
 - postman docs : https://documenter.getpostman.com/view/4473147/TVzXDFka
 
