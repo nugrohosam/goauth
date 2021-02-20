@@ -2,10 +2,10 @@ package main
 
 import (
 	"bufio"
+	"flag"
+	"fmt"
 	"os"
-	"path"
 	"path/filepath"
-	"runtime"
 	"strings"
 
 	database "github.com/nugrohosam/gosampleapi/services/databases"
@@ -60,11 +60,16 @@ func initiateRedisCache() {
 func loadConfigFile() {
 	viper.SetConfigType("yaml")
 
-	_, fileRunnerPath, _, _ := runtime.Caller(0)
-	rootPath := path.Join(path.Dir(fileRunnerPath))
+	envRootPath := flag.String("env-root-path", "none", "--")
+	flag.Parse()
+
+	if *envRootPath == "none" {
+		fmt.Println("flag [--env-root-path=?] must be spellied")
+		return
+	}
 
 	viper.SetConfigName(".env")
-	viper.AddConfigPath(rootPath)
+	viper.AddConfigPath(*envRootPath)
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
@@ -73,7 +78,7 @@ func loadConfigFile() {
 	var files []string
 
 	configFolderName := "config"
-	root := rootPath + "/" + configFolderName
+	root := *envRootPath + "/" + configFolderName
 	if err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if info.Name() != configFolderName {
 			files = append(files, info.Name())
