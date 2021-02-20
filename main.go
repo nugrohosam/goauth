@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"os"
+	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -59,7 +60,8 @@ func initiateRedisCache() {
 func loadConfigFile() {
 	viper.SetConfigType("yaml")
 
-	_, rootPath, _, _ := runtime.Caller(0)
+	_, fileRunnerPath, _, _ := runtime.Caller(0)
+	rootPath := path.Join(path.Dir(fileRunnerPath))
 
 	viper.SetConfigName(".env")
 	viper.AddConfigPath(rootPath)
@@ -71,7 +73,7 @@ func loadConfigFile() {
 	var files []string
 
 	configFolderName := "config"
-	root := rootPath + configFolderName
+	root := rootPath + "/" + configFolderName
 	if err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if info.Name() != configFolderName {
 			files = append(files, info.Name())
