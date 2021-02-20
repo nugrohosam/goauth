@@ -1,3 +1,7 @@
+## Try this project
+- link : https://nugrohosam-auth.herokuapp.com/
+- postman docs : https://documenter.getpostman.com/view/4473147/TVzXDFka
+
 ## Set project
 
 - copy .env.example to .env.yaml
