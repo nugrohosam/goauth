@@ -1,1 +1,1 @@
-web: cp .env.yaml.example .env.yaml && bin/gosampleapi --env-root-path=../
+web: cp .env.yaml.example .env.yaml && bin/gosampleapi --env-root-path=./
