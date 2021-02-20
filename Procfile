@@ -1,2 +1,1 @@
-release: cp .env.yaml.example .env.yaml
-web: bin/gosampleapi --env-root-path=./
+web: cp .env.yaml.heroku .env.yaml && bin/gosampleapi --env-root-path=./
