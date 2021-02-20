@@ -30,5 +30,6 @@ require (
 	google.golang.org/protobuf v1.25.0
 	gopkg.in/boj/redistore.v1 v1.0.0-20160128113310-fc113767cd6b
 	gorm.io/driver/mysql v1.0.2
-	gorm.io/gorm v1.20.2
+	gorm.io/driver/postgres v1.0.8
+	gorm.io/gorm v1.20.12
 )

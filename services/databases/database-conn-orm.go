@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -18,10 +19,20 @@ func ConnOrm() error {
 	dbHost := viper.GetString("database.host")
 	dbPort := viper.GetString("database.port")
 	dbName := viper.GetString("database.name")
+	dbDriver := viper.GetString("database.driver")
 
-	dsn := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := ""
+	var db *gorm.DB
+	var errOpen error
 
-	db, errOpen := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if dbDriver == "mysql" {
+		dsn = dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
+		db, errOpen = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	} else if dbDriver == "pgsql" {
+		dsn = "host=" + dbHost + " user=" + dbUsername + " password=" + dbPassword + " dbname=gorm port=" + dbPort + " sslmode=disable TimeZone=Asia/Jakarta"
+		db, errOpen = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	}
+
 	if errOpen != nil {
 		return errOpen
 	}
