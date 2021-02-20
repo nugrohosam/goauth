@@ -55,6 +55,7 @@ if you want to seder data, run `$ ./cmd/seeder -file=namefile.yaml`
 
 ## Checklist
 
+- [x] Supporting for database pgsql, mysql
 - [x] Register Users
 - [x] Auth JWT
 - [x] Middlewares
