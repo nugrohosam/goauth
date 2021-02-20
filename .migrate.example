@@ -11,8 +11,11 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -60,43 +63,68 @@ func main() {
 	dbHost := viper.GetString("database.host")
 	dbPort := viper.GetString("database.port")
 	dbName := viper.GetString("database.name")
+	dbDriver := viper.GetString("database.driver")
+	migrationPath := "file://migrations"
 
-	urlConn := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?multiStatements=true"
+	dsn := ""
+	var err error
+	var driver database.Driver
+	var migrationExec *migrate.Migrate
+	var db *sql.DB
 
-	db, errConn := sql.Open("mysql", urlConn)
-	if errConn != nil {
-		fmt.Println(errConn)
-		return
+	if dbDriver == "mysql" {
+		dsn = dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
+		db, err = sql.Open("mysql", dsn)
+
+		// if there is an error opening the connection, handle it
+		if err != nil {
+			panic(err.Error())
+			return
+		}
+
+		driver, err = mysql.WithInstance(db, &mysql.Config{})
+		if err != nil {
+			panic(err.Error())
+			return
+		}
+	} else if dbDriver == "postgres" {
+		dsn = "postgres://" + dbUsername + ":" + dbPassword + "@" + dbHost + ":" + dbPort + "/" + dbName + "?" + "TimeZone=Asia/Jakarta"
+		db, err = sql.Open("postgres", dsn)
+
+		// if there is an error opening the connection, handle it
+		if err != nil {
+			panic(err.Error())
+			return
+		}
+
+		driver, err = postgres.WithInstance(db, &postgres.Config{})
+		if err != nil {
+			panic(err.Error())
+			return
+		}
 	}
 
-	driver, errMysql := mysql.WithInstance(db, &mysql.Config{})
-	if errMysql != nil {
-		fmt.Println(errMysql)
-		return
-	}
-
-	m, errInstance := migrate.NewWithDatabaseInstance(
-		"file://migrations",
-		"mysql",
+	migrationExec, err = migrate.NewWithDatabaseInstance(
+		migrationPath,
+		dbDriver,
 		driver,
 	)
 
-	if errInstance != nil {
-		fmt.Println(errInstance)
+	if err != nil {
+		panic(err.Error())
 		return
 	}
 
 	if *state == "up" {
-		if err := m.Up(); err != nil {
+		if err := migrationExec.Up(); err != nil {
 			fmt.Println(err, "when up")
 			return
 		}
 		fmt.Println("Migration", *state, "complete")
 	} else if *state == "down" {
-		m.Steps((int)(-step))
+		migrationExec.Steps((int)(-step))
 		fmt.Println("Migration", *state, "complete", *howManyStep, "step")
 	} else {
 		fmt.Println("State is not define right")
 	}
-
 }

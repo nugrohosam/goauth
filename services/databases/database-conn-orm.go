@@ -28,7 +28,7 @@ func ConnOrm() error {
 	if dbDriver == "mysql" {
 		dsn = dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
 		db, errOpen = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	} else if dbDriver == "pgsql" {
+	} else if dbDriver == "postgres" {
 		dsn = "host=" + dbHost + " user=" + dbUsername + " password=" + dbPassword + " dbname=gorm port=" + dbPort + " sslmode=disable TimeZone=Asia/Jakarta"
 		db, errOpen = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	}

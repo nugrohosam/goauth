@@ -3,6 +3,8 @@ package databases
 import (
 	"database/sql"
 
+	_ "github.com/lib/pq"
+
 	"github.com/spf13/viper"
 )
 
@@ -25,9 +27,9 @@ func Conn() error {
 	if dbDriver == "mysql" {
 		dsn = dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
 		db, err = sql.Open("mysql", dsn)
-	} else if dbDriver == "pgsql" {
-		dsn = "host=" + dbHost + " user=" + dbUsername + " password=" + dbPassword + " dbname=gorm port=" + dbPort + " sslmode=disable TimeZone=Asia/Jakarta"
-		db, err = sql.Open("pgsql", dsn)
+	} else if dbDriver == "postgres" {
+		dsn = "postgres://" + dbUsername + ":" + dbPassword + "@" + dbHost + ":" + dbPort + "/" + dbName + "?" + "TimeZone=Asia/Jakarta"
+		db, err = sql.Open("postgres", dsn)
 	}
 
 	// if there is an error opening the connection, handle it

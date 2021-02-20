@@ -17,6 +17,7 @@ func main() {
 
 	viper.SetConfigName(".env")
 	viper.AddConfigPath("./")
+
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
@@ -35,7 +36,14 @@ func main() {
 	database.Conn()
 	defer database.Close()
 
-	p := polluter.New(polluter.MySQLEngine(database.Db))
+	dbDriver := viper.GetString("database.driver")
+	var p *polluter.Polluter
+
+	if dbDriver == "mysql" {
+		p = polluter.New(polluter.MySQLEngine(database.Db))
+	} else if dbDriver == "postgres" {
+		p = polluter.New(polluter.PostgresEngine(database.Db))
+	}
 
 	content, err := ioutil.ReadFile(filePath)
 	if err != nil {
@@ -43,7 +51,10 @@ func main() {
 		return
 	}
 
-	if err := p.Pollute(strings.NewReader(string(content))); err != nil {
+	contentInString := string(content)
+	reader := strings.NewReader(contentInString)
+
+	if err := p.Pollute(reader); err != nil {
 		fmt.Printf("failed to pollute: %s", err)
 	}
 }

@@ -1,7 +1,7 @@
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS user_role (
-    id bigint PRIMARY KEY AUTO_INCREMENT,
+    id serial PRIMARY KEY,
     user_id bigint,
     role_id bigint,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,

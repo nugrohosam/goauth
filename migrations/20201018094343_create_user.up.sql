@@ -1,7 +1,7 @@
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS users (
-    id bigint PRIMARY KEY AUTO_INCREMENT,
+    id serial PRIMARY KEY,
     name varchar(255) NULL
 );
 
