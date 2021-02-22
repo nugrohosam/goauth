@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
+	"strings"
 	"unicode"
 
 	"github.com/gorilla/sessions"
@@ -189,6 +190,11 @@ func StringInSlice(a string, list []string) bool {
 	}
 
 	return false
+}
+
+// SetPath ..
+func SetPath(paths ...string) string {
+	return strings.Join(paths, "/")
 }
 
 // Decrypt ..

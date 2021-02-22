@@ -42,8 +42,11 @@ func Conn() error {
 	}
 
 	// POOLING DB
-	db.SetMaxIdleConns(10)
-	db.SetMaxOpenConns(100)
+	dbMinPool := viper.GetInt("database.min_pool")
+	dbMaxPool := viper.GetInt("database.max_pool")
+
+	db.SetMaxIdleConns(dbMinPool)
+	db.SetMaxOpenConns(dbMaxPool)
 	db.SetConnMaxLifetime(time.Hour)
 
 	Db = db
