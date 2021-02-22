@@ -42,6 +42,7 @@ func ConnOrm() error {
 		return errSet
 	}
 
+	// POOLING DB
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour)
