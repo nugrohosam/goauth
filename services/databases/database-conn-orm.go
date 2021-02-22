@@ -1,6 +1,7 @@
 package databases
 
 import (
+	"errors"
 	"time"
 
 	"github.com/spf13/viper"
@@ -31,6 +32,8 @@ func ConnOrm() error {
 	} else if dbDriver == "postgres" {
 		dsn = "postgres://" + dbUsername + ":" + dbPassword + "@" + dbHost + ":" + dbPort + "/" + dbName + "?" + "TimeZone=Asia/Jakarta"
 		db, errOpen = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	} else {
+		return errors.New("Not Defined Database Driver")
 	}
 
 	if errOpen != nil {
