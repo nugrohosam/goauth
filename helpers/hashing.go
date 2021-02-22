@@ -20,7 +20,7 @@ func MakeHash(data string) string {
 func CompareHash(str, compareString string) bool {
 	bytedStr := []byte(str)
 	bytedPlainPassword := []byte(compareString)
-	err := bcrypt.CompareHashAndPassword(bytedPlainPassword, bytedStr)
+	err := bcrypt.CompareHashAndPassword(bytedStr, bytedPlainPassword)
 	if err != nil {
 		return false
 	}
