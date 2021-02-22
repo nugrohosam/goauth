@@ -22,12 +22,12 @@ func main() {
 		panic(err)
 	}
 
-	file := flag.String("file", "none", "-")
+	file := flag.String("file", "none", "--")
 
 	flag.Parse()
 
 	if *file == "none" {
-		fmt.Println("flag [-file=?] must be spellied")
+		fmt.Println("flag [--file=?] must be spellied")
 		return
 	}
 

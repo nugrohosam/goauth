@@ -2,4 +2,4 @@ BEGIN;
 
 DROP TABLE IF EXISTS roles;
 
-COMMIt;
+COMMIT;

@@ -21,7 +21,7 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 		return "", errors.New("Cannot find user, username or email")
 	}
 
-	if isPasswordValid := helpers.CompareHash([]byte(user.Password), password); isPasswordValid {
+	if isPasswordValid := helpers.CompareHash(user.Password, password); !isPasswordValid {
 		return "", errors.New("Cannot find user, password")
 	}
 

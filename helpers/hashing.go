@@ -17,9 +17,10 @@ func MakeHash(data string) string {
 }
 
 // CompareHash ...
-func CompareHash(hashedPassword []byte, plainPassword string) bool {
-	bytedPlainPassword := []byte(plainPassword)
-	err := bcrypt.CompareHashAndPassword(bytedPlainPassword, hashedPassword)
+func CompareHash(str, compareString string) bool {
+	bytedStr := []byte(str)
+	bytedPlainPassword := []byte(compareString)
+	err := bcrypt.CompareHashAndPassword(bytedPlainPassword, bytedStr)
 	if err != nil {
 		return false
 	}

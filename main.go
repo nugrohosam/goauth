@@ -78,8 +78,6 @@ func loadConfigFile(envRootPath string) {
 	configFolderName := "config"
 	rootPathConfig := helpers.SetPath(envRootPath, configFolderName)
 
-	fmt.Println(rootPathConfig)
-
 	if err := filepath.Walk(rootPathConfig, func(path string, info os.FileInfo, err error) error {
 		if info.Name() != configFolderName {
 			files = append(files, info.Name())

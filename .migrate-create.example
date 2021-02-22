@@ -15,12 +15,12 @@ func check(e error) {
 }
 
 func main() {
-	namefileUsers := flag.String("namefile", "none", "-")
+	namefileUsers := flag.String("namefile", "none", "--")
 
 	flag.Parse()
 
 	if *namefileUsers == "none" {
-		fmt.Println("flag [-namefile=?] must be spellied")
+		fmt.Println("flag [--namefile=?] must be spellied")
 		return
 	}
 
@@ -33,12 +33,12 @@ func main() {
 	timeNow := time.Now()
 	numbersFile := timeNow.Format("20060102150404")
 
-	up := []byte("BEGIN;\n\n## DO YOUR MIGRATION UP \n\nCOMMIt;")
+	up := []byte("BEGIN;\n\n## DO YOUR MIGRATION UP \n\nCOMMIT;")
 	if err := ioutil.WriteFile(dir+numbersFile+"_"+*namefileUsers+".up.sql", up, 0754); err != nil {
 		fmt.Println(err)
 	}
 
-	down := []byte("BEGIN;\n\n## DO YOUR MIGRATION DOWN \n\nCOMMIt;")
+	down := []byte("BEGIN;\n\n## DO YOUR MIGRATION DOWN \n\nCOMMIT;")
 	if err := ioutil.WriteFile(dir+numbersFile+"_"+*namefileUsers+".down.sql", down, 0754); err != nil {
 		fmt.Println(err)
 	}

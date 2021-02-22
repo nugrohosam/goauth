@@ -19,14 +19,14 @@ import (
 )
 
 func main() {
-	state := flag.String("state", "none", "-")
-	stage := flag.String("stage", "dev", "-")
-	howManyStep := flag.String("howmanystep", "none", "-")
+	state := flag.String("state", "none", "--")
+	stage := flag.String("stage", "dev", "--")
+	howManyStep := flag.String("howmanystep", "none", "--")
 
 	flag.Parse()
 
 	if *stage == "none" {
-		fmt.Println("flag [-stage=?] must be spellied")
+		fmt.Println("flag [--stage=?] must be spellied")
 		return
 	}
 

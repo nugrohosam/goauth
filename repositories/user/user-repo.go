@@ -9,16 +9,16 @@ import (
 
 // Get using for permission
 func Get(search, limit, offset, orderBy string) (Users, int, error) {
-	var permissions = Users{}
+	var users = Users{}
 	database := *conn.DbOrm
 
 	limitInt, _ := strconv.Atoi(limit)
 	offsetInt, _ := strconv.Atoi(offset)
 
-	totalRows := database.Where("name LIKE ? or email LIKE ?", "%"+search+"%", "%"+search+"%").Find(&permissions).RowsAffected
-	database.Where("name LIKE ? or email LIKE ?", "%"+search+"%", "%"+search+"%").Limit(limitInt).Offset(offsetInt).Order("name " + orderBy).Find(&permissions)
+	totalRows := database.Where("name LIKE ? or email LIKE ?", "%"+search+"%", "%"+search+"%").Find(&users).RowsAffected
+	database.Where("name LIKE ? or email LIKE ?", "%"+search+"%", "%"+search+"%").Limit(limitInt).Offset(offsetInt).Order("name " + orderBy).Find(&users)
 
-	return permissions, int(totalRows), nil
+	return users, int(totalRows), nil
 }
 
 // Create using for user
