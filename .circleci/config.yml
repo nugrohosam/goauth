@@ -1,11 +1,12 @@
-version: 2
-jobs:
-  build:
-    docker:
-      - image: circleci/golang:1.15
-    working_directory: /go/src/github.com/nugrohosam/gosampleapi
-    steps:
-      - checkout
+orbs:
+  heroku: circleci/heroku@1.2.5
 
-      # specify any bash command here prefixed with `run: `
-      - run: make
+version: 2.1
+workflows:
+  heroku_deploy:
+    jobs:
+      - heroku/push-docker-image:
+          api-key: "a265f92c-49ac-46c7-847c-be9843ae227b"
+          app-name: "gosampleapi"
+          pre-steps:
+            - run: make deps
