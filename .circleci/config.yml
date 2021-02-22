@@ -9,5 +9,6 @@ workflows:
       - heroku/push-docker-image:
           api-key: a265f92c-49ac-46c7-847c-be9843ae227b
           app-name: gosampleapi
+          process-types: web
           pre-steps:
-            - run: make deps
+            - run: make
