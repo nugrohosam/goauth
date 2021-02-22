@@ -41,15 +41,10 @@ func Conn() error {
 		panic(err.Error())
 	}
 
-	sqlDB, errSet := db.DB()
-	if errSet != nil {
-		return errSet
-	}
-
 	// POOLING DB
-	sqlDB.SetMaxIdleConns(10)
-	sqlDB.SetMaxOpenConns(100)
-	sqlDB.SetConnMaxLifetime(time.Hour)
+	db.SetMaxIdleConns(10)
+	db.SetMaxOpenConns(100)
+	db.SetConnMaxLifetime(time.Hour)
 
 	Db = db
 
