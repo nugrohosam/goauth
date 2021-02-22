@@ -1,5 +1,5 @@
 ## Try this project free
-- link : https://https://gosampleapi.herokuapp.com
+- link : https://gosampleapi.herokuapp.com
 - postman docs : https://documenter.getpostman.com/view/4473147/TVzXDFka
 
 ## Set project
