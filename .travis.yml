@@ -1,0 +1,4 @@
+deploy:
+  provider: heroku
+  api_key: a265f92c-49ac-46c7-847c-be9843ae227b
+  app: gosampleapi
