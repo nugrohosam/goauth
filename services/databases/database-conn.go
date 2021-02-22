@@ -2,6 +2,7 @@ package databases
 
 import (
 	"database/sql"
+	"errors"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -31,6 +32,8 @@ func Conn() error {
 	} else if dbDriver == "postgres" {
 		dsn = "postgres://" + dbUsername + ":" + dbPassword + "@" + dbHost + ":" + dbPort + "/" + dbName + "?" + "TimeZone=Asia/Jakarta"
 		db, err = sql.Open("postgres", dsn)
+	} else {
+		return errors.New("Not Defined Database Driver")
 	}
 
 	// if there is an error opening the connection, handle it
