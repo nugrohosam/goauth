@@ -5,6 +5,6 @@ go:
 before_deploy: cp deploy/heroku/.gitignore.heroku ./.gitignore
 deploy:
   provider: heroku
-  api_key: a265f92c-49ac-46c7-847c-be9843ae227b
-  app: gosampleapi
+  api_key: "a265f92c-49ac-46c7-847c-be9843ae227b"
+  app: "gosampleapi"
   strategy: git
