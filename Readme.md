@@ -60,7 +60,7 @@ if you want to seder data, run `$ ./cmd/seeder -file=namefile.yaml`
 - [x] Auth JWT
 - [x] Middlewares
 - [x] Test api
-- [x] Cleaner DB Test
+- [x] DB Cleaner In Test
 - [x] Request gRPC
 - [x] Test gRPC
 - [x] Migration tools

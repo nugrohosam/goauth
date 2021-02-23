@@ -1,1 +1,1 @@
-web: cp ./deploy/heroku/.env.yaml.heroku .env.yaml && ./bin/gosampleapi --env-root-path=./ --service=http
+web: cp ./deploy/heroku/.env.yaml.heroku .env.yaml && ./cmd/migrate --state=up && ./bin/gosampleapi --env-root-path=./ --service=http
