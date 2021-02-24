@@ -1,8 +1,6 @@
 package usecases
 
 import (
-	"fmt"
-
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
 	rolePermissionRepo "github.com/nugrohosam/gosampleapi/repositories/rolepermission"
 )
@@ -18,7 +16,6 @@ func GetRolePermission(search, perPage, page, order string) (rolePermissionRepo.
 	limit, offset := helpers.GenerateLimitOffset(perPage, page)
 
 	rolePermissions, total, err := rolePermissionRepo.Get(search, limit, offset, orderBy)
-	fmt.Println(rolePermissions)
 	if err != nil {
 		return nil, 0, err
 	}
