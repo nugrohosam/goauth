@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strconv"
@@ -26,20 +27,27 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 	}
 
 	tokenExpiredInHour, _ := strconv.ParseInt(viper.GetString("token.expired_time"), 24, 64)
-	data := map[string]interface{}{
-		"id":          user.ID,
-		"name":        user.Name,
-		"username":    user.Username,
-		"email":       user.Email,
+	dataUser := map[string]interface{}{
+		"id":       user.ID,
+		"name":     user.Name,
+		"username": user.Username,
+		"email":    user.Email,
+	}
+
+	dataTokenString, _ := json.Marshal(dataUser)
+	secret := viper.GetString("secret")
+	dataTokenEncrypted := helpers.Encrypt(string(dataTokenString), secret)
+
+	dataToken := map[string]interface{}{
+		"data":        dataTokenEncrypted,
 		"expiredTime": time.Now().Add(time.Hour * time.Duration(tokenExpiredInHour)),
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims(data))
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims(dataToken))
 
 	bytedString := helpers.GetBytedSecret()
 	tokenString, err := token.SignedString(bytedString) // always use byted string
 
-	tokenString = helpers.Encrypt(tokenString, viper.GetString("secret"))
 	if err != nil {
 		return "", errors.New("Cannot make token")
 	}
@@ -49,9 +57,6 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 
 // AuthorizationValidation ...
 func AuthorizationValidation(tokenString string) error {
-
-	tokenString = helpers.Decrypt(tokenString, viper.GetString("secret"))
-
 	token, err := jwt.Parse(tokenString, validateToken)
 	if err != nil {
 		return errors.New("Wrong token input")
@@ -76,13 +81,17 @@ func AuthorizationValidation(tokenString string) error {
 // GetDataAuth ...
 func GetDataAuth(tokenString string) (map[string]interface{}, error) {
 
-	tokenString = helpers.Decrypt(tokenString, viper.GetString("secret"))
-
 	token, err := jwt.Parse(tokenString, validateToken)
-	data, ok := token.Claims.(jwt.MapClaims)
+	dataToken, ok := token.Claims.(jwt.MapClaims)
+
+	secret := viper.GetString("secret")
+	dataUserInString := helpers.Decrypt(dataToken["data"].(string), secret)
+
+	var dataUser map[string]interface{}
+	json.Unmarshal([]byte(dataUserInString), &dataUser)
 
 	if ok && token.Valid {
-		return data, nil
+		return dataUser, nil
 	} else if err != nil {
 		return nil, errors.New("Cannot validate auth token")
 	} else {
