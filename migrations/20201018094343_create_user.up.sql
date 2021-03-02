@@ -1,7 +1,5 @@
-BEGIN;
-
 CREATE TABLE users (
-    id BIGINT NOT NULL AUTO_INCREMENT
+    id SERIAL,
+    name VARCHAR(255) NULL,
+    PRIMARY KEY (id)
 );
-
-COMMIT;
