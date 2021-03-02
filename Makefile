@@ -5,7 +5,6 @@
 # binary and no external dependencies are needed to run the service.
 
 GOSAMPLEAPI_VERSION=$(shell git describe --always --long --dirty --tags)
-BIN_NAME=app
 
 all: deps build
 
@@ -32,4 +31,4 @@ deps:
 build:
 	go build main.go
 	mv main ./bin/
-	@echo "You can now use ./bin/${BIN_NAME}"
+	@echo "You can now use ./bin/main"
