@@ -30,5 +30,6 @@ deps:
 	mv .main.example main.go
 
 build:
-	go build -a -ldflags="[pattern=]args list" -o ./bin/${BIN_NAME}
+	go build main.go
+	mv main ./bin/
 	@echo "You can now use ./bin/${BIN_NAME}"
