@@ -1,12 +1,10 @@
-BEGIN;
+
 
 CREATE TABLE IF NOT EXISTS user_role (
-    id BIGINT NOT NULL AUTO_INCREMENT,
+    id SERIAL,
     user_id BIGINT,
     role_id BIGINT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
     PRIMARY KEY (id)
 );
-
-COMMIT;
