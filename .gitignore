@@ -5,8 +5,10 @@ env.test.yaml
 third_party
 vendor
 
+.htaccess
 app
 cmd/*
+bin/*
 *.exe
 *.so
 *.bin
