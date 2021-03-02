@@ -1,5 +1,3 @@
-
-
 CREATE TABLE IF NOT EXISTS user_role (
     id SERIAL,
     user_id BIGINT,

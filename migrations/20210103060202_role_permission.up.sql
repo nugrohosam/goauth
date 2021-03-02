@@ -1,5 +1,3 @@
-
-
 CREATE TABLE IF NOT EXISTS role_permission (
     id SERIAL,
     role_id BIGINT,
