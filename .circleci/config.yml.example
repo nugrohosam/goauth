@@ -5,7 +5,5 @@ jobs:
       - image: circleci/golang:1.15
     working_directory: /go/src/github.com/nugrohosam/gosampleapi
     steps:
-      - checkoutx
-
-      # specify any bash command here prefixed with `run: `
+      - checkout
       - run: make

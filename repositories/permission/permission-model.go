@@ -35,14 +35,14 @@ func (permission *Permission) AfterCreate(tx *gorm.DB) error {
 // ToMap ..
 func (permissions *Permissions) ToMap() []interface{} {
 	var wg sync.WaitGroup
-	wg.Add(cap(*permissions))
 
 	permissionsMapped := make([]interface{}, cap(*permissions))
 	for index, value := range *permissions {
-		go func() {
+		wg.Add(1)
+		go func(wg *sync.WaitGroup) {
 			defer wg.Done()
 			permissionsMapped[index] = structs.Map(value)
-		}()
+		}(&wg)
 	}
 
 	wg.Wait()
@@ -53,16 +53,15 @@ func (permissions *Permissions) ToMap() []interface{} {
 // PluckName ..
 func (permissions *Permissions) PluckName() []string {
 	var wg sync.WaitGroup
-	wg.Add(cap(*permissions))
 
 	namePermissionsMapped := make([]string, cap(*permissions))
 	for index, value := range *permissions {
-		go func() {
+		wg.Add(1)
+		go func(index int, wg *sync.WaitGroup) {
 			defer wg.Done()
 			namePermissionsMapped[index] = value.Name
-		}()
+		}(index, &wg)
 	}
-
 	wg.Wait()
 
 	return namePermissionsMapped
