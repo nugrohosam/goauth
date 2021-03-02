@@ -30,7 +30,7 @@ func Conn() error {
 		dsn = dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
 		db, err = sql.Open("mysql", dsn)
 	} else if dbDriver == "postgres" {
-		dsn = "postgres://" + dbUsername + ":" + dbPassword + "@" + dbHost + ":" + dbPort + "/" + dbName + "?" + "TimeZone=Asia/Jakarta"
+		dsn = "postgres://" + dbUsername + ":" + dbPassword + "@" + dbHost + ":" + dbPort + "/" + dbName + "?" + "sslmode=disableTimeZone=Asia/Jakarta"
 		db, err = sql.Open("postgres", dsn)
 	} else {
 		return errors.New("Not Defined Database Driver")
