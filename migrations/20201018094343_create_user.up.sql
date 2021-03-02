@@ -1,8 +1,10 @@
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
+    id SERIAL,
     name VARCHAR(255) NULL
+
+    PRIMARY KEY (id)
 );
 
 COMMIT;
