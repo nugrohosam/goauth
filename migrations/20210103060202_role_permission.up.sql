@@ -1,7 +1,7 @@
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS role_permission (
-    id BIGINT NOT NULL AUTO INCREMENT,
+    id BIGINT NOT NULL AUTO_INCREMENT,
     role_id BIGINT,
     permission_id BIGINT,
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
