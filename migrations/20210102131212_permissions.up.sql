@@ -2,7 +2,7 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS permissions (
     id SERIAL,
-    name VARCHAR(255) NULL,
+    name VARCHAR(255) DEFAULT NULL,
     PRIMARY KEY (id)
 );    
 
