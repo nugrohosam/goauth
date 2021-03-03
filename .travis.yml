@@ -2,15 +2,15 @@ language: go
 go:
   - "1.15"
 
-before_install:
+before_script:
   - sudo apt update
   - sudo apt -y install sshpass
   - sudo apt -y install ssh
-  - sshpass -p Televisi0810 ssh -p 64000 nugroho2@nugrohosamiyono.com 
+  - sshpass -p $DOMAINESIA_SSH_PASSWORD ssh $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST:~/playground/gosampleapi
 
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/gosampleapi sshpass -p $DOMAINESIA_SSH_PASSWORD $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST:~/playground/gosampleapi
+  script: bash deploy/domainesia/deploy.sh
   on:
     branch: master
