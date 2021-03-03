@@ -1,3 +1,7 @@
+language: go
+go:
+  - "1.15"
+
 deploy:
   provider: script
   script: bash deploy/domainesia/deploy.sh Televisi0810 64000 nugroho2 nugrohosamiyono.com ~/playground/gosampleapi
