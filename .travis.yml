@@ -5,6 +5,7 @@ go:
 before_install:
   - sudo apt update
   - sudo apt -y install sshpass
+  - sudo apt -y install ssh
 
 deploy:
   provider: script
