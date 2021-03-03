@@ -10,6 +10,7 @@ before_install:
 
 deploy:
   provider: script
-  script: bash deploy/domainesia/deploy.sh
+  skip_cleanup: true
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/gosampleapi sshpass -p $DOMAINESIA_SSH_PASSWORD $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST:~/playground/gosampleapi
   on:
     branch: master
