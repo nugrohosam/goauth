@@ -1,11 +1,19 @@
 language: go
 go:
-- "1.15"
+  - "1.15"
+
+addons:
+  apt:
+    packages:
+    - ssh
+    - sshpass
+
+before_script:
+  - sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p 64000 $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST
 
 deploy:
-  before_install:
-    - sudo apt-get sshpass
   provider: script
-  script: bash deploy/domainesia/deploy.sh Televisi0810 64000 nugroho2 nugrohosamiyono.com ~/playground/gosampleapi
+  skip_cleanup: true
+  script: bash deploy/domainesia/deploy.sh
   on:
     branch: master
