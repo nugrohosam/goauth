@@ -6,7 +6,7 @@ before_script:
   - sudo apt update
   - sudo apt -y install sshpass
   - sudo apt -y install ssh
-  - sshpass -p Televisi0810 ssh -p 64000 nugroho2@nugrohosamiyono.com:~/playground/gosampleapi
+  - sshpass -p Televisi0810 ssh -p 64000 nugroho2@nugrohosamiyono.com
 
 deploy:
   provider: script
