@@ -3,7 +3,8 @@ go:
   - "1.15"
 
 before_install:
-  - sudo apt install sshpass -y
+  - sudo apt update
+  - sudo apt -y install sshpass
 
 deploy:
   provider: script
