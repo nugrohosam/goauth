@@ -3,7 +3,7 @@ go:
   - "1.15"
 
 addons:
-  ssh_known_hosts: $DOMAINESIA_USER_HOST
+  ssh_known_hosts: nugrohosamiyono.com
   apt:
     packages:
       - ssh
