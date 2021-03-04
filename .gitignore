@@ -6,7 +6,6 @@ third_party
 vendor
 
 .htaccess
-app
 cmd/*
 bin/*
 *.exe
