@@ -1,0 +1,11 @@
+.env.yaml
+env.yaml
+.env.test.yaml
+env.test.yaml
+third_party
+vendor
+
+.htaccess
+*.exe
+*.so
+*.bin

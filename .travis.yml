@@ -3,11 +3,15 @@ go:
   - "1.15"
 
 addons:
+  ssh_known_hosts: $DOMAINESIA_USER_HOST
   apt:
     packages:
       - ssh
       - sshpass
       - rsync
+
+before_script:
+  - cp ./deploy/domainesia/.gitignore.domainesia ./.gitignore
 
 deploy:
   provider: script
