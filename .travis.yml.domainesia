@@ -5,15 +5,11 @@ go:
 addons:
   apt:
     packages:
-    - ssh
-    - sshpass
-
-before_script:
-  - sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p 64000 $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST
+    - rsync
 
 deploy:
   provider: script
   skip_cleanup: true
-  script: bash deploy/domainesia/deploy.sh
+  script: rsync -avHPe "sshpass -p$DOMAINESIA_SSH_PASSWORD ssh -p$DOMAINESIA_SSH_PORT" ./ $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST:/home/nugroho2/playground/gosampleapi
   on:
     branch: master

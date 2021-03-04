@@ -1,0 +1,17 @@
+language: go
+go:
+  - "1.15"
+
+addons:
+  apt:
+    packages:
+    - ssh
+    - sshpass
+    - rsync
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: rsync -avHPe "sshpass -p$DOMAINESIA_SSH_PASSWORD ssh -p$DOMAINESIA_SSH_PORT" ./ $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST:/home/$DOMAINESIA_SSH_USER/playground/gosampleapi
+  on:
+    branch: master
