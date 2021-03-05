@@ -5,6 +5,7 @@ env.test.yaml
 third_party
 vendor
 
+.htaccess
 app
 *.exe
 *.so
