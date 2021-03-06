@@ -3,17 +3,22 @@ go:
   - "1.15"
 
 addons:
-  ssh_known_hosts: 
+  ssh_known_hosts:
     - 192.53.174.157
   apt:
     packages:
-    - ssh
-    - sshpass
-    - rsync
+      - ssh
+      - sshpass
+      - rsync
+
+before_script:
+  - cp deploy/domainesia/.htaccess.domainesia .htaccess
+  - cp deploy/domainesia/.gitignore.domainesia .gitignore
+  - rm -rf .git
 
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -avHPe "sshpass -p$DOMAINESIA_SSH_PASSWORD ssh -p$DOMAINESIA_SSH_PORT" ./ $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST:/home/nugroho2/playground/gosampleapi
+  script: rsync -avHP --exclude-from=.gitignore -e "sshpass -p$DOMAINESIA_SSH_PASSWORD ssh -p$DOMAINESIA_SSH_PORT" ./ $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST:/home/$DOMAINESIA_SSH_USER/$DOMAINESIA_SSH_FOLDER_PATH
   on:
     branch: master
