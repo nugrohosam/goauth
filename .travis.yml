@@ -19,6 +19,6 @@ before_script:
 deploy:
   provider: script
   cleanup: false
-  script: deploy/domainesia/script.sh
+  script: bash deploy/domainesia/script.sh
   on:
     branch: master
