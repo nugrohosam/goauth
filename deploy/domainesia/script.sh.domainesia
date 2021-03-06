@@ -7,8 +7,6 @@ echo "Deployed in repo"
 echo "Start doing restart system"
 # SCIPRT_RESTART_APPS="
 
-#     FOLDER_PATH=/home/$DOMAINESIA_SSH_USER/$DOMAINESIA_SSH_FOLDER_PATH;
-    
 #     pwd;
 
 #     if [ ! -z $(cat $FOLDER_PATH/pid) ]
@@ -21,5 +19,5 @@ echo "Start doing restart system"
 
 # "
 
-sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p $DOMAINESIA_SSH_PORT -o StrictHostKeyChecking=no -l $DOMAINESIA_SSH_USER $DOMAINESIA_SSH_HOST "pwd"
+sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p $DOMAINESIA_SSH_PORT -o StrictHostKeyChecking=no -l $DOMAINESIA_SSH_USER $DOMAINESIA_SSH_HOST "pwd; ls -la"
 echo "restarted system"
