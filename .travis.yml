@@ -14,6 +14,7 @@ addons:
 before_script:
   - cp deploy/domainesia/.gitignore.domainesia .gitignore
   - cp deploy/domainesia/script.sh.domainesia deploy/domainesia/script.sh 
+  - cp deploy/domainesia/restart-app.sh.domainesia deploy/domainesia/restart-app.sh 
   - rm -rf .git
 
 deploy:
