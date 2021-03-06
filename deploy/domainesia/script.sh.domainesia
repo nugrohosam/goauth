@@ -14,5 +14,5 @@ SCIPRT_RESTART_APPS=`
     echo $! > pid
 `
 
-sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p $DOMAINESIA_SSH_PORT -o StrictHostKeyChecking=no -l $DOMAINESIA_SSH_USER $DOMAINESIA_SSH_HOST "cd /home/${$DOMAINESIA_SSH_USER}/${DOMAINESIA_SSH_FOLDER_PATH}; ls -la"
+sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p $DOMAINESIA_SSH_PORT -o StrictHostKeyChecking=no -l $DOMAINESIA_SSH_USER $DOMAINESIA_SSH_HOST "cd /home/${DOMAINESIA_SSH_USER}/${DOMAINESIA_SSH_FOLDER_PATH}; ls -la"
 echo "restarted system"
