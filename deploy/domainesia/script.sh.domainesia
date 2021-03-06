@@ -16,7 +16,7 @@ SCIPRT_RESTART_APPS="
         kill $(cat $FOLDER_PATH/pid);
     fi
 
-    nohup ./bin/main --env-root-path=./ --service=http > runing.log 2>&1 &
+    nohup $FOLDER_PATH/bin/main --env-root-path=./ --service=http > runing.log 2>&1 &
     echo $! > pid
 
 "
