@@ -1,8 +1,0 @@
-Options +FollowSymLinks -Indexes
-IndexIgnore *
-DirectoryIndex
-<IfModule mod_rewrite.c>
-RewriteEngine on
-# Simple URL redirect:
-RewriteRule ^(.*)$ http://127.0.0.1:8000/$1 [P]
-</IfModule>

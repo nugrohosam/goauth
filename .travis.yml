@@ -12,7 +12,6 @@ addons:
       - rsync
 
 before_script:
-  - cp deploy/domainesia/.htaccess.domainesia .htaccess
   - cp deploy/domainesia/.gitignore.domainesia .gitignore
   - rm -rf .git
 
