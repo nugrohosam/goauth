@@ -7,6 +7,8 @@ addons:
     - 192.53.174.157
   apt:
     packages:
+    - ssh
+    - sshpass
     - rsync
 
 deploy:
