@@ -5,19 +5,14 @@ rsync -avHP --exclude-from=.gitignore --exclude=.git -e "sshpass -p$DOMAINESIA_S
 echo "Deployed in repo"
 
 echo "Start doing restart system"
-# SCIPRT_RESTART_APPS="
+SCIPRT_RESTART_APPS="
+    if [ ! -z $(cat ./pid) ]
+    then
+        kill $(cat ./pid)
+    fi
+    nohup ./bin/main --env-root-path=./ --service=http > runing.log 2>&1 &
+    echo $! > pid
+"
 
-#     pwd;
-
-#     if [ ! -z $(cat $FOLDER_PATH/pid) ]
-#     then
-#         kill $(cat $FOLDER_PATH/pid);
-#     fi
-
-#     nohup $FOLDER_PATH/bin/main --env-root-path=./ --service=http > runing.log 2>&1 &
-#     echo $! > pid
-
-# "
-
-sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p $DOMAINESIA_SSH_PORT -o StrictHostKeyChecking=no -l $DOMAINESIA_SSH_USER $DOMAINESIA_SSH_HOST "pwd; ls -la"
+sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p $DOMAINESIA_SSH_PORT -o StrictHostKeyChecking=no -l $DOMAINESIA_SSH_USER $DOMAINESIA_SSH_HOST "cd /home/${$DOMAINESIA_SSH_USER/$DOMAINESIA_SSH_FOLDER_PATH}; ls -la"
 echo "restarted system"
