@@ -71,4 +71,3 @@ if you want to seder data, run `$ ./cmd/seeder -file=namefile.yaml`
 - [x] Encrypted token
 - [x] Heroku deployment
 - [x] CircleCI deployment
-- [ ] Cached response
