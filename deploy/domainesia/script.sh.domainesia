@@ -7,11 +7,13 @@ echo "Deployed in repo"
 echo "Start doing restart system"
 SCIPRT_RESTART_APPS="
 
-    cd /home/$DOMAINESIA_SSH_USER/$DOMAINESIA_SSH_FOLDER_PATH;
+    FOLDER_PATH=/home/$DOMAINESIA_SSH_USER/$DOMAINESIA_SSH_FOLDER_PATH;
+    
+    pwd;
 
-    if [ ! -z $(cat pid) ]
+    if [ ! -z $(cat $FOLDER_PATH/pid) ]
     then
-        kill $(cat pid);
+        kill $(cat $FOLDER_PATH/pid);
     fi
 
     nohup ./bin/main --env-root-path=./ --service=http > runing.log 2>&1 &
