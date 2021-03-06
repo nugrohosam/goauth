@@ -4,7 +4,7 @@ go:
 
 addons:
   ssh_known_hosts:
-    - 192.53.174.157
+    - nugrohosamiyono.com:64000
   apt:
     packages:
       - ssh
