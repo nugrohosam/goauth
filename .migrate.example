@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/spf13/viper"
 
@@ -21,6 +22,7 @@ import (
 func main() {
 	state := flag.String("state", "none", "--")
 	stage := flag.String("stage", "dev", "--")
+	force := flag.String("force", "dev", "--")
 	howManyStep := flag.String("howmanystep", "none", "--")
 
 	flag.Parse()
@@ -67,13 +69,14 @@ func main() {
 	migrationPath := "file://migrations"
 
 	dsn := ""
+
+	var migrationExec *migrate.Migrate
 	var err error
 	var driver database.Driver
-	var migrationExec *migrate.Migrate
 	var db *sql.DB
 
 	if dbDriver == "mysql" {
-		dsn = dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
+		dsn = dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?multiStatements=true&charset=utf8mb4&parseTime=True&loc=Local"
 		db, err = sql.Open("mysql", dsn)
 
 		// if there is an error opening the connection, handle it
@@ -120,11 +123,18 @@ func main() {
 			fmt.Println(err, "when up")
 			return
 		}
-		fmt.Println("Migration", *state, "complete")
 	} else if *state == "down" {
-		migrationExec.Steps((int)(-step))
-		fmt.Println("Migration", *state, "complete", *howManyStep, "step")
+		stepIs := (int)(-step)
+		migrationExec.Steps(stepIs)
 	} else {
 		fmt.Println("State is not define right")
+	}
+
+	time.Sleep(4 * time.Second)
+	version, _, _ := migrationExec.Version()
+	fmt.Println("Migration", *state, "complete and now version :", version)
+
+	if *force == "true" {
+		migrationExec.Force(int(version))
 	}
 }
