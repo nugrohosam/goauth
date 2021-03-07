@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./cmd/migrate --state=up
+
 if [ ! -z "$(cat ./pid)" ]
 then
         kill $(cat ./pid)
