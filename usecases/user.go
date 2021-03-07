@@ -52,7 +52,7 @@ func IsHaveAnyPermission(userID int, permissionName []string) (bool, error) {
 
 	isTrue := false
 	for _, value := range permissionName {
-		isTrue = helpers.StringInSlice(value, userPermissionsName)
+		isTrue = helpers.InArray(value, userPermissionsName)
 		if isTrue {
 			break
 		}

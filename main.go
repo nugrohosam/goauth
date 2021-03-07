@@ -27,7 +27,7 @@ func main() {
 		return
 	}
 
-	if !helpers.StringInSlice(*serviceUse, []string{"http", "grpc"}) || *serviceUse == "none" {
+	if !helpers.InArray(*serviceUse, []string{"http", "grpc"}) || *serviceUse == "none" {
 		fmt.Println("flag [--service=?] must be spellied in (http or grpc)")
 		return
 	}
