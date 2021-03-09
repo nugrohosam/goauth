@@ -40,7 +40,7 @@ if you want to create some migration, run `$ ./cmd/migrate -state=up -stage=dev`
 
 if you want to create some migration, run `$ ./cmd/migrate -state=down -stage=dev -howmanystep=1` it will rollback 1 file .down.sql
 
-## Seeder Down
+## Seeder
 
 if you want to seder data, run `$ ./cmd/seeder -file=namefile.yaml`
 
