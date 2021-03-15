@@ -1,9 +1,17 @@
 #!/bin/bash
 
-echo "Start deploy in repo"
-rsync -avHP --exclude-from=.gitignore --exclude=.git -e "sshpass -p$DOMAINESIA_SSH_PASSWORD ssh -p$DOMAINESIA_SSH_PORT" ./ $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST:/home/$DOMAINESIA_SSH_USER/$DOMAINESIA_SSH_FOLDER_PATH
-echo "Deployed in repo"
+echo "Start deploy api in repo"
+rsync -avHP --exclude-from=.gitignore --exclude=.git -e "sshpass -p$DOMAINESIA_SSH_PASSWORD ssh -p$DOMAINESIA_SSH_PORT" ./ $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST:/home/$DOMAINESIA_SSH_USER/$DOMAINESIA_SSH_FOLDER_API_PATH
+echo "Deployed api in repo"
 
-echo "Start doing restart system"
-sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p $DOMAINESIA_SSH_PORT -o StrictHostKeyChecking=no -l $DOMAINESIA_SSH_USER $DOMAINESIA_SSH_HOST "cd /home/${DOMAINESIA_SSH_USER}/${DOMAINESIA_SSH_FOLDER_PATH}; ./deploy/domainesia/restart-app.sh"
-echo "restarted system"
+echo "Start doing restart api system"
+sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p $DOMAINESIA_SSH_PORT -o StrictHostKeyChecking=no -l $DOMAINESIA_SSH_USER $DOMAINESIA_SSH_HOST "cd /home/${DOMAINESIA_SSH_USER}/${DOMAINESIA_SSH_FOLDER_API_PATH}; ./deploy/domainesia/restart-app.sh http"
+echo "restarted api system"
+
+echo "Start deploy grpc in repo"
+rsync -avHP --exclude-from=.gitignore --exclude=.git -e "sshpass -p$DOMAINESIA_SSH_PASSWORD ssh -p$DOMAINESIA_SSH_PORT" ./ $DOMAINESIA_SSH_USER@$DOMAINESIA_SSH_HOST:/home/$DOMAINESIA_SSH_USER/$DOMAINESIA_SSH_FOLDER_GRPC_PATH
+echo "Deployed grpc in repo"
+
+echo "Start doing restart grpc system"
+sshpass -p $DOMAINESIA_SSH_PASSWORD ssh -p $DOMAINESIA_SSH_PORT -o StrictHostKeyChecking=no -l $DOMAINESIA_SSH_USER $DOMAINESIA_SSH_HOST "cd /home/${DOMAINESIA_SSH_USER}/${DOMAINESIA_SSH_FOLDER_GRPC_PATH}; ./deploy/domainesia/restart-app.sh grpc"
+echo "restarted grpc system"
