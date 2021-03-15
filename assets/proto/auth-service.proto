@@ -7,14 +7,14 @@ message GetAuthRequest {
 }
 
 message GetAuthResponse {
-    uint64 id = 1;
+    double id = 1;
     string name = 2;
     string username = 3;
     string email = 4;
 }
 
 message GetAuthIdResponse {
-    uint64 id = 1;
+    double id = 1;
 }
 
 service GetAuthService {
