@@ -53,16 +53,21 @@ func main() {
 
 func initiateRedisCache() {
 	cacheRedisPrefixKey := viper.GetString("cache.redis.prefix-key")
-	configCacheRedis := viper.GetStringMap("cache.redis.hosts")
-	redisHostsCache := make(map[string]string)
+	driverCache := viper.GetString("redis.driver")
 
-	for key, value := range configCacheRedis {
-		keyRedis := cacheRedisPrefixKey + key
-		valueReal := value.(map[string]string)
-		redisHostsCache[keyRedis] = valueReal["host"] + ":" + valueReal["port"]
+	switch driverCache {
+	case "redis":
+		configCacheRedis := viper.GetStringMap("redis")
+		redisHostsCache := make(map[string]string)
+	
+		for key, value := range configCacheRedis {
+			keyRedis := cacheRedisPrefixKey + key
+			valueReal := value.(map[string]string)
+			redisHostsCache[keyRedis] = valueReal["host"] + ":" + valueReal["port"]
+		}
+	
+		infrastructure.InitiateRedisCache(redisHostsCache)
 	}
-
-	infrastructure.InitiateRedisCache(redisHostsCache)
 }
 
 func loadConfigFile(envRootPath string) {

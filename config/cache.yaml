@@ -1,6 +1,7 @@
 # cache.yml file
 
 cache:
+  driver: "redis"
   redis:
     prefix-key: "cache-redis-server-"
     size: 1000

@@ -17,7 +17,7 @@ var CacheConfigRing *cache.Cache
 
 // InitiateRedisCache ..
 func InitiateRedisCache(hosts map[string]string) {
-	sizeCache := viper.GetInt("cache.redis.size")
+	sizeCache := viper.GetInt("redis.size")
 
 	Ring = redis.NewRing(&redis.RingOptions{
 		Addrs: hosts,
