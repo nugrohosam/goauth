@@ -4,6 +4,3 @@ cache:
   redis:
     prefix-key: "cache-redis-server-"
     size: 1000
-    hosts:
-      - port: 6379
-        host: "localhsot"
