@@ -33,12 +33,12 @@ func main() {
 	timeNow := time.Now()
 	numbersFile := timeNow.Format("20060102150404")
 
-	up := []byte("\n\n## DO YOUR MIGRATION UP \n\nCOMMIT;")
+	up := []byte("BEGIN;\n\n## DO YOUR MIGRATION UP \n\nCOMMIT;")
 	if err := ioutil.WriteFile(dir+numbersFile+"_"+*namefileUsers+".up.sql", up, 0754); err != nil {
 		fmt.Println(err)
 	}
 
-	down := []byte("\n\n## DO YOUR MIGRATION DOWN \n\nCOMMIT;")
+	down := []byte("BEGIN;\n\n## DO YOUR MIGRATION DOWN \n\nCOMMIT;")
 	if err := ioutil.WriteFile(dir+numbersFile+"_"+*namefileUsers+".down.sql", down, 0754); err != nil {
 		fmt.Println(err)
 	}

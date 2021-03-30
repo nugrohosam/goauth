@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"strconv"
-	"time"
 
 	"github.com/spf13/viper"
 
@@ -23,6 +22,7 @@ func main() {
 	state := flag.String("state", "none", "--")
 	stage := flag.String("stage", "dev", "--")
 	force := flag.String("force", "dev", "--")
+	version := flag.String("version", "dev", "--")
 	howManyStep := flag.String("howmanystep", "none", "--")
 
 	flag.Parse()
@@ -30,22 +30,7 @@ func main() {
 	if *stage == "none" {
 		fmt.Println("flag [--stage=?] must be spellied")
 		return
-	}
-
-	var step int64
-	if *state == "none" {
-		panic("Stop!!! state must be spellied")
-	} else if *state == "down" {
-		if *howManyStep == "none" {
-			panic("Stop!!! howmanystep must be spellied more than 0")
-		} else {
-			var err error
-			step, err = strconv.ParseInt(*howManyStep, 0, 32)
-			if step == 0 || err != nil {
-				panic("Stop!!! define howmanystep must be spellied more than 0")
-			}
-		}
-	}
+	} 
 
 	// initial call to envinronment variable
 	if *stage == "prod" {
@@ -118,23 +103,48 @@ func main() {
 		return
 	}
 
-	if *state == "up" {
-		if err := migrationExec.Up(); err != nil {
-			fmt.Println(err, "when up")
-			return
-		}
-	} else if *state == "down" {
-		stepIs := (int)(-step)
-		migrationExec.Steps(stepIs)
-	} else {
-		fmt.Println("State is not define right")
+	if (*force == "true" || *force == "1") && *version == "none" {
+		fmt.Println("set [--force] the [--version] must be spellied")
+		return
 	}
-
-	time.Sleep(4 * time.Second)
-	version, _, _ := migrationExec.Version()
-	fmt.Println("Migration", *state, "complete and now version :", version)
 
 	if *force == "true" {
-		migrationExec.Force(int(version))
+		versionRequest,  _ := strconv.Atoi(*version)
+		migrationExec.Force(int(versionRequest))
+	} else {
+		var step int64
+		if *state == "none" {
+			panic("Stop!!! state must be spellied")
+		} else if *state == "down" {
+			if *howManyStep == "none" {
+				panic("Stop!!! howmanystep must be spellied more than 0")
+			} else {
+				var err error
+				step, err = strconv.ParseInt(*howManyStep, 0, 32)
+				if step == 0 || err != nil {
+					panic("Stop!!! define howmanystep must be spellied more than 0")
+				}
+			}
+		}
+		
+		if *state == "up" {
+			versionNow, _, _ := migrationExec.Version()
+			if err := migrationExec.Up(); err != nil {
+				migrationExec.Force(int(versionNow))
+				fmt.Println("Migration", *state, "fail and now version :", versionNow)
+				return
+			} 
+		} else if *state == "down" {
+			stepIs := (int)(-step)
+			if err := migrationExec.Steps(stepIs); err != nil {
+				fmt.Println(err, "when down")
+			} 
+		} else {
+			fmt.Println("State is not define right")
+			return
+		}
 	}
+
+	versionAfter, _, _ := migrationExec.Version()
+	fmt.Println("Migration", *state, "success and now version :", versionAfter)
 }
