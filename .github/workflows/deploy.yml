@@ -11,10 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+      with: 
+        clean: false
     - name: Build Go
       uses: actions/setup-go@v2
       with:
-        clean: false
         go-version: 1.15.x
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
