@@ -7,7 +7,8 @@ on:
     branches: [ master ]
 
 jobs:
-  deploy:
+
+  deploy-http:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -26,15 +27,6 @@ jobs:
         port: ${{ secrets.PORT }}
         source: ./
         target: ${{ secrets.PATH_FOLDER_REMOTE_HTTP }}
-    - name: copy file via ssh password
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        source: ./
-        target: ${{ secrets.PATH_FOLDER_REMOTE_GRPC }}
     - name: Restart app http
       uses: garygrossgarten/github-action-ssh@release
       with:
@@ -48,7 +40,27 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         target: ${{ secrets.PATH_FOLDER_REMOTE_HTTP }}
-    - name: Restart app grpc
+
+  deploy-grpc:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with: 
+        clean: false
+    - name: Build Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.15.x
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        source: ./
+        target: ${{ secrets.PATH_FOLDER_REMOTE_GRPC }}
+    - name: Restart app http
       uses: garygrossgarten/github-action-ssh@release
       with:
         command: |
