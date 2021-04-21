@@ -1,6 +1,10 @@
+BEGIN;
+
 CREATE TABLE IF NOT EXISTS permissions (
-    id SERIAL,
+    id BIGINT AUTO_INCREMENT,
     name VARCHAR(255) NULL,
     PRIMARY KEY (id)
 );    
+
+COMMIT;
 

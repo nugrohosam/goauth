@@ -1,5 +1,9 @@
+BEGIN;
+
 CREATE TABLE IF NOT EXISTS users (
-    id SERIAL,
+    id BIGINT AUTO_INCREMENT,
     name VARCHAR(255) NULL,
     PRIMARY KEY (id)
 );
+
+COMMIT;

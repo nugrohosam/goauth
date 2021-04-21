@@ -70,6 +70,8 @@ func Prepare() {
 		panic("make panic test")
 	})
 
+	Routes.GET("", controllers.BaseHandler())
+	
 	// v1
 	v1 := Routes.Group("/v1")
 

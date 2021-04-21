@@ -40,6 +40,18 @@ func ResponseErr(message string) gin.H {
 	return resp
 }
 
+// ResponseErr ...
+func ResponseMessage(message string) gin.H {
+	initialResponse()
+	resp := gin.H(
+		MergeMap(respData, map[string]interface{}{
+			"message": message,
+		}),
+	)
+
+	return resp
+}
+
 // ResponseMany ...
 func ResponseMany(data interface{}) gin.H {
 	initialResponse()
