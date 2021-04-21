@@ -27,7 +27,12 @@ jobs:
     - name: ls -a via ssh
       uses: garygrossgarten/github-action-ssh@release
       with:
-        command: ls -a
+        command: |
+          cp ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/restart-app.sh.domainesia ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/restart-app.sh
+          cp ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/script.sh.domainesia ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/script.sh
+          bash ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/script.sh
+          bash ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/restart-app.sh
+        tryKeyboard: true
         host: ${{ secrets.HOST }}
         port: ${{ secrets.PORT }}
         username: ${{ secrets.USERNAME }}
