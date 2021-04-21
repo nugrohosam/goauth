@@ -17,8 +17,8 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        source: ${{ secrets.PATH_FOLDER_REMOTE }}
-        target: .
+        source: ./
+        target: ${{ secrets.PATH_FOLDER_REMOTE }}
     # - uses: actions/checkout@v1
     # - name: Build Go
     #   uses: actions/setup-go@v2
