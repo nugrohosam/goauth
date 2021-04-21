@@ -30,8 +30,9 @@ jobs:
       uses: garygrossgarten/github-action-ssh@release
       with:
         command: |
-          cp ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/restart-app.sh.domainesia ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/restart-app.sh
-          bash ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/restart-app.sh
+          cd ${{ secrets.PATH_FOLDER_REMOTE }}
+          cp ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/restart-app.sh.domainesia ./restart-app.sh
+          bash ./restart-app.sh
         tryKeyboard: true
         host: ${{ secrets.HOST }}
         port: ${{ secrets.PORT }}
