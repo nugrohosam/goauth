@@ -24,13 +24,11 @@ jobs:
         port: ${{ secrets.PORT }}
         source: ./
         target: ${{ secrets.PATH_FOLDER_REMOTE }}
-    - name: ls -a via ssh
+    - name: Restart app
       uses: garygrossgarten/github-action-ssh@release
       with:
         command: |
           cp ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/restart-app.sh.domainesia ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/restart-app.sh
-          cp ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/script.sh.domainesia ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/script.sh
-          bash ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/script.sh
           bash ${{ secrets.PATH_FOLDER_REMOTE }}/deploy/domainesia/restart-app.sh
         tryKeyboard: true
         host: ${{ secrets.HOST }}
