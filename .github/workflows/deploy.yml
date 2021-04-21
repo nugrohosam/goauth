@@ -14,6 +14,7 @@ jobs:
     - name: Build Go
       uses: actions/setup-go@v2
       with:
+        clean: false
         go-version: 1.15.x
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
