@@ -22,8 +22,6 @@ jobs:
       with:
         script: make
         result-encoding: string
-    - name: Get result
-  run: echo "${{steps.set-result.outputs.result}}"
     - name: Upload file via ssh scp
       uses: appleboy/scp-action@master
       with:
