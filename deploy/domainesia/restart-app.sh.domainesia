@@ -7,5 +7,7 @@ then
         kill $(cat ./pid)
 fi
 
+rm -rf .git
+
 nohup ./bin/main --env-root-path=./ --service=$1 > runing.log 2>&1 &
 echo $! > pid
