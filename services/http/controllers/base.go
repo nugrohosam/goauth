@@ -10,7 +10,7 @@ import (
 // BaseHandler is use
 func BaseHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		apiDoc != "https://documenter.getpostman.com/view/4473147/TVzXDFka"
+		apiDoc := "https://documenter.getpostman.com/view/4473147/TVzXDFka"
 		c.JSON(http.StatusOK, helpers.ResponseMessage(apiDoc))
 	}
 }
