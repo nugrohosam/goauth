@@ -18,10 +18,8 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.15.x
-    - uses: actions/github-script@v4
-      with:
-        script: make
-        result-encoding: string
+    - name: Run Makefile
+        run: make
     - name: Upload file via ssh scp
       uses: appleboy/scp-action@master
       with:
@@ -54,10 +52,8 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.15.x
-    - uses: actions/github-script@v4
-      with:
-        script: make
-        result-encoding: string
+    - name: Run Makefile
+        run: make
     - name: Upload file via ssh scp
       uses: appleboy/scp-action@master
       with:
