@@ -26,20 +26,20 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         source: ./
-        target: ${{ secrets.PATH_FOLDER_REMOTE_HTTP }}
+        target: ${{ secrets.FOLDER_PATH_REMOTE_HTTP }}
     - name: Restart app http
       uses: garygrossgarten/github-action-ssh@release
       with:
         command: |
-          cd ${{ secrets.PATH_FOLDER_REMOTE_HTTP }}
-          cp ${{ secrets.PATH_FOLDER_REMOTE_HTTP }}/deploy/domainesia/restart-app.sh.domainesia ./restart-app.sh
+          cd ${{ secrets.FOLDER_PATH_REMOTE_HTTP }}
+          cp ${{ secrets.FOLDER_PATH_REMOTE_HTTP }}/deploy/domainesia/restart-app.sh.domainesia ./restart-app.sh
           bash ./restart-app.sh
         tryKeyboard: true
         host: ${{ secrets.HOST }}
         port: ${{ secrets.PORT }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        target: ${{ secrets.PATH_FOLDER_REMOTE_HTTP }}
+        target: ${{ secrets.FOLDER_PATH_REMOTE_HTTP }}
 
   deploy-grpc:
     runs-on: ubuntu-latest
@@ -59,18 +59,18 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         source: ./
-        target: ${{ secrets.PATH_FOLDER_REMOTE_GRPC }}
+        target: ${{ secrets.FOLDER_PATH_REMOTE_GRPC }}
     - name: Restart app http
       uses: garygrossgarten/github-action-ssh@release
       with:
         command: |
-          cd ${{ secrets.PATH_FOLDER_REMOTE_GRPC }}
-          cp ${{ secrets.PATH_FOLDER_REMOTE_GRPC }}/deploy/domainesia/restart-app.sh.domainesia ./restart-app.sh
+          cd ${{ secrets.FOLDER_PATH_REMOTE_GRPC }}
+          cp ${{ secrets.FOLDER_PATH_REMOTE_GRPC }}/deploy/domainesia/restart-app.sh.domainesia ./restart-app.sh
           bash ./restart-app.sh
         tryKeyboard: true
         host: ${{ secrets.HOST }}
         port: ${{ secrets.PORT }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        target: ${{ secrets.PATH_FOLDER_REMOTE_GRPC }}
+        target: ${{ secrets.FOLDER_PATH_REMOTE_GRPC }}
         
