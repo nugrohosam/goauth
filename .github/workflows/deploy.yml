@@ -54,6 +54,10 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.15.x
+    - uses: actions/github-script@v4
+      with:
+        script: make
+        result-encoding: string
     - name: Upload file via ssh scp
       uses: appleboy/scp-action@master
       with:
