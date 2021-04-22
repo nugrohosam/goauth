@@ -18,7 +18,7 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.15.x
-    - name: copy file via ssh password
+    - name: Upload file via ssh scp
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -50,7 +50,7 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.15.x
-    - name: copy file via ssh password
+    - name: Upload file via ssh scp
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.HOST }}
