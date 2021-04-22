@@ -60,7 +60,7 @@ jobs:
         port: ${{ secrets.PORT }}
         source: ./
         target: ${{ secrets.FOLDER_PATH_REMOTE_GRPC }}
-    - name: Restart app http
+    - name: Restart app grpc
       uses: garygrossgarten/github-action-ssh@release
       with:
         command: |
