@@ -39,7 +39,6 @@ jobs:
         port: ${{ secrets.PORT }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        target: ${{ secrets.FOLDER_PATH_REMOTE_HTTP }}
 
   deploy-grpc:
     runs-on: ubuntu-latest
@@ -72,5 +71,4 @@ jobs:
         port: ${{ secrets.PORT }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        target: ${{ secrets.FOLDER_PATH_REMOTE_GRPC }}
         
