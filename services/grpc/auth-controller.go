@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 
-	pb "github.com/nugrohosam/gosampleapi/services/grpc/pb"
+	pb "github.com/nugrohosam/gosampleapi/services/grpc/proto"
 	usecases "github.com/nugrohosam/gosampleapi/usecases"
 )
 

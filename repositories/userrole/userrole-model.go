@@ -3,7 +3,7 @@ package userrole
 import (
 	"github.com/nugrohosam/gosampleapi/repositories/role"
 	"github.com/nugrohosam/gosampleapi/repositories/user"
-	pb "github.com/nugrohosam/gosampleapi/services/grpc/pb"
+	pb "github.com/nugrohosam/gosampleapi/services/grpc/proto"
 )
 
 // TableName ...

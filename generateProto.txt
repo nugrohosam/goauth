@@ -1,1 +1,3 @@
-protoc --proto_path=./assets/proto --proto_path=./third_party --go_out=plugins=grpc:./services/grpc/pb nameofservice.proto
+protoc --go_out=./services/grpc/proto --go_opt=paths=source_relative \
+    --go-grpc_out=./services/grpc/proto --go-grpc_opt=paths=source_relative \
+    assets/proto/user-permission-service.proto

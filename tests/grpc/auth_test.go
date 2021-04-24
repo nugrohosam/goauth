@@ -5,7 +5,7 @@ import (
 	"log"
 	"testing"
 
-	pb "github.com/nugrohosam/gosampleapi/services/grpc/pb"
+	pb "github.com/nugrohosam/gosampleapi/services/grpc/proto"
 	utilities "github.com/nugrohosam/gosampleapi/tests/utilities"
 	viper "github.com/spf13/viper"
 	assert "github.com/stretchr/testify/assert"

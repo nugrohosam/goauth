@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "./proto";
+package proto;
+
+message GetUserPermissionRequest {
+    string token = 1;
+    string permission = 2;
+}
+
+message GetUserPermissionResponse {
+    bool is_valid = 1;
+}
+
+service UserPermissionService {
+    rpc Validate(GetUserPermissionRequest) returns (GetUserPermissionResponse);
+}

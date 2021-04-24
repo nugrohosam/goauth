@@ -5,7 +5,6 @@ import (
 	"sync"
 
 	"github.com/fatih/structs"
-	pb "github.com/nugrohosam/gosampleapi/services/grpc/pb"
 
 	"gorm.io/gorm"
 )
@@ -50,31 +49,6 @@ func (roles *Roles) ToMap() []interface{} {
 	wg.Wait()
 
 	return rolesMapped
-}
-
-// ToProto ..
-func (role *Role) ToProto() *pb.GetRoleResponse {
-	return &pb.GetRoleResponse{
-		Id:   uint64(role.ID),
-		Name: role.Name,
-	}
-}
-
-// ToProtos ..
-func (roles *Roles) ToProtos() []*pb.GetRoleResponse {
-	var wg sync.WaitGroup
-
-	roleProtosMapped := make([]*pb.GetRoleResponse, cap(*roles))
-	for index, value := range *roles {
-		wg.Add(1)
-		go func(index int, wg *sync.WaitGroup) {
-			defer wg.Done()
-			roleProtosMapped[index] = value.ToProto()
-		}(index, &wg)
-	}
-	wg.Wait()
-
-	return roleProtosMapped
 }
 
 // PluckName ..

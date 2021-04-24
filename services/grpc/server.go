@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	pb "github.com/nugrohosam/gosampleapi/services/grpc/pb"
+	pb "github.com/nugrohosam/gosampleapi/services/grpc/proto"
 )
 
 // NewServer ...
@@ -45,6 +45,6 @@ func Prepare() {
 	NewServer = grpc.NewServer()
 	pb.RegisterGetAuthServiceServer(NewServer, &getAuthServiceServer{})
 	pb.RegisterValidationServiceServer(NewServer, &validationServiceServer{})
-	pb.RegisterGetRoleServiceServer(NewServer, &getRoleServiceServer{})
+	pb.RegisterUserPermissionServiceServer(NewServer, &userPermissionServiceServer{})
 	pb.RegisterGetUserRoleServiceServer(NewServer, &getUserRoleServiceServer{})
 }
