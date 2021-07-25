@@ -9,24 +9,10 @@ GOSAMPLEAPI_VERSION=$(shell git describe --always --long --dirty --tags)
 all: deps build
 
 deps:
-	mv main.go .main.example
-	
-	mv .migrate.example migrate.go
-	go build migrate.go
-	mv migrate.go .migrate.example
-	mv migrate* ./cmd/
-
-	mv .migrate-create.example migrate-create.go
-	go build migrate-create.go
-	mv migrate-create.go .migrate-create.example
-	mv migrate-create* ./cmd/
-	
 	mv .seed.example seed.go
 	go build seed.go
 	mv seed.go .seed.example
 	mv seed* ./cmd/
-
-	mv .main.example main.go
 
 build:
 	go build main.go

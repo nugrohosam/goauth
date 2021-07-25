@@ -13,7 +13,8 @@ const TableName = "permissions"
 
 // Permission struct
 type Permission struct {
-	ID   int
+	gorm.Model
+	ID   int `gorm:"primaryKey;autoIncrement:true"`
 	Name string
 }
 

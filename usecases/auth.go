@@ -19,11 +19,11 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 	user := userRepo.FindByEmailOrUsername(emailOrUsername)
 
 	if len(user.Username) == 0 || len(user.Email) == 0 {
-		return "", errors.New("Cannot find user, username or email")
+		return "", errors.New("cannot find user, username or email")
 	}
 
 	if isPasswordValid := helpers.CompareHash(user.Password, password); !isPasswordValid {
-		return "", errors.New("Cannot find user, password")
+		return "", errors.New("cannot find user, password")
 	}
 
 	tokenExpiredInHour, _ := strconv.ParseInt(viper.GetString("token.expired_time"), 24, 64)
@@ -49,7 +49,7 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 	tokenString, err := token.SignedString(bytedString) // always use byted string
 
 	if err != nil {
-		return "", errors.New("Cannot make token")
+		return "", errors.New("cannot make token")
 	}
 
 	return tokenString, nil
@@ -59,7 +59,7 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 func AuthorizationValidation(tokenString string) error {
 	token, err := jwt.Parse(tokenString, validateToken)
 	if err != nil {
-		return errors.New("Wrong token input")
+		return errors.New("wrong token input")
 	}
 
 	if data, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
@@ -72,10 +72,10 @@ func AuthorizationValidation(tokenString string) error {
 			return nil
 		}
 
-		return errors.New("Time token has expired")
+		return errors.New("time token has expired")
 	}
 
-	return errors.New("Cannot validate")
+	return errors.New("cannot validate")
 }
 
 // GetDataAuth ...
@@ -93,9 +93,9 @@ func GetDataAuth(tokenString string) (map[string]interface{}, error) {
 	if ok && token.Valid {
 		return dataUser, nil
 	} else if err != nil {
-		return nil, errors.New("Cannot validate auth token")
+		return nil, errors.New("cannot validate auth token")
 	} else {
-		return nil, errors.New("Cannot validate")
+		return nil, errors.New("cannot validate")
 	}
 }
 

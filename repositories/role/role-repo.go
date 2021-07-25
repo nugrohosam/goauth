@@ -30,7 +30,7 @@ func Create(name string) (Role, error) {
 	isExists := database.Where("name = ?", role.Name).Find(&role).RowsAffected
 
 	if isExists != 0 {
-		return roleExisting, errors.New("Role is exists")
+		return roleExisting, errors.New("role is exists")
 	}
 
 	database.Create(&role)
@@ -56,7 +56,7 @@ func Update(ID int, name string) (Role, error) {
 	isExists := database.Where("name = ?", role.Name).Where("id != ?", ID).Find(&role).RowsAffected
 
 	if isExists != 0 {
-		return roleExisting, errors.New("Role is exists")
+		return roleExisting, errors.New("role is exists")
 	}
 
 	database.Model(Role{}).Where("id = ?", ID).Updates(&role)

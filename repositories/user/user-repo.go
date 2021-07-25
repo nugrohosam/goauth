@@ -30,7 +30,7 @@ func Create(name, username, email, password string) (User, error) {
 	isExists := database.Where("email = ? OR username = ?", user.Email, user.Username).Find(&user).RowsAffected
 
 	if isExists != 0 {
-		return userExisting, errors.New("User is exists")
+		return userExisting, errors.New("user is exists")
 	}
 
 	database.Create(&user)

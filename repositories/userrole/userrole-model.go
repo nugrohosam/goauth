@@ -4,6 +4,7 @@ import (
 	"github.com/nugrohosam/gosampleapi/repositories/role"
 	"github.com/nugrohosam/gosampleapi/repositories/user"
 	pb "github.com/nugrohosam/gosampleapi/services/grpc/proto"
+	"gorm.io/gorm"
 )
 
 // TableName ...
@@ -11,7 +12,8 @@ const TableName = "user_role"
 
 // UserRole struct
 type UserRole struct {
-	ID     int
+	gorm.Model
+	ID     int `gorm:"primaryKey;autoIncrement:true"`
 	UserID int
 	User   user.User `gorm:"constraint:OnDelete:CASCADE;references:id"`
 	RoleID int

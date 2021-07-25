@@ -33,7 +33,7 @@ func Conn() error {
 		dsn = "postgres://" + dbUsername + ":" + dbPassword + "@" + dbHost + ":" + dbPort + "/" + dbName + "?" + "sslmode=disableTimeZone=Asia/Jakarta"
 		db, err = sql.Open("postgres", dsn)
 	} else {
-		return errors.New("Not Defined Database Driver")
+		return errors.New("not Defined Database Driver")
 	}
 
 	// if there is an error opening the connection, handle it

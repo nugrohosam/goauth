@@ -35,7 +35,7 @@ func Create(roleID, userID int) (UserRole, error) {
 	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", roleID, userID).Find(&userRole).RowsAffected
 
 	if isExists != 0 {
-		return roleExisting, errors.New("Role Permission is exists")
+		return roleExisting, errors.New("role Permission is exists")
 	}
 
 	database.Table(TableName).Create(&userRole)
@@ -51,7 +51,7 @@ func Update(ID, roleID, userID int) (UserRole, error) {
 	isExists := database.Table(TableName).Where("role_id = ? AND user_id = ?", roleID, userID).Where("id != ?", ID).Find(&userRole).RowsAffected
 
 	if isExists != 0 {
-		return roleExisting, errors.New("User is has this role")
+		return roleExisting, errors.New("user is has this role")
 	}
 
 	database.Table(TableName).Model(UserRole{}).Where("id = ?", ID).Updates(&userRole)

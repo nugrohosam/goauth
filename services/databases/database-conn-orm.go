@@ -33,7 +33,7 @@ func ConnOrm() error {
 		dsn = "postgres://" + dbUsername + ":" + dbPassword + "@" + dbHost + ":" + dbPort + "/" + dbName + "?" + "sslmode=disableTimeZone=Asia/Jakarta"
 		db, errOpen = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	} else {
-		return errors.New("Not Defined Database Driver")
+		return errors.New("not Defined Database Driver")
 	}
 
 	if errOpen != nil {
@@ -54,6 +54,12 @@ func ConnOrm() error {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	DbOrm = db
+
+	return nil
+}
+
+func MigrateModels(models []interface{}) error {
+	DbOrm.AutoMigrate(models...)
 
 	return nil
 }

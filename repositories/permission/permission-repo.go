@@ -30,7 +30,7 @@ func Create(name string) (Permission, error) {
 	isExists := database.Where("name = ?", permission.Name).Find(&permission).RowsAffected
 
 	if isExists != 0 {
-		return permissionExisting, errors.New("Permission is exists")
+		return permissionExisting, errors.New("permission is exists")
 	}
 
 	database.Create(&permission)
@@ -46,7 +46,7 @@ func Update(ID int, name string) (Permission, error) {
 	isExists := database.Where("name = ?", permission.Name).Where("id != ?", ID).Find(&permission).RowsAffected
 
 	if isExists != 0 {
-		return permissionExisting, errors.New("Permission is exists")
+		return permissionExisting, errors.New("permission is exists")
 	}
 
 	database.Model(Permission{}).Where("id = ?", ID).Updates(&permission)

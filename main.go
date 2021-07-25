@@ -8,6 +8,11 @@ import (
 	"strings"
 
 	helpers "github.com/nugrohosam/gosampleapi/helpers"
+	permission "github.com/nugrohosam/gosampleapi/repositories/permission"
+	role "github.com/nugrohosam/gosampleapi/repositories/role"
+	rolepermission "github.com/nugrohosam/gosampleapi/repositories/rolepermission"
+	user "github.com/nugrohosam/gosampleapi/repositories/user"
+	userrole "github.com/nugrohosam/gosampleapi/repositories/userrole"
 	database "github.com/nugrohosam/gosampleapi/services/databases"
 	grpcConn "github.com/nugrohosam/gosampleapi/services/grpc"
 	httpConn "github.com/nugrohosam/gosampleapi/services/http"
@@ -40,6 +45,22 @@ func main() {
 		panic(err)
 	}
 
+	models := []interface{}{
+		permission.Permission{},
+		role.Role{},
+		user.User{},
+		rolepermission.RolePermission{},
+		userrole.UserRole{},
+	}
+
+	if err := database.MigrateModels(models); err != nil {
+		panic(err)
+	}
+
+	if err := database.ConnOrm(); err != nil {
+		panic(err)
+	}
+
 	if *serviceUse == "grpc" {
 		if err := grpcConn.Serve(); err != nil {
 			panic(err)
@@ -59,13 +80,13 @@ func initiateRedisCache() {
 	case "redis":
 		configCacheRedis := viper.GetStringMap("redis")
 		redisHostsCache := make(map[string]string)
-	
+
 		for key, value := range configCacheRedis {
 			keyRedis := cacheRedisPrefixKey + key
 			valueReal := value.(map[string]string)
 			redisHostsCache[keyRedis] = valueReal["host"] + ":" + valueReal["port"]
 		}
-	
+
 		infrastructure.InitiateRedisCache(redisHostsCache)
 	}
 }

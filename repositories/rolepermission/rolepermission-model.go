@@ -1,7 +1,7 @@
 package rolepermission
 
 import (
-	"github.com/nugrohosam/gosampleapi/listeners/producers"
+	"github.com/nugrohosam/gosampleapi/pubsub/producers"
 	"github.com/nugrohosam/gosampleapi/repositories/permission"
 	"github.com/nugrohosam/gosampleapi/repositories/role"
 	"gorm.io/gorm"
@@ -12,7 +12,8 @@ const TableName = "role_permission"
 
 // RolePermission struct
 type RolePermission struct {
-	ID           int
+	gorm.Model
+	ID           int `gorm:"primaryKey;autoIncrement:true"`
 	RoleID       int
 	Role         role.Role `gorm:"constraint:OnDelete:CASCADE;references:id"`
 	PermissionID int

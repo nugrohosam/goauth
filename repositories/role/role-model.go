@@ -14,7 +14,8 @@ const TableName = "roles"
 
 // Role struct
 type Role struct {
-	ID   int
+	gorm.Model
+	ID   int `gorm:"primaryKey;autoIncrement:true"`
 	Name string
 }
 

@@ -81,7 +81,7 @@ func Create(roleID int, permissionID int) (RolePermission, error) {
 	isExists := database.Table(TableName).Where("role_id = ? AND permission_id = ?", roleID, permissionID).Find(&rolePermission).RowsAffected
 
 	if isExists != 0 {
-		return roleExisting, errors.New("Role RolePermission is exists")
+		return roleExisting, errors.New("role RolePermission is exists")
 	}
 
 	database.Table(TableName).Create(&rolePermission)
