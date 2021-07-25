@@ -25,20 +25,6 @@
 ## Run Makefile
 
 - $ make
-## Migration Create
-
-if you want to create some migration, run `$ ./cmd/migrate-create -namefile=namefileyouwant` it will automaticaly create 2 files in migrations folder 
-
-- {number}{nameofmigration}.up.sql
-- {number}{nameofmigration}.down.sql
-
-## Migration Up
-
-if you want to create some migration, run `$ ./cmd/migrate -state=up -stage=dev` it will automaticaly migration up
-
-## Migration Down
-
-if you want to create some migration, run `$ ./cmd/migrate -state=down -stage=dev -howmanystep=1` it will rollback 1 file .down.sql
 
 ## Seeder
 
