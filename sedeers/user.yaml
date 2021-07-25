@@ -1,4 +1,4 @@
-roles:
+users:
 - username: "admin"
   name: "admin"
   password: "admin"
