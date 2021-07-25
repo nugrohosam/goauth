@@ -30,7 +30,7 @@
 if you want to seder data, run `$ ./cmd/seeder -file=namefile.yaml`
 
 ## Run Server
-- $ go run main.go
+- $ go run main.go --env-root-path=./ --service=[http, grpc]
 
 ## Run Test API
 - $ go test github.com/nugrohosam/gosampleapi/tests/api
