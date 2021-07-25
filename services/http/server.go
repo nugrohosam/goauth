@@ -71,7 +71,7 @@ func Prepare() {
 	})
 
 	Routes.GET("", controllers.BaseHandler())
-	
+
 	// v1
 	v1 := Routes.Group("/v1")
 
@@ -87,7 +87,7 @@ func Prepare() {
 	user.Use(gzip.Gzip(gzip.DefaultCompression), middlewares.AuthJwt())
 	{
 		user.GET("/profile", controllers.UserHandlerShow())
-		user.GET("/permissions", controllers.UserPermissionItsOwnHandlerIndex())
+		user.GET("/permissions", controllers.UserPermissionOwnedHandlerIndex())
 		user.GET("/roles", controllers.UserRoleItsOwnHandlerIndex())
 		retrieveUserPermission := user.Use(middlewares.CanAccessWith(
 			[]string{

@@ -8,7 +8,7 @@ import (
 )
 
 // TableName ...
-const TableName = "user_role"
+const TableName = "user_roles"
 
 // UserRole struct
 type UserRole struct {

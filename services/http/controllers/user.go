@@ -75,8 +75,8 @@ func UserRoleItsOwnHandlerIndex() gin.HandlerFunc {
 	}
 }
 
-// UserPermissionItsOwnHandlerIndex ..
-func UserPermissionItsOwnHandlerIndex() gin.HandlerFunc {
+// UserPermissionOwnedHandlerIndex ..
+func UserPermissionOwnedHandlerIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		auth := helpers.GetAuth()
