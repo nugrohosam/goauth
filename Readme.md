@@ -1,5 +1,4 @@
 ## Try this project free
-- api : https://api.auth.nugrohosamiyono.com
 - postman docs : https://documenter.getpostman.com/view/4473147/TVzXDFka
 
 ## Set project
