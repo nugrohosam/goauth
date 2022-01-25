@@ -46,8 +46,8 @@ func ConnOrm() error {
 	}
 
 	// POOLING DB
-	dbMinPool := viper.GetInt("database.min_pool")
-	dbMaxPool := viper.GetInt("database.max_pool")
+	dbMinPool := viper.GetInt("database.min-pool")
+	dbMaxPool := viper.GetInt("database.max-pool")
 
 	sqlDB.SetMaxIdleConns(dbMinPool)
 	sqlDB.SetMaxOpenConns(dbMaxPool)

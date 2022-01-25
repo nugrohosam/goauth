@@ -26,7 +26,7 @@ func AuthBasic(emailOrUsername, password string) (string, error) {
 		return "", errors.New("cannot find user, password")
 	}
 
-	tokenExpiredInHour, _ := strconv.ParseInt(viper.GetString("token.expired_time"), 24, 64)
+	tokenExpiredInHour, _ := strconv.ParseInt(viper.GetString("token.expired-time"), 24, 64)
 	dataUser := map[string]interface{}{
 		"id":       user.ID,
 		"name":     user.Name,
